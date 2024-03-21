@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { Box, Divider, useTheme } from '@mui/material';
+import { Box, Button, Divider, Tab, useTheme } from '@mui/material';
 import {
   Drawer,
   Fab,
@@ -14,12 +14,14 @@ import {
   RadioGroup,
   Slider,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab'
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import AnimateButton from '../../components/AnimatedButton/AnimateButton';
-import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '../../store/actions';
+import { SET_BORDER_RADIUS, SET_FONT_FAMILY  } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
+import { IconTextSize, IconDevices, IconSettings } from '@tabler/icons-react';
 
 function valueText(value) {
   return `${value}px`;
@@ -27,11 +29,13 @@ function valueText(value) {
 
 
 
-const Customization = () => {
+const Customization = ({ toggleTheme }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const customization = useSelector((state) => state.customization);
   const [open, setOpen] = useState(false);
+  const [tabValue, setTabValue] = useState('0');
+
   const handleToggle = () => {
     setOpen(!open);
   };
@@ -60,6 +64,16 @@ const Customization = () => {
     dispatch({ type: SET_FONT_FAMILY, fontFamily });
   }, [dispatch, fontFamily]);
 
+  const handleThemeToggle = () => {
+    toggleTheme(customization.theme === 'light' ? 'dark' : 'light');
+  };
+
+
+  const handleChangeTab = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+
   return (
     <>
       <Tooltip title="Live Customize">
@@ -83,7 +97,7 @@ const Customization = () => {
         >
           <AnimateButton type="rotate">
             <IconButton color="inherit" size="large" disableRipple>
-        
+                <IconSettings />
             </IconButton>
           </AnimateButton>
         </Fab>
@@ -95,7 +109,7 @@ const Customization = () => {
         open={open}
         PaperProps={{
           sx: {
-            width: 300,
+            width: 375,
           }
         }}
       >
@@ -104,7 +118,19 @@ const Customization = () => {
             <Typography variant="h3">App Settings</Typography>
           </Box>
           <Divider />
-          <Grid container spacing={gridSpacing} sx={{ p: 3 }}>
+          <Box sx={{ maxWidth: 375,width: '100%' }}>
+          <TabContext value={tabValue}>
+            <Box sx={{ width: '100%' }}>
+              <TabList onChange={handleChangeTab}>
+                  <Tab  label={<IconDevices />} value="0" sx={{ width: '50%' }} />
+                  <Tab label={<IconTextSize/>} value="1" sx={{ width: '50%' }} />
+              </TabList>
+            </Box>
+            <TabPanel value="0" sx={{ width: '100%', p: 0 }}>
+
+            </TabPanel>
+            <TabPanel value="1" sx={{ width: '100%', p: 0 }}>
+            <Grid container spacing={gridSpacing} sx={{ p: 3 }}>
             <Grid item xs={12}>
                 <FormControl>
                   <RadioGroup
@@ -142,7 +168,6 @@ const Customization = () => {
                     />
                   </RadioGroup>
                 </FormControl>
-
             </Grid>
             <Grid item xs={12}>
                 <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
@@ -176,9 +201,14 @@ const Customization = () => {
                       24px
                     </Typography>
                   </Grid>
+                  <Button onClick={handleThemeToggle}>Toggle Theme</Button>
                 </Grid>
             </Grid>
           </Grid>
+            </TabPanel>
+        </TabContext>
+          </Box>
+          
         </PerfectScrollbar>
       </Drawer>
     </>

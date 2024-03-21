@@ -8,7 +8,6 @@ import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
 // project imports
 import Header from './Header/index';
 import Sidebar from './Sidebar/index';
-import Customization from '../Customization/index';
 import { drawerWidth } from '../../store/constant';
 import { SET_MENU } from '../../store/actions';
 
@@ -85,7 +84,6 @@ const MainLayout = () => {
         {/* breadcrumb */}
         <Outlet />
       </Main>
-      <Customization />
     </Box>
   );
 };

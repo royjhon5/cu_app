@@ -3,8 +3,10 @@ import * as actionTypes from './actions';
 export const initialState = {
   isOpen: [],
   defaultId: 'default',
-  opened: true
+  opened: true,
+  theme: 'light'
 };
+
 
 
 const customizationReducer = (state = initialState, action) => {
@@ -31,6 +33,11 @@ const customizationReducer = (state = initialState, action) => {
         ...state,
         borderRadius: action.borderRadius
       };
+    case actionTypes.SET_THEME:
+      return {
+        ...state,
+        theme: action.theme
+      }
     default:
       return state;
   }
