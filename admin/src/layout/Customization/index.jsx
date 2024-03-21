@@ -1,8 +1,9 @@
+import { PropTypes } from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { Box, Button, Divider, Tab, useTheme } from '@mui/material';
+import { Box, Button, Divider, Grow, Tab, useTheme } from '@mui/material';
 import {
   Drawer,
   Fab,
@@ -22,12 +23,13 @@ import AnimateButton from '../../components/AnimatedButton/AnimateButton';
 import { SET_BORDER_RADIUS, SET_FONT_FAMILY  } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
 import { IconTextSize, IconDevices, IconSettings } from '@tabler/icons-react';
+import SubCard from '../../components/cards/SubCard';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 function valueText(value) {
   return `${value}px`;
 }
-
-
 
 const Customization = ({ toggleTheme }) => {
   const theme = useTheme();
@@ -35,6 +37,7 @@ const Customization = ({ toggleTheme }) => {
   const customization = useSelector((state) => state.customization);
   const [open, setOpen] = useState(false);
   const [tabValue, setTabValue] = useState('0');
+  const grow = true;
 
   const handleToggle = () => {
     setOpen(!open);
@@ -106,6 +109,7 @@ const Customization = ({ toggleTheme }) => {
       <Drawer
         anchor="right"
         onClose={handleToggle}
+        elevation={0}
         open={open}
         PaperProps={{
           sx: {
@@ -114,8 +118,9 @@ const Customization = ({ toggleTheme }) => {
         }}
       >
         <PerfectScrollbar component="div">
-          <Box sx={{ p:3 }}>
-            <Typography variant="h3">App Settings</Typography>
+          <Box sx={{ p:3, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Typography variant="h5">App Customization</Typography>
+              <CancelIcon fontSize='small' onClick={handleToggle} sx={{ cursor: 'pointer' }} />
           </Box>
           <Divider />
           <Box sx={{ maxWidth: 375,width: '100%' }}>
@@ -127,11 +132,14 @@ const Customization = ({ toggleTheme }) => {
               </TabList>
             </Box>
             <TabPanel value="0" sx={{ width: '100%', p: 0 }}>
-
+            
+            <Button onClick={handleThemeToggle}>Toggle Theme</Button>
             </TabPanel>
             <TabPanel value="1" sx={{ width: '100%', p: 0 }}>
             <Grid container spacing={gridSpacing} sx={{ p: 3 }}>
             <Grid item xs={12}>
+               <Grow in={grow} style={{ transformOrigin: '0 0 0' }}{...(grow ? { timeout: 1000 } : {})}>
+               <SubCard title="Font Family">
                 <FormControl>
                   <RadioGroup
                     aria-label="font-family"
@@ -168,8 +176,12 @@ const Customization = ({ toggleTheme }) => {
                     />
                   </RadioGroup>
                 </FormControl>
+                </SubCard>
+               </Grow>
             </Grid>
             <Grid item xs={12}>
+                <Grow in={grow} style={{ transformOrigin: '0 0 0' }}{...(grow ? { timeout: 1200 } : {})}>
+                <SubCard title="Border Radius">
                 <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
                   <Grid item>
                     <Typography variant="h6" color="secondary">
@@ -200,19 +212,23 @@ const Customization = ({ toggleTheme }) => {
                     <Typography variant="h6" color="secondary">
                       24px
                     </Typography>
-                  </Grid>
-                  <Button onClick={handleThemeToggle}>Toggle Theme</Button>
+                  </Grid>    
                 </Grid>
+                </SubCard>
+                </Grow>
             </Grid>
           </Grid>
             </TabPanel>
         </TabContext>
-          </Box>
-          
+          </Box> 
         </PerfectScrollbar>
       </Drawer>
     </>
   );
 };
+
+Customization.propTypes = {
+  toggleTheme: PropTypes.func
+}
 
 export default Customization;

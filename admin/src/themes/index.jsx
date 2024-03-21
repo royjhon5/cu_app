@@ -13,15 +13,19 @@ export const theme = (customization, mode) => {
 
 
   let background;
+  let heading;
   if (mode === 'dark') {
     background = "#1A223F";
+    heading = "#CCD1E2";
   } else {
     background = color.primaryLight;
+    heading = color.grey900;
   }
+  
 
   const themeOption = {
     colors: color,
-    heading: color.grey900,
+    heading,
     paper: color.paper,
     backgroundDefault: color.paper,
     background,

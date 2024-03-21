@@ -123,13 +123,13 @@ export default function themePalette(theme, mode) {
       900: theme.colors?.darkPaper
     },
     text: {
-      primary: theme.darkTextPrimary,
-      secondary: theme.darkTextSecondary,
-      dark: theme.textDark,
+      primary: "#CCD1E2",
+      secondary: "#CCD1E2",
+      dark: "#CCD1E2",
       hint: theme.colors?.grey100
     },
     background: {
-      paper: theme.paper,
+      paper: "#111936",
       default: '#111936'
     }
   };
