@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 
-// ==============================|| CUSTOM SUB CARD ||============================== //
 
 const SubCard = forwardRef(({ children, content, contentClass, darkTitle, secondary, sx = {}, contentSX = {}, title, ...others }, ref) => {
   const theme = useTheme();
@@ -23,11 +20,8 @@ const SubCard = forwardRef(({ children, content, contentClass, darkTitle, second
       }}
       {...others}
     >
-      {/* card header and action */}
       {!darkTitle && title && <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} />}
       {darkTitle && title && <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} />}
-
-      {/* content & header divider */}
       {title && (
         <Divider
           sx={{
@@ -36,8 +30,6 @@ const SubCard = forwardRef(({ children, content, contentClass, darkTitle, second
           }}
         />
       )}
-
-      {/* card content */}
       {content && (
         <CardContent sx={{ p: 2.5, ...contentSX }} className={contentClass || ''}>
           {children}

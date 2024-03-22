@@ -102,7 +102,7 @@ export default function componentStyleOverrides(theme) {
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          background: bgColor,
+          background: '#1A223F',
           borderRadius: `${theme?.customization?.borderRadius}px`,
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: theme.colors?.grey400
@@ -154,7 +154,7 @@ export default function componentStyleOverrides(theme) {
       styleOverrides: {
         root: {
           borderColor: theme.divider,
-          opacity: 1
+          opacity: 0.1
         }
       }
     },

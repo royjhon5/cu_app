@@ -5,6 +5,7 @@ import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 import { IconMenu2 } from '@tabler/icons-react';
+import LogoSection from '../LogoSection';
 
 
 const Header = ({ handleLeftDrawerToggle }) => {
@@ -21,8 +22,9 @@ const Header = ({ handleLeftDrawerToggle }) => {
           }
         }}
       >
-        <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-          
+        <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1, justifyContent: 'space-between' }}>
+            <LogoSection />
+            <b>CU Giftshop</b>
         </Box>
         <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
           <Avatar
