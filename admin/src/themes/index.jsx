@@ -34,7 +34,7 @@ export const theme = (customization, mode) => {
     background,
     darkTextPrimary,
     darkTextSecondary: color.grey700,
-    textDark: color.grey900,
+    textDark: 'red',
     menuSelected: color.secondaryDark,
     menuSelectedBack: color.secondaryLight,
     divider: "#D7D4D6",
