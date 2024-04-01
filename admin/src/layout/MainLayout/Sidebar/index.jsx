@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
-
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip, Drawer, Stack, useMediaQuery } from '@mui/material';
-
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
-
-import MenuList from './MenuList';
-import LogoSection from '../LogoSection';
-import MenuCard from './MenuCard';
+import MenuList from './MenuList/index';
+import LogoSection from '../LogoSection/index';
+import MenuCard from './MenuCard/index';
 import { drawerWidth } from '../../../store/constant';
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
@@ -40,7 +37,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           <MenuList />
           <MenuCard />
           <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-            <Chip label={"3.4.5"} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
+            <Chip disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
           </Stack>
         </Box>
       </MobileView>

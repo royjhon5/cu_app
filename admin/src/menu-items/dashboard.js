@@ -1,18 +1,15 @@
-// assets
-import { IconDashboard } from '@tabler/icons-react';
 
-// constant
+import { IconDashboard } from '@tabler/icons-react';
 const icons = { IconDashboard };
 
-// ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const dashboard = {
-  id: 'dashboard',
+  id: 'sample',
   title: 'Dashboard',
   type: 'group',
   children: [
     {
-      id: 'default',
+      id: 'sample',
       title: 'Dashboard',
       type: 'item',
       url: '/dashboard/default',

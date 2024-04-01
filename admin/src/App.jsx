@@ -3,9 +3,9 @@ import themes from "./themes/index";
 import { useDispatch, useSelector } from 'react-redux'
 import { SET_THEME } from "./store/actions";
 import NavigationScroll from "./layout/NavigationScroll";
-import ThemeRoutes from "./routes/index";
 import Customization from "./layout/Customization";
 import { useEffect } from "react";
+import Routes from './routes/index'
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -35,7 +35,7 @@ function App() {
       <ThemeProvider theme={currentTheme}>
       <CssBaseline />
         <NavigationScroll>
-          <ThemeRoutes  />
+          <Routes  />
           <Customization toggleTheme={toggleTheme} />
         </NavigationScroll>
       </ThemeProvider>

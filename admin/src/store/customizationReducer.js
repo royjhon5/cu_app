@@ -1,5 +1,4 @@
 import * as actionTypes from './actions';
-
 export const initialState = {
   isOpen: [],
   defaultId: 'default',

@@ -7,11 +7,9 @@ import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
 import Breadcrumbs from '../../components/extended/Breadcrumbs';
 import Header from '../MainLayout/Header/index';
 import Sidebar from '../MainLayout/Sidebar/index';
-import Customization from '../Customization/index';
 import navigation from '../../menu-items/index';
 import { drawerWidth } from '../../store/constant';
 import { SET_MENU } from '../../store/actions';
-
 import { IconChevronRight } from '@tabler/icons-react';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'theme' })(({ theme, open }) => ({
@@ -80,7 +78,6 @@ const MainLayout = () => {
         <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
         <Outlet />
       </Main>
-      <Customization />
     </Box>
   );
 };

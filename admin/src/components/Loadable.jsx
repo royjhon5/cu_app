@@ -1,10 +1,10 @@
-import { Suspense } from "react"
-import Loader from './Loader'
+import { Suspense } from 'react';
+import Loader from './Loader';
 
-const Loadable = (Component) => (props) => {
+const Loadable = (Component) => (props) => (
   <Suspense fallback={<Loader />}>
-    <Component {...props }/>
+    <Component {...props} />
   </Suspense>
-}
+);
 
-export default Loadable
+export default Loadable;

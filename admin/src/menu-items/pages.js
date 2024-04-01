@@ -8,28 +8,29 @@ const icons = {
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
-const administrative = {
+const pages = {
   id: 'pages',
-  title: 'Administrative',
+  title: 'Pages',
+  caption: 'Pages Caption',
   type: 'group',
   children: [
     {
       id: 'authentication',
-      title: 'User Account',
+      title: 'Authentication',
       type: 'collapse',
       icon: icons.IconKey,
 
       children: [
         {
           id: 'login3',
-          title: 'Admin Account',
+          title: 'Login',
           type: 'item',
           url: '/pages/login/login3',
           target: true
         },
         {
           id: 'register3',
-          title: 'Client Account',
+          title: 'Register',
           type: 'item',
           url: '/pages/register/register3',
           target: true
@@ -39,4 +40,4 @@ const administrative = {
   ]
 };
 
-export default administrative;
+export default pages;

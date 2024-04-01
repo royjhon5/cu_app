@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
-import { useTheme } from '@mui/material';
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
 
 const headerSX = {
   '& .MuiCardHeader-action': { mr: 0 }

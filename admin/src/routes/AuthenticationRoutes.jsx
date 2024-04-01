@@ -1,29 +1,18 @@
-
-import {lazy} from 'react'
+import { lazy } from 'react';
 import Loadable from '../components/Loadable';
-import MinimalLayout from '../components/MinimalLayout/index'
-import MainLayout from '../layout/MainLayout/index'
+import MinimalLayout from '../layout/MinimalLayout/index';
+const AuthLogin3 = Loadable(lazy(() => import('../views/pages/authentication/auth-container/Login')));
 
-const AuthLogin = Loadable(lazy(() => import('../views/pages/authentication/auth-container/Login')));
 
-const AuthenticationRoutes  = {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-        {
-            path: '/',
-            element: <AuthLogin />
-        },
-        {
-            path: 'login',
-            children: [
-              {
-                path: 'default',
-                element: <AuthLogin />
-              }
-            ]
-          },
-    ]
-}
+const AuthenticationRoutes = {
+  path: '/',
+  element: <MinimalLayout />,
+  children: [
+    {
+      path: '/pages/login/login3',
+      element: <AuthLogin3 />
+    },
+  ]
+};
 
-export default AuthenticationRoutes
+export default AuthenticationRoutes;

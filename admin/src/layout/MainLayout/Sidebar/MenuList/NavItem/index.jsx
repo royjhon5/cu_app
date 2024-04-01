@@ -1,21 +1,15 @@
 import PropTypes from 'prop-types';
+import { forwardRef, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
-
-// project imports
 import { MENU_OPEN, SET_MENU } from '../../../../../store/actions';
-
-// assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-
-// ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
-
 const NavItem = ({ item, level }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const customization = useSelector((state) => state.customization);
   const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -38,10 +32,10 @@ const NavItem = ({ item, level }) => {
   }
 
   let listItemProps = {
-    // component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.url} target={itemTarget} />)
+    component: forwardRef(function CustomLink(props, ref) {
+      return <Link ref={ref} {...props} to={item.url} target={itemTarget} />;
+    })
   };
-
-
   if (item?.external) {
     listItemProps = { component: 'a', href: item.url, target: itemTarget };
   }
@@ -50,6 +44,17 @@ const NavItem = ({ item, level }) => {
     dispatch({ type: MENU_OPEN, id });
     if (matchesSM) dispatch({ type: SET_MENU, opened: false });
   };
+
+  useEffect(() => {
+    const currentIndex = document.location.pathname
+      .toString()
+      .split('/')
+      .findIndex((id) => id === item.id);
+    if (currentIndex > -1) {
+      dispatch({ type: MENU_OPEN, id: item.id });
+    }
+    // eslint-disable-next-line
+  }, [pathname]);
 
   return (
     <ListItemButton

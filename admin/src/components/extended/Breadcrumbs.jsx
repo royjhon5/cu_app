@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
-import { Box, Card, Divider, Grid, Typography } from '@mui/material';
+import { Box, Card, Divider, Grid, Typography,useTheme } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 import config from '../../config';
 import { gridSpacing } from '../../store/constant';
@@ -18,8 +17,6 @@ const linkSX = {
   alignContent: 'center',
   alignItems: 'center'
 };
-
-// ==============================|| BREADCRUMBS ||============================== //
 
 const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAlign, separator, title, titleBottom, ...others }) => {
   const theme = useTheme();
