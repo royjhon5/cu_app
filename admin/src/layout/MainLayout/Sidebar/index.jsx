@@ -5,7 +5,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
 import MenuList from './MenuList/index';
 import LogoSection from '../LogoSection/index';
-import MenuCard from './MenuCard/index';
 import { drawerWidth } from '../../../store/constant';
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
@@ -29,13 +28,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           }}
         >
           <MenuList />
-          <MenuCard />
         </PerfectScrollbar>
       </BrowserView>
       <MobileView>
         <Box sx={{ px: 2 }}>
           <MenuList />
-          <MenuCard />
           <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
             <Chip disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
           </Stack>

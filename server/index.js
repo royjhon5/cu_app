@@ -1,12 +1,15 @@
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const app = express();
-const parser = require('cookie-parser');
 
 app.use(express.json());
-app.use(cors());
-
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); 
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    method: ["GET", "POST", "DELETE"],
+    credentials: true,
+}))
 require('./routes/routerManager')(app);
 app.listen(8000, "127.0.0.1");

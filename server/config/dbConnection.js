@@ -1,23 +1,23 @@
 const mysql = require('mysql');
+const dotenv = require('dotenv');
 
-const configuration = {
-    debug: true,
-    port: 3306,
-    mysql: {
-        host: '127.0.0.1',
-        username: 'root',
-        password: '',
-        database: 'prulife_recruitment'
-    }
-}
+dotenv.config();
 
 const connection = mysql.createConnection({
-    host: configuration.mysql.host,
-    port: configuration.port,
-    user: configuration.mysql.username,
-    passowrd: configuration.mysql.password,
-    database: configuration.mysql.database,
+    host: process.env.DB_HOST,
+    port: process.env.PORT,
+    user: process.env.DB_USER,
+    passowrd: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     insecureAuth: false
+});
+
+connection.connect((err) => {
+    if(err) {
+        console.error('Error connecting to database', err)
+        return;
+    }
+    console.log('Connected to the database');
 });
 
 
