@@ -1,6 +1,5 @@
 import { Divider, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import AuthWrapper from '../AuthWrapper'
-import AuthLogin from '../auth-form/AuthLogin';
 import MainCard from '../../../../components/cards/MainCard';
 import AuthFooter from '../../../../components/cards/AuthFooter';
 const Login = () => {
@@ -24,34 +23,27 @@ const Login = () => {
               }}
               >
               <Grid container spacing={2} alignItems="center" justifyContent="center">
-                <Grid item sx={{ mb: 3 }}>
+                <Grid item sx={{ mb: 1 }}>
                 </Grid>
                 <Grid item xs={12}>
-                  <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
+                  <Grid container direction={matchDownSM ? 'column-reverse' : 'row'}>
                     <Grid item>
-                      <Stack alignItems="center" justifyContent="center" spacing={1}>
-                        <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h5' : 'h4'}>
-                          Hi, Welcome Back
+                      <Stack spacing={1}>
+                        <Typography color={theme.palette.secondary.main} variant={matchDownSM ? 'h5' : 'h4'}>
+                            Find Your Account
                         </Typography>
-                        <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                          Enter your credentials to continue
+                        <Divider />
+                        <Typography fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
+                            Please enter your email address or mobile number to search for your account.
                         </Typography>
                       </Stack>
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <AuthLogin />
                 </Grid>
                 <Grid item xs={12}>
                   <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid item container direction="column" alignItems="center" xs={12}>
-                    <Typography to="/forgot-password" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                      Don&apos;t have an account?
-                    </Typography>
-                  </Grid>
                 </Grid>
               </Grid>
               </MainCard>

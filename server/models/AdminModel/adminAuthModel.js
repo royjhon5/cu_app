@@ -49,20 +49,36 @@ const adminModel = {
         });
     },
 
-    adminUserIsLoggedIn: function(adminID) {
-        const query = 'SELECT * FROM admin_user_session WHERE adminID = ? AND is_active = "true"'
+    incrementFailedAttempts: function(user_id) {
+        const query = 'UPDATE admin_user SET failed_login_attempts = failed_login_attempts + 1 WHERE id = ?'
         return new Promise((resolve, reject) => {
-          db.query(query, [adminID], function(err, results) {
-            if (err) {
-              return reject(err);
-            }
-            if (results.length === 0) {
-              return resolve(null);
-            }
-            const user = results[0];
-            resolve(user);
+            db.query(query, [user_id], function(err, results) {
+              if (err) {
+                return reject(err);
+              }
+              if (results.length === 0) {
+                return resolve(null);
+              }
+              const user = results[0];
+              resolve(user);
+            });
           });
-        });
+    },
+
+    isDisable: function(user_id) {
+        const query = 'UPDATE admin_user SET is_disable = 1 WHERE id = ?'
+        return new Promise((resolve, reject) => {
+            db.query(query, [user_id], function(err, results) {
+              if (err) {
+                return reject(err);
+              }
+              if (results.length === 0) {
+                return resolve(null);
+              }
+              const user = results[0];
+              resolve(user);
+            });
+          });
     },
 
     register: function(user, callback) {

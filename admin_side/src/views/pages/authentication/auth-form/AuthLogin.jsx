@@ -11,6 +11,7 @@ import http from '../../../../api/http';
 import { LoadingButton } from '@mui/lab';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import { Link } from 'react-router-dom';
  
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
@@ -51,9 +52,15 @@ const AuthLogin = ({ ...others }) => {
             } else if (error.response.data.error === "Invalid password!") {
                 setError("ID Number or password is incorrect.");
                 setloginLdngBtn(false);
-            } else if (error.response.data.error === "User is already logged In.") {
-                setError("User is already logged In.");
+            } else if (error.response.data.error === "User is already logged in on another device.") {
+                setError("User is already logged in on another device.");
                 setloginLdngBtn(false);
+            } else if (error.response.data.error === "Account locked. Please contact support.") {
+              setError("Account locked. Please contact support.");
+              setloginLdngBtn(false);
+            } else if (error.response.data.error === "Too many failed attempts. Account locked 10min") {
+              setError("Too many failed attempts. Account locked 10min");
+              setloginLdngBtn(false);
             }
         } else {
             setError("Server Error");
@@ -149,9 +156,11 @@ const AuthLogin = ({ ...others }) => {
               )}
             </FormControl>
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+              <Link to="/forgot-password">
               <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                 Forgot Password?
               </Typography>
+              </Link>
             </Stack>
             {errors.submit && (
               <Box sx={{ mt: 3 }}>

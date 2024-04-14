@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
     getUsers();
   }, []);
   
-  console.log(name)
 
   const refreshToken = async () => {
     try {
