@@ -33,7 +33,7 @@ const Login = () => {
                             Find Your Account
                         </Typography>
                         <Divider />
-                        <Typography fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
+                        <Typography fontSize="16px" textAlign={matchDownSM ? 'inherit' : 'inherit'}>
                             Please enter your email address or mobile number to search for your account.
                         </Typography>
                       </Stack>

@@ -9,6 +9,8 @@ const { refreshToken } = require('../controller/AdminController/refreshToken');
 router.get('/users', verifyToken, UserController.getUsers);
 router.post('/admin-register', UserController.adminUserReg);
 router.post('/admin-login', UserController.userLogin);
+router.post('/send-otp', UserController.sendOtp); 
+router.post('/send-message-opt', UserController.sendOtpMessage);
 router.get('/token', refreshToken);
 router.delete('/admin-logout', UserController.userLogout);
 

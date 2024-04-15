@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
-import { Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 
 const headerSX = {
   '& .MuiCardHeader-action': { mr: 0 }
@@ -25,7 +25,6 @@ const MainCard = forwardRef(
     },
     ref
   ) => {
-    const theme = useTheme();
 
     return (
       <Card
@@ -33,7 +32,7 @@ const MainCard = forwardRef(
         {...others}
         sx={{
           border: border ? '1px solid' : 'none',
-          borderColor: theme.palette.primary[200] + 25,
+          borderColor: '#90caf9' + 25,
           ':hover': {
             boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit'
           },

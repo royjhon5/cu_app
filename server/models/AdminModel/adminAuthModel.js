@@ -1,10 +1,10 @@
 const db = require('../../config/dbConnection');
 
 const adminModel = {
-    findAll: function(){
+    findAll: function(refresh_token){
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM admin_user';
-            db.query(query, function(err, results){ 
+            const query = 'SELECT * FROM admin_user WHERE refresh_token = ?';
+            db.query(query, [refresh_token], function(err, results){ 
                 if(err){
                     reject(err);
                 } else {
@@ -47,6 +47,22 @@ const adminModel = {
             resolve(user);
           });
         });
+    },
+
+    findEmail: function(email) {
+      const query = "SELECT * FROM admin_user WHERE email = ?"
+      return new Promise((resolve, reject) => {
+        db.query(query, [email], function(err, results) {
+          if (err) {
+            return reject(err);
+          }
+          if (results.length === 0) {
+            return resolve(null);
+          }
+          const user = results[0];
+          resolve(user);
+        });
+      });
     },
 
     incrementFailedAttempts: function(user_id) {
