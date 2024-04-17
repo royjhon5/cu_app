@@ -4,7 +4,7 @@ const adminUser = require('../../models/AdminModel/adminAuthModel');
 const db = require('../../config/dbConnection');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
-const https = require('follow-redirects').https;
+const client = require('twilio')(process.env.TWILIO_AUTH_SID, process.env.TWILIO_AUTH_TOKEN);
 
 module.exports.getUsers = async function(req, res) {
   try {
@@ -17,6 +17,24 @@ module.exports.getUsers = async function(req, res) {
     res.status(500).send('Server Error');
   }
 }
+
+module.exports.getIdnumber = async function(req, res) {
+  const { id_number } = req.query; // Assuming id_number is sent as a query parameter
+  try {
+    db.query('SELECT * FROM admin_user WHERE id_number = ?', [id_number], (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+      } else {
+        res.send(results);
+      }
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+}
+
 
 module.exports.adminUserReg = async function(req, res) {
   const { id_number, password, first_name } = req.body;
@@ -112,6 +130,7 @@ module.exports.userLogin = async function(req, res) {
   }
 }
 
+
 module.exports.sendOtp = async function(req, res) {
   const { email } = req.body;
   try {
@@ -123,8 +142,8 @@ module.exports.sendOtp = async function(req, res) {
       host: 'smpt.gmail.com',
       port: 587,
       auth: {
-        user: 'cugiftshop7@gmail.com',
-        pass: 'iitz kzmx ibwv rkiq'
+        user: process.env.EMAIL_NODE,
+        pass: process.env.EMAIL_PASS_NODE,
       }
     });
     const mailOptions = {
@@ -146,45 +165,20 @@ module.exports.sendOtp = async function(req, res) {
   }
 }
 
-module.exports.sendOtpMessage = async function(req, res) {
-  var options = {
-    'method': 'POST',
-    'hostname': 'xlexeg.api.infobip.com',
-    'path': '/2fa/2/applications/{appId}/messages',
-    'headers': {
-        'Authorization': 'App •••••••••••••••••e11a',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    'maxRedirects': 20
-  };
+module.exports.sendOtpMessage = async function() {
+  try {
+    const OTP = otpGenerator.generate(7, { digits: true, lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
+    const message = await client.messages.create({
+      body: OTP,
+      from: '+12515125276',
+      to: '+639356580149'
+    });
 
-  var req = https.request(options, function (res) {
-      var chunks = [];
-
-      res.on("data", function (chunk) {
-          chunks.push(chunk);
-      });
-
-      res.on("end", function (chunk) {
-          var body = Buffer.concat(chunks);
-          console.log(body.toString());
-      });
-
-      res.on("error", function (error) {
-          console.error(error);
-      });
-  });
-
-  var postData = JSON.stringify({
-      "pinType": "NUMERIC",
-      "messageText": "Your pin is {{pin}}",
-      "pinLength": 4,
-      "senderId": "ServiceSMS",
-      "to": '09356580149'
-  });
-  req.write(postData);
-  req.end();
+    await adminUser.InsertOTP()
+    console.log(message.sid);
+  } catch (error) {
+    console.error('Error sending OTP message:', error);
+  }
 }
 
 module.exports.userLogout = async function(req, res) {

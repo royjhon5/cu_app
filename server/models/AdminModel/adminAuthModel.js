@@ -1,3 +1,4 @@
+const { verify } = require('jsonwebtoken');
 const db = require('../../config/dbConnection');
 
 const adminModel = {
@@ -18,6 +19,24 @@ const adminModel = {
             });
         });
     },
+
+    verifyIdNumber: function(id_number){
+      return new Promise((resolve, reject) => {
+          const query = 'SELECT * FROM admin_user WHERE id = ?';
+          db.query(query, [id_number], function(err, results){ 
+              if(err){
+                  reject(err);
+              } else {
+                  if (results.length === 0) {
+                      resolve(null);
+                  } else {
+                      const user = results[0];
+                      resolve(user);
+                  }
+              }
+          });
+      });
+  },
 
     findByIdNumber: function(id_number, callback){
         const query = 'SELECT * FROM admin_user WHERE id_number = ?';
@@ -53,6 +72,22 @@ const adminModel = {
       const query = "SELECT * FROM admin_user WHERE email = ?"
       return new Promise((resolve, reject) => {
         db.query(query, [email], function(err, results) {
+          if (err) {
+            return reject(err);
+          }
+          if (results.length === 0) {
+            return resolve(null);
+          }
+          const user = results[0];
+          resolve(user);
+        });
+      });
+    },
+
+    InsertOTP: function(opt, user_id) {
+      const query = "UPDATE admin_user SET OTP = ? WHERE id = ?"
+      return new Promise((resolve, reject) => {
+        db.query(query, [opt, user_id], function(err, results) {
           if (err) {
             return reject(err);
           }

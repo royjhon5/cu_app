@@ -3,7 +3,7 @@ import GuestLayout from '../layouts/Guestlayout/GuestLayout'
 import { lazy } from "react"
 import Loadable from '../components/Loadable/Loadable'
 const Login = Loadable(lazy(() => import('../views/pages/authentication/auth-container/AuthContainer')));
-const ForgotPassword = Loadable(lazy(() => import('../views/pages/authentication/forgot-password/ForgotPassContainer')));
+const FindAccount = Loadable(lazy(() => import('../views/pages/authentication/forgot-password/find-account/findAccount')));
 
 const AuthenticationRoutes = {
   path: '/',
@@ -14,9 +14,9 @@ const AuthenticationRoutes = {
         element: <Login />
     },
     {
-        path: '/forgot-password',
-        element: <ForgotPassword />
-    }
+        path: '/forgot-password/verify',
+        element: <FindAccount />
+    },
   ]
 }
 
