@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap');
+@import '../../../node_modules/react-perfect-scrollbar/dist/css/styles.css';
+
+.scrollbar-container .ps__rail-y:hover > .ps__thumb-y,
+.scrollbar-container .ps__rail-y:focus > .ps__thumb-y,
+.scrollbar-container .ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: 'grey';
+  width: 5px;
+}
+
+.scrollbar-container .ps__thumb-y {
+  background-color: 'grey';
+  border-radius: 6px;
+  width: 5px;
+  right: 0;
+}
+
+.scrollbar-container.ps.ps--active-y > .ps__rail-y {
+  width: 5px;
+  background-color: transparent !important;
+  z-index: 999;
+}
+
+.scrollbar-container.ps.ps--active-y > .ps__rail-y:hover,
+.scrollbar-container.ps.ps--active-y > .ps__rail-y.ps--clicking {
+  width: 5px;
+  background-color: transparent;
+}
+
+.scrollbar-container.ps.ps--scrolling-y > .ps__rail-y,
+.scrollbar-container.ps.ps--scrolling-x > .ps__rail-x {
+  opacity: 0.4;
+  background-color: transparent;
+}
+
+.rotateIcon {
+  animation: spin 10s linear infinite;
+}
+

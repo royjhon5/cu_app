@@ -1,10 +1,9 @@
-const { verify } = require('jsonwebtoken');
 const db = require('../../config/dbConnection');
 
 const adminModel = {
     findAll: function(refresh_token){
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM admin_user WHERE refresh_token = ?';
+            const query = 'SELECT * FROM admin_user WHERE access_token = ?';
             db.query(query, [refresh_token], function(err, results){ 
                 if(err){
                     reject(err);
@@ -19,24 +18,6 @@ const adminModel = {
             });
         });
     },
-
-    verifyIdNumber: function(id_number){
-      return new Promise((resolve, reject) => {
-          const query = 'SELECT * FROM admin_user WHERE id = ?';
-          db.query(query, [id_number], function(err, results){ 
-              if(err){
-                  reject(err);
-              } else {
-                  if (results.length === 0) {
-                      resolve(null);
-                  } else {
-                      const user = results[0];
-                      resolve(user);
-                  }
-              }
-          });
-      });
-  },
 
     findByIdNumber: function(id_number, callback){
         const query = 'SELECT * FROM admin_user WHERE id_number = ?';
@@ -67,6 +48,23 @@ const adminModel = {
           });
         });
     },
+
+    findById: function(id) {
+      const query = "SELECT * FROM admin_user WHERE id = ?"
+      return new Promise((resolve, reject) => {
+        db.query(query, [id], function(err, results) {
+          if (err) {
+            return reject(err);
+          }
+          if (results.length === 0) {
+            return resolve(null);
+          }
+          const user = results[0];
+          resolve(user);
+        });
+      });
+    },
+    
 
     findEmail: function(email) {
       const query = "SELECT * FROM admin_user WHERE email = ?"
@@ -130,6 +128,22 @@ const adminModel = {
               resolve(user);
             });
           });
+    },
+
+    resetFailedAttempts: function(user_id) {
+      const query = 'UPDATE admin_user SET failed_login_attempts = 0 WHERE id = ?'
+      return new Promise((resolve, reject) => {
+          db.query(query, [user_id], function(err, results) {
+            if (err) {
+              return reject(err);
+            }
+            if (results.length === 0) {
+              return resolve(null);
+            }
+            const user = results[0];
+            resolve(user);
+          });
+        });
     },
 
     register: function(user, callback) {

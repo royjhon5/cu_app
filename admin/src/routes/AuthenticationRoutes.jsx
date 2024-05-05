@@ -1,18 +1,28 @@
-import { lazy } from 'react';
-import Loadable from '../components/Loadable';
-import MinimalLayout from '../layout/MinimalLayout/index';
-const AuthLogin3 = Loadable(lazy(() => import('../views/pages/authentication/auth-container/Login')));
 
+import GuestLayout from '../layouts/Guestlayout/GuestLayout'
+import { lazy } from "react"
+import Loadable from '../components/Loadable/Loadable'
+const Login = Loadable(lazy(() => import('../views/authentication/auth/auth-container/index')));
+const ForgetPassword = Loadable(lazy(() => import('../views/authentication/forgot-password/forgetpass-container/index')));
+const UpdatePassword = Loadable(lazy(() => import('../views/authentication/update-password/updatepass-container/index')));
 
 const AuthenticationRoutes = {
   path: '/',
-  element: <MinimalLayout />,
+  element: <GuestLayout />,
   children: [
     {
-      path: '/pages/login/login3',
-      element: <AuthLogin3 />
+        path: '/',
+        element: <Login />
+    },
+    {
+      path: '/forgot-password',
+      element: <ForgetPassword />
+    },
+    {
+      path: '/new-password/initiate',
+      element: <UpdatePassword />
     },
   ]
-};
+}
 
-export default AuthenticationRoutes;
+export default AuthenticationRoutes

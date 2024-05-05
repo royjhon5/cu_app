@@ -1,8 +1,7 @@
 import { createStore } from 'redux';
 import reducer from './reducer';
 
-export const store = createStore(reducer);
-export const persister = 'Free';
+const store = createStore(reducer);
+const persister = 'Free';
 
-
-
+export { store, persister };

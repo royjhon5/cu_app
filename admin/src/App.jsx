@@ -1,45 +1,22 @@
-import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
-import themes from "./themes/index";
-import { useDispatch, useSelector } from 'react-redux'
-import { SET_THEME } from "./store/actions";
-import NavigationScroll from "./layout/NavigationScroll";
-import Customization from "./layout/Customization";
-import { useEffect } from "react";
-import Routes from './routes/index'
+import { RouterProvider } from "react-router-dom"
+import { AuthProvider } from "./modules/context/AuthContext"
+import routes from "./routes"
+import { AppSettingsContext, UseMode } from "./themes"
+import { ThemeProvider } from "@mui/material/styles"
+import CssBaseline from '@mui/material/CssBaseline'
 
 function App() {
-  const customization = useSelector((state) => state.customization);
-  const currentTheme = themes(customization, customization.theme);
-  const dispatch  = useDispatch();
-
-  const toggleTheme = (mode) => {
-    dispatch({
-      type: SET_THEME,
-      theme: mode,
-    });
-    localStorage.setItem('theme', mode);
-  };
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      dispatch({
-        type: SET_THEME,
-        theme: savedTheme,
-      });
-    }
-  }, [dispatch]);
+  const [theme, appMode] = UseMode();
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={currentTheme}>
-      <CssBaseline />
-        <NavigationScroll>
-          <Routes  />
-          <Customization toggleTheme={toggleTheme} />
-        </NavigationScroll>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <AppSettingsContext.Provider value={appMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AuthProvider>
+            <RouterProvider router={routes} />
+          </AuthProvider>
+        </ThemeProvider>
+    </AppSettingsContext.Provider>
   )
 }
 

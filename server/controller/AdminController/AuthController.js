@@ -4,29 +4,61 @@ const adminUser = require('../../models/AdminModel/adminAuthModel');
 const db = require('../../config/dbConnection');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
-const client = require('twilio')(process.env.TWILIO_AUTH_SID, process.env.TWILIO_AUTH_TOKEN);
+var https = require('follow-redirects').https;
+var fs = require('fs');
 
 module.exports.getUsers = async function(req, res) {
   try {
-    const users = await adminUser.findAll({
-      attributes:['id','id_number','first_name']
-    });
+    const query = 'SELECT id, id_number, first_name FROM admin_user';
+    const users = await db.query(query);
     res.json(users);
   } catch (error) {
-    console.error(err.message);
+    console.error(error.message);
     res.status(500).send('Server Error');
   }
 }
 
 module.exports.getIdnumber = async function(req, res) {
-  const { id_number } = req.query; // Assuming id_number is sent as a query parameter
+  const { id_number } = req.query; 
   try {
-    db.query('SELECT * FROM admin_user WHERE id_number = ?', [id_number], (err, results) => {
+    await db.query('SELECT * FROM admin_user WHERE id_number = ?', [id_number], async (err, results) => {
       if (err) {
         console.error(err);
         res.status(500).send('Server Error');
       } else {
-        res.send(results);
+        if (results.length === 0) {
+          res.status(400).send({ error: 'ID number does not exist' });
+        } else {
+          const user = results[0];
+          if (user.is_disable === 1) {
+            res.status(400).send({ error: 'Account locked. Please contact support.' });
+          } else {
+            try {
+              const OTP = otpGenerator.generate(6, { digits: true, lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
+              const transporter = nodemailer.createTransport({
+                service: 'gmail', 
+                host: 'smpt.gmail.com',
+                port: 587,
+                auth: {
+                  user: process.env.EMAIL_NODE,
+                  pass: process.env.EMAIL_PASS_NODE,
+                }
+              });
+              const mailOptions = {
+                from: 'cugiftshop7@gmail.com',
+                to: user.email,
+                subject: 'Password Reset OTP',
+                text: `Your OTP for password reset is: ${OTP}`
+              };
+              await transporter.sendMail(mailOptions);
+              await db.query('UPDATE admin_user SET OTP = ? WHERE id_number = ?;', [OTP, id_number]);
+              res.status(200).send(user);
+            } catch (emailError) {
+              console.error(emailError);
+              res.status(500).send('Failed to send OTP email. Please try again later.');
+            }
+          }
+        }
       }
     });
   } catch (error) {
@@ -35,6 +67,42 @@ module.exports.getIdnumber = async function(req, res) {
   }
 }
 
+module.exports.UpdatePassword = async function(req, res) {
+  const { OTP, newPassword } = req.query;
+  try {
+      await db.query('SELECT * FROM admin_user WHERE OTP = ?', [OTP], async (err, results) => {
+          if (err) {
+              console.error(err);
+              res.status(500).send('Server Error');
+          }
+          if (results.length === 0) {
+              res.status(400).send({ error: 'Invalid OTP' });
+          } else {
+              const user = results[0];
+              try {
+                  const salt = await bcrypt.genSalt(10);
+                  const hashedPassword = await bcrypt.hash(newPassword, salt);
+                  await db.query('UPDATE admin_user SET password = ?, OTP = NULL WHERE id = ?', [hashedPassword, user.id], (err, result) => {
+                      if (err) {
+                          console.error(err);
+                          res.status(500).send('Server Error');
+                      } else {
+                          res.status(200).send('Password updated successfully');
+                      }
+                  });
+              } catch (hashError) {
+                  console.error(hashError);
+                  res.status(500).send('Server Error');
+              }
+          }
+      });
+  } catch(error) {
+      console.error(error);
+      res.status(500).send('Server Error');
+  }
+}
+
+
 
 module.exports.adminUserReg = async function(req, res) {
   const { id_number, password, first_name } = req.body;
@@ -42,10 +110,10 @@ module.exports.adminUserReg = async function(req, res) {
     adminUser.findByIdNumber(id_number, async(err, existingUser) => { 
       if(err){
         console.error(err);
-        return res.status(500).json({ message: 'Server Error'});
+        return res.status(500).json({ error: 'Server Error'});
       }
       if (existingUser) {
-        return res.status(400).json({ message: 'User already exist'});
+        return res.status(400).json({ error: 'User already exist'});
       }
 
       const salt = await bcrypt.genSalt(10);
@@ -85,14 +153,10 @@ module.exports.userLogin = async function(req, res) {
   const { id_number, password } = req.body;
   try {
       const user = await adminUser.findIdNumberLogin(id_number);
-      if (user.is_disable === 1) {
-        return res.status(400).json({ error: 'Account locked. Please contact support.' });
-      } else {
-        if(!user) return res.status(400).json({ error: 'Invalid Id Number' });
-        if (user.refresh_token) {
-          return res.status(400).json({ error: 'User is already logged in on another device.' });
-        }
-        const match = await bcrypt.compare(password , user.password);
+      if (user.is_disable === 1) return res.status(400).json({ error: 'Account locked. Please contact support.' });
+      if (!user) return res.status(400).json({ error: 'Invalid Id Number' });
+      if (user.access_token) return res.status(400).json({ error: 'User is already logged in on another device.' });
+      const match = await bcrypt.compare(password , user.password);
         if (!match) {
           if (user.failed_login_attempts >= 5) {
             await adminUser.isDisable(user.id)
@@ -102,93 +166,38 @@ module.exports.userLogin = async function(req, res) {
           }
           return res.status(400).json({ error: 'Invalid password!' });
         }
-        const userID = user.id;
-        const fName = user.first_name;
-
-        const accessToken = jwt.sign({userID, fName}, process.env.SECRET_KEY, {
-          expiresIn: '15s'
-        });
-        const refreshToken = jwt.sign({userID, fName}, process.env.REFRESH_KEY, {
-          expiresIn: '1d'
-        });
-     
-        await db.query('UPDATE admin_user SET refresh_token = ? WHERE id = ?;', [
-          refreshToken, user.id
-        ]);
-        await db.query('UPDATE admin_user SET last_login = now() WHERE id =?;', [
-            user.id,
-        ]);
-        res.cookie('refreshToken', refreshToken, {
-          httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000
-        });
-        res.json({ accessToken });
-      }
+      const userID = user.id;
+      const fName = user.first_name;
+      const idNumber = user.id_number;
+      await adminUser.resetFailedAttempts(user.id);
+      const accessToken = jwt.sign({userID, fName, idNumber}, process.env.SECRET_KEY, {
+        expiresIn: '1d'
+      }); 
+      await db.query('UPDATE admin_user SET access_token = ? WHERE id = ?;', [
+        accessToken, user.id
+      ]);
+      await db.query('UPDATE admin_user SET last_login = now() WHERE id =?;', [
+          user.id,
+      ]);
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+      });
+      res.json({ accessToken });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
 }
 
-
-module.exports.sendOtp = async function(req, res) {
-  const { email } = req.body;
-  try {
-    const user = await adminUser.findEmail(email);
-    if(!user) return res.status(400).json({ error: "Email not found" });
-    const OTP = otpGenerator.generate(7, { digits: true, lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
-    const transporter = nodemailer.createTransport({
-      service: 'gmail', 
-      host: 'smpt.gmail.com',
-      port: 587,
-      auth: {
-        user: process.env.EMAIL_NODE,
-        pass: process.env.EMAIL_PASS_NODE,
-      }
-    });
-    const mailOptions = {
-      from: 'cugiftshop7@gmail.com',
-      to: email,
-      subject: 'Password Reset OTP',
-      text: `Your OTP for password reset is: ${OTP}`
-    };
-    transporter.sendMail(mailOptions, function(error, info) {
-      if (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Failed to send OTP. Please try again later.' });
-      } else {
-        return res.status(200).json({ message: 'OTP sent successfully. Check your email.' });
-      }
-    });
-  } catch (error) {
-    res.status(500).send('Server Error')
-  }
-}
-
-module.exports.sendOtpMessage = async function() {
-  try {
-    const OTP = otpGenerator.generate(7, { digits: true, lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
-    const message = await client.messages.create({
-      body: OTP,
-      from: '+12515125276',
-      to: '+639356580149'
-    });
-
-    await adminUser.InsertOTP()
-    console.log(message.sid);
-  } catch (error) {
-    console.error('Error sending OTP message:', error);
-  }
-}
-
 module.exports.userLogout = async function(req, res) {
-  const refreshToken = req.cookies.refreshToken;
-  if(!refreshToken) return res.sendStatus(204);
-  const user = await adminUser.findAll(refreshToken);
+  const accessToken = req.cookies.accessToken;
+  if(!accessToken) return res.sendStatus(204);
+  const user = await adminUser.findAll(accessToken);
   if(!user) return res.sendStatus(204);
-    await db.query('UPDATE admin_user SET refresh_token = ?, last_login = now() WHERE id = ?', [
+    await db.query('UPDATE admin_user SET access_token = ?, last_login = now() WHERE id = ?', [
       '', user.id
-    ]);
-  res.clearCookie('refreshToken');
+  ]);
+  res.clearCookie('accessToken');
   return res.sendStatus(200);
 }

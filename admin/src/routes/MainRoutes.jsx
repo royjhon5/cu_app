@@ -1,36 +1,17 @@
-import { lazy } from 'react';
-import MainLayout from '../layout/MainLayout/index';
-import Loadable from '../components/Loadable';
-const DashboardDefault = Loadable(lazy(() => import('../views/pages/dashboard/index')));
-const ProductCategory = Loadable(lazy(() => import('../views/pages/products/product-category/ProductCategory.jsx')));
-const ProductList = Loadable(lazy(() => import('../views/pages/products/product-list/index.jsx')));
+import { lazy } from "react"
+import Loadable from '../components/Loadable/Loadable'
+const MainLayout = Loadable(lazy(() => import('../layouts/Mainlayout/MainLayout')));
+const Dashboard = Loadable(lazy(() => import('../views/dashboard/index')));
 
 const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
     {
-      path: '/',
-      element: <DashboardDefault />
-    },
-    {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'default',
-          element: <DashboardDefault />
-        }
-      ]
-    },
-    {
-      path: '/views/products/category',
-      element: <ProductCategory />
-    },
-    {
-      path: '/views/products/List',
-      element: <ProductList />
+        path: '/dashboard',
+        element: <Dashboard  />
     }
   ]
-};
+}
 
-export default MainRoutes;
+export default MainRoutes
