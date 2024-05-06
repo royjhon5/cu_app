@@ -5,6 +5,7 @@ import SettingsIcon from '../../../components/svg-icons/SettingsIcon'
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_MENU } from '../../../store/actions'
 import DrawerIndex from '../../../components/ui-settings/Drawer';
+import AnimateButton from '../../../components/AnimatedButton';
 
 const TopNav = () => {
   const OpenDrawer = useSelector((state) => state.customization.opened);
@@ -23,9 +24,11 @@ const TopNav = () => {
             <IconButton size="small">
                 <NotificationIcon />
             </IconButton>
-            <IconButton size="small" onClick={handleRightDrawerToggle}>
-                <SettingsIcon />
-            </IconButton>
+            <AnimateButton type="rotate">
+              <IconButton size="small" onClick={handleRightDrawerToggle}>
+                  <SettingsIcon />
+              </IconButton>
+            </AnimateButton>  
             <DrawerIndex drawerOpen={OpenDrawer} drawerToggle={handleRightDrawerToggle} />
         </Box>
     </Box>

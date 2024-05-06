@@ -60,7 +60,9 @@ const DrawerContainer = () => {
             </PerfectScrollbar>
          </Box>
          <Box sx={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Button variant="outlined" fullWidth>
+            <Button fullWidth sx={{
+                border: '1px solid rgba(145, 158, 171, 0.08)',
+            }}>
                 Fullscreen
             </Button>
          </Box>

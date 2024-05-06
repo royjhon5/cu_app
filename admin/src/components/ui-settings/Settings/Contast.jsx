@@ -1,6 +1,20 @@
 import { Box, Button, Stack, Typography } from "@mui/material"
+import { useContext } from "react"
+import { AppSettingsContext } from "../../../themes"
+import NormalContrast from "../../svg-icons/NormalContrast";
+import BoldContrast from "../../svg-icons/BoldContrast";
 
 const Contrast = () => {
+  const setMode = useContext(AppSettingsContext);
+
+  const ToggleNormalContrast = () => {
+    setMode.toggleNormal();
+  }
+
+  const ToggleBoldContrast = () => {
+    setMode.toggleHigh();
+  }
+
   return (
     <Box>
         <Typography sx={{
@@ -16,20 +30,22 @@ const Contrast = () => {
             gap: '16px'
         }}>
             <Button 
-            variant="outlined"
+            onClick={ToggleNormalContrast}
             sx={{
                 width: '100%',
-                height: '80px'
+                height: '80px',
+                border: '1px solid rgba(145, 158, 171, 0.08)',
             }}>
-                true
+                <NormalContrast />
             </Button>
             <Button 
-            variant="outlined"
+            onClick={ToggleBoldContrast}
             sx={{
                 width: '100%',
-                height: '80px'
+                height: '80px',
+                border: '1px solid rgba(145, 158, 171, 0.08)',
             }}>
-                false
+                <BoldContrast />
             </Button>
         </Stack>
     </Box>

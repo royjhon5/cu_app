@@ -1,3 +1,48 @@
+export const navColors = (appSettings) => ({
+    ...(appSettings.paletteMode === "dark" ? {
+        ...(appSettings.navColor === "blend-in" ? {
+            ...(appSettings.contrast === "normal" ? {
+                navcolor: {
+                    100: "#161C24"
+                }
+            }:{
+                navcolor: {
+                    100: '#161C24'
+                }
+            }),
+        } : appSettings.navColor === "discrete" ? {
+            navcolor: {
+                100: "#111927"
+            }
+        } : {
+            navcolor: {
+                100: "#1C2536"
+            }
+        })
+    }:{
+        ...(appSettings.navColor === "blend-in" ? {
+            ...(appSettings.contrast === "normal" ? {
+                navcolor: {
+                    100: "#FFFFFF"
+                }
+            }:{
+                navcolor: {
+                    100: '#F4F6F8'
+                }
+            })
+        } : appSettings.navColor === "discrete" ? {
+            navcolor: {
+                100: "#F8F9FA"
+            }
+        } : {
+            navcolor: {
+                100: "#1C2536"
+            }
+        }),
+    })
+}); 
+
+
 export const tokens = (appSettings) => ({
     ...(appSettings.paletteMode === "dark" 
         ? {
@@ -71,6 +116,10 @@ export const tokens = (appSettings) => ({
             },
             motion: {
             100: "#fff"
+            },
+            sidebarColor: {
+               100: "#161C24",
+               200: 'rgba(145, 158, 171, 0.2)'
             }
     } : {
             black: {
@@ -143,6 +192,10 @@ export const tokens = (appSettings) => ({
             },
             motion: {
             100: "#000"
+            },
+            sidebarColor: {
+                100: "#FFFFFF",
+                200: 'rgba(145, 158, 171, 0.2)'
             }
     }),
 });

@@ -1,6 +1,8 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import themeTypography from "./typography";
 import { createTheme } from "@mui/material/styles";
+import compStyleOverride from "./compStyleOverride";
+import { navColors, tokens } from "./palette";
 
 export const ThemeSettings = (appSettings) => {
     return {
@@ -9,18 +11,18 @@ export const ThemeSettings = (appSettings) => {
             ...(appSettings.paletteMode === "dark" 
             ? { 
                  mode: 'dark', 
-                ...(appSettings.colorPreset === "green" ? {
-                    primary: { main: "#16b364" }
-                } : appSettings.colorPreset === "blue" ? {
-                    primary: { main: "#2970ff" }
-                } : appSettings.colorPreset === "indigo" ? {
-                    primary: { main: "#6366f1" }
-                } : appSettings.colorPreset === "purple" ? {
-                    primary: { main: '#9e77ed' }
-                } : appSettings.colorPreset === "gold" ? {
-                    primary: { main: '#FFD700' }
+                ...(appSettings.colorPreset === "dark-green" ? {
+                    primary: { main: "#00A76F" }
+                } : appSettings.colorPreset === "light-blue" ? {
+                    primary: { main: "#078DEE" }
+                } : appSettings.colorPreset === "dark-purple" ? {
+                    primary: { main: "#7635DC" }
+                } : appSettings.colorPreset === "dark-blue" ? {
+                    primary: { main: '#2065D1' }
+                } : appSettings.colorPreset === "light-orange" ? {
+                    primary: { main: '#FDA92D' }
                 } : {
-                    primary: { main: '#7A0000' }
+                    primary: { main: '#FF3030' }
                 }),
                 ...(appSettings.contrast === "normal" ? {
                     background: { default: "#161C24" },
@@ -31,60 +33,48 @@ export const ThemeSettings = (appSettings) => {
             :
             {
                 mode: 'light', 
-                ...(appSettings.colorPreset === "green" ? {
-                    primary: {
-                        main: "#16b364"
-                    }
-                } : appSettings.colorPreset === "blue" ? {
-                    primary: {
-                        main: "#2970ff"
-                    }
-                } : appSettings.colorPreset === "indigo" ? {
-                    primary: {
-                        main: "#6366f1"
-                    }
-                } : appSettings.colorPreset === "purple" ? {
-                    primary: {
-                        main: '#9e77ed'
-                    }
-                } : appSettings.colorPreset === "gold" ? {
-                    primary: {
-                        main: '#FFD700'
-                    }
+                ...(appSettings.colorPreset === "dark-green" ? {
+                    primary: { main: "#00A76F" }
+                } : appSettings.colorPreset === "light-blue" ? {
+                    primary: { main: "#078DEE" }
+                } : appSettings.colorPreset === "dark-purple" ? {
+                    primary: { main: "#7635DC" }
+                } : appSettings.colorPreset === "dark-blue" ? {
+                    primary: { main: '#2065D1' }
+                } : appSettings.colorPreset === "light-orange" ? {
+                    primary: { main: '#FDA92D' }
                 } : {
-                    primary: {
-                        main: '#7A0000'
-                    }
+                    primary: { main: '#FF3030' }
                 }),
                 ...(appSettings.contrast === "normal" ? {
-                    background: {
-                        default: "#FFFFFF",
-                    },
+                    background: { default: "#FFFFFF" },
                 } : {
-                    background: {
-                        default: "#F8F9FA",
-                    },
+                    background: { default: "#F4F6F8" },
                 }),
             })
         },
-        typography: themeTypography(appSettings)
+        typography: themeTypography(appSettings),
+        components: compStyleOverride(appSettings),
+        tokens: tokens(appSettings),
+        navColors: navColors(appSettings)
     };
 };
 
 export const AppSettingsContext = createContext({
     //Color Preset
-    toggleGreen: () => {},
-    toggleBlue: () => {},
-    toggleIndigo: () => {},
-    togglePurple: () => {},
-    toggleGold: () => {},
-    toggleMaroon: () => {},
+    toggleDarkGreen: () => {},
+    toggleLightBlue: () => {},
+    toggleDarkPurple: () => {},
+    toggleDarkBlue: () => {},
+    toggleLightOrange: () => {},
+    toggleDarkRed: () => {},
     //contrast
     toggleNormal: () => {},
     toggleHigh: () => {},
     //layout
     toggleVertical: () => {},
     toggleHorizontal: () => {},
+    toggleCollapsed: () => {},
     //nav bar Colors
     toggleBlendin: () => {},
     toggleDiscrete: () => {},
@@ -93,42 +83,42 @@ export const AppSettingsContext = createContext({
     toggleLightMode: () => {},
     toggleDarkMode: () => {},
     //stretch
-    toggleCompact: () => {},
-    toggleWide: () => {},
+    toggleStretch: () => {},
 });
 
 export const UseMode = () => {
-    const colors = JSON.parse(localStorage.getItem("app.settings")) || 'green';
+    const colors = JSON.parse(localStorage.getItem("app.settings")) || 'dark-green';
     const appContrasts = JSON.parse(localStorage.getItem("app.settings")) || 'normal';
     const appLayout = JSON.parse(localStorage.getItem("app.settings")) || 'horizontal';
     const navColors = JSON.parse(localStorage.getItem("app.settings")) || 'blend-in';
     const palettes = JSON.parse(localStorage.getItem("app.settings")) || 'dark';
-    const appContent = JSON.parse(localStorage.getItem("app.settings")) || 'true';
+    const appContent = JSON.parse(localStorage.getItem("app.settings")) || true;
     const [appSettings, setAppSettings] = useState({
-        colorPreset: colors.colorPreset || 'green',
+        colorPreset: colors.colorPreset || 'dark-green',
         contrast: appContrasts.contrast || 'normal',
         layout: appLayout.layout || 'horizontal',
         navColor: navColors.navColor || 'blend-in',
         paletteMode: palettes.paletteMode || 'dark',
-        stretch: appContent.stretch || 'true'
+        stretch: appContent.stretch || true
     });
 
 
     const appMode = useMemo(
         () => ({
             //Color Preset
-            toggleGreen: () => setAppSettings({ ...appSettings, colorPreset: 'green' }),
-            toggleBlue: () => setAppSettings({ ...appSettings, colorPreset: 'blue' }),
-            toggleIndigo: () => setAppSettings({ ...appSettings, colorPreset: 'indigo' }),
-            togglePurple: () => setAppSettings({ ...appSettings, colorPreset: 'purple' }),
-            toggleGold: () => setAppSettings({ ...appSettings, colorPreset: 'gold' }),
-            toggleMaroon: () => setAppSettings({ ...appSettings, colorPreset: 'maroon' }),
+            toggleDarkGreen: () => setAppSettings({ ...appSettings, colorPreset: 'dark-green' }),
+            toggleLightBlue: () => setAppSettings({ ...appSettings, colorPreset: 'light-blue' }),
+            toggleDarkPurple: () => setAppSettings({ ...appSettings, colorPreset: 'dark-purple' }),
+            toggleDarkBlue: () => setAppSettings({ ...appSettings, colorPreset: 'dark-blue' }),
+            toggleLightOrange: () => setAppSettings({ ...appSettings, colorPreset: 'light-orange' }),
+            toggleDarkRed: () => setAppSettings({ ...appSettings, colorPreset: 'dark-red' }),
             //contrast 
             toggleNormal: () => setAppSettings({ ...appSettings, contrast: 'normal' }),
             toggleHigh: () => setAppSettings({ ...appSettings, contrast: 'high' }),
             //layout
             toggleVertical: () => setAppSettings({ ...appSettings, layout: 'vertical' }),
             toggleHorizontal: () => setAppSettings({ ...appSettings, layout: 'horizontal' }),
+            toggleCollapsed: () => setAppSettings({ ...appSettings, layout: 'collapsed' }),
             //Nav Bar Color
             toggleBlendin: () => setAppSettings({ ...appSettings, navColor: 'blend-in' }),
             toggleDiscrete: () => setAppSettings({ ...appSettings, navColor: 'discrete' }),
@@ -137,8 +127,10 @@ export const UseMode = () => {
             toggleLightMode: () => setAppSettings({ ...appSettings, paletteMode: 'light' }),
             toggleDarkMode: () => setAppSettings({ ...appSettings, paletteMode: 'dark' }),
             //stretch
-            toggleCompact: () => setAppSettings({ ...appSettings, stretch: 'true' }),
-            toggleWide: () => setAppSettings({ ...appSettings, stretch: 'false' }),
+            toggleStretch: () => {
+                const newStretchValue = appSettings.stretch === true ? false : true;
+                setAppSettings({ ...appSettings, stretch: newStretchValue });
+            },
             appSettings,
         }),
         [appSettings]
