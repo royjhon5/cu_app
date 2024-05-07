@@ -1,10 +1,14 @@
 import { Box, Button, Stack, Typography } from "@mui/material"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AppSettingsContext } from "../../../themes"
 import SunIcon from "../../svg-icons/SunIcon";
 import MoonIcon from "../../svg-icons/MoonIcon";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../../themes/palette";
 
 const Mode = () => {
+  const theme = useTheme();
+  const btnColor = tokens(theme.palette.appSettings)
   const setMode = useContext(AppSettingsContext);
   const [lightModeActive, setLightModeActive] = useState(false);
   const [darkModeActive, setDarkModeActive] = useState(false);
@@ -20,6 +24,16 @@ const Mode = () => {
     setLightModeActive(false);
     setDarkModeActive(true);
   };
+
+  useEffect(() => {
+    if(theme.palette.appSettings.paletteMode === 'dark') {
+        setLightModeActive(false);
+        setDarkModeActive(true);
+    } else {
+        setLightModeActive(true);
+        setDarkModeActive(false);
+    }
+  }, [theme.palette.appSettings.paletteMode])
 
   return (
     <Box>
@@ -42,13 +56,14 @@ const Mode = () => {
                 height: '80px',
                 border: '1px solid rgba(145, 158, 171, 0.08)',
                 color: 'inherit',
-                background: lightModeActive ? 'red' : 'none',
+                background: lightModeActive ? `${btnColor.buttonColor[100]}` : 'none',
+                boxShadow: lightModeActive ? 'rgba(145, 158, 171, 0.08) -24px 8px 24px -4px' : '',
                 '&:hover': {
-                    backgroundColor: lightModeActive ? 'red' : 'transparent',
+                    backgroundColor: lightModeActive ? `${btnColor.buttonColor[100]}` : 'transparent',
                     color: 'inherit',
                 }
             }}>
-                <SunIcon />
+                <SunIcon lightModeActive={lightModeActive} />
             </Button>
             <Button 
             onClick={handleDarkModeClick}
@@ -57,13 +72,14 @@ const Mode = () => {
                 height: '80px',
                 border: '1px solid rgba(145, 158, 171, 0.08)',
                 color: 'inherit',
-                background: darkModeActive ? 'blue' : 'none',
+                background: darkModeActive ? `${btnColor.buttonColor[100]}` : 'none',
+                boxShadow: darkModeActive ? 'rgba(0, 0, 0, 0.08) -24px 8px 24px -4px' : '',
                 '&:hover': {
-                    backgroundColor: darkModeActive ? 'blue' : 'transparent',
+                    backgroundColor: darkModeActive ? `${btnColor.buttonColor[100]}` : 'transparent',
                     color: 'inherit',
                 }
             }}>
-                <MoonIcon />
+                <MoonIcon darkModeActive={darkModeActive} />
             </Button>
         </Stack>
     </Box>

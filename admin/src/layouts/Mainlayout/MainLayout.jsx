@@ -1,12 +1,13 @@
 import { Outlet, Navigate } from 'react-router-dom'
 import { useAuth } from '../../modules/context/AuthContext';
 import SidebarContainer from './Sidebar';
-import { Box, Container } from '@mui/material'
+import { Box, Container, useTheme } from '@mui/material'
 import TopNav from './TopNav';
 import { useIdleTimer } from 'react-idle-timer'
 
 
 const MainLayout = () => {
+  const theme = useTheme();
   const { accessToken, idleLogout } = useAuth();
   const handleIdleTimeout = () => {
     idleLogout();
@@ -34,7 +35,7 @@ const MainLayout = () => {
         <SidebarContainer />     
           <Box sx={{ flexGrow: 1 }}>
             <TopNav />   
-            <Container component="main" maxWidth="xl" sx={{ p:4 }}>
+            <Container component="main" maxWidth={theme.palette.appSettings.stretch === 'true' ? "lg" : 'xl'} sx={{ p:4, transition: 'all .2s ease-in-out' }}>
               <Outlet /> 
             </Container>  
           </Box>

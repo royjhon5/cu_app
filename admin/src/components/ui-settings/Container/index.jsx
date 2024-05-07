@@ -7,6 +7,9 @@ import Contrast from "../Settings/Contast";
 import Layout from "../Settings/Layout";
 import Stretch from "../Settings/Stretch";
 import Presets from "../Settings/Presets";
+import NavColor from "../Settings/NavColor";
+import BorderRadius from "../Settings/BorderRadius";
+import Fonts from "../Settings/Fonts";
 
 const DrawerContainer = () => {
   return (
@@ -56,6 +59,9 @@ const DrawerContainer = () => {
                     <Layout />
                     <Stretch />
                     <Presets />
+                    <NavColor />
+                    <BorderRadius />
+                    <Fonts />
                 </Box>
             </PerfectScrollbar>
          </Box>

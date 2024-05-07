@@ -1,7 +1,7 @@
 export const navColors = (appSettings) => ({
     ...(appSettings.paletteMode === "dark" ? {
         ...(appSettings.navColor === "blend-in" ? {
-            ...(appSettings.contrast === "normal" ? {
+            ...(appSettings.contrast === "default" ? {
                 navcolor: {
                     100: "#161C24"
                 }
@@ -21,7 +21,7 @@ export const navColors = (appSettings) => ({
         })
     }:{
         ...(appSettings.navColor === "blend-in" ? {
-            ...(appSettings.contrast === "normal" ? {
+            ...(appSettings.contrast === "default" ? {
                 navcolor: {
                     100: "#FFFFFF"
                 }
@@ -120,6 +120,9 @@ export const tokens = (appSettings) => ({
             sidebarColor: {
                100: "#161C24",
                200: 'rgba(145, 158, 171, 0.2)'
+            },
+            buttonColor: {
+               100: 'rgb(33, 43, 54)'
             }
     } : {
             black: {
@@ -196,6 +199,62 @@ export const tokens = (appSettings) => ({
             sidebarColor: {
                 100: "#FFFFFF",
                 200: 'rgba(145, 158, 171, 0.2)'
+            },
+            buttonColor: {
+                100: 'rgb(255, 255, 255)'
             }
     }),
 });
+
+export const SvgIconColors = (appSettings) => ({
+    ...(appSettings.colorPreset === 'dark-green' ? {
+        svgcolor: {
+            100: "#00A76F",
+        }
+    } : appSettings.colorPreset === 'light-blue' ? {
+        svgcolor: {
+            100: "#078DEE",
+        }
+    } : appSettings.colorPreset === 'dark-purple' ? {
+        svgcolor: {
+            100: "#7635DC",
+        }
+    } : appSettings.colorPreset === "dark-blue" ? {
+        svgcolor: {
+            100: "#2065D1",
+        }
+    } : appSettings.colorPreset === "light-orange" ? {
+        svgcolor: {
+            100: "#FDA92D",
+        }
+    } : {
+        svgcolor: {
+            100: "#FF3030",
+        }
+    })
+});
+
+
+export const BoxShadowBtnSettings = (appSettings) => ({
+    ...(appSettings.paletteMode === "dark" ? {
+        ...(appSettings.contrast === 'default' ? {
+            btnShadow: {
+                100: 'rgba(0, 0, 0, 0.08) -24px 8px 24px -4px'
+            }
+        } : {
+            btnShadow: {
+                100: 'rgba(0, 0, 0, 0.08) -24px 8px 24px -4px'
+            }
+        })
+    }:{
+        ...(appSettings.contrast === 'default' ? {
+            btnShadow: { 
+                100: 'rgba(145, 158, 171, 0.08) -24px 8px 24px -4px'
+            }
+        } : {
+            btnShadow: {
+                100: 'rgba(145, 158, 171, 0.08) -24px 8px 24px -4px'
+            }
+        })
+    })
+}); 

@@ -24,7 +24,7 @@ export const ThemeSettings = (appSettings) => {
                 } : {
                     primary: { main: '#FF3030' }
                 }),
-                ...(appSettings.contrast === "normal" ? {
+                ...(appSettings.contrast === "default" ? {
                     background: { default: "#161C24" },
                 } : {
                     background: { default: "#161C24" },
@@ -46,7 +46,7 @@ export const ThemeSettings = (appSettings) => {
                 } : {
                     primary: { main: '#FF3030' }
                 }),
-                ...(appSettings.contrast === "normal" ? {
+                ...(appSettings.contrast === "default" ? {
                     background: { default: "#FFFFFF" },
                 } : {
                     background: { default: "#F4F6F8" },
@@ -69,8 +69,8 @@ export const AppSettingsContext = createContext({
     toggleLightOrange: () => {},
     toggleDarkRed: () => {},
     //contrast
-    toggleNormal: () => {},
-    toggleHigh: () => {},
+    toggleDefault: () => {},
+    toggleBold: () => {},
     //layout
     toggleVertical: () => {},
     toggleHorizontal: () => {},
@@ -88,18 +88,18 @@ export const AppSettingsContext = createContext({
 
 export const UseMode = () => {
     const colors = JSON.parse(localStorage.getItem("app.settings")) || 'dark-green';
-    const appContrasts = JSON.parse(localStorage.getItem("app.settings")) || 'normal';
+    const appContrasts = JSON.parse(localStorage.getItem("app.settings")) || 'default';
     const appLayout = JSON.parse(localStorage.getItem("app.settings")) || 'horizontal';
     const navColors = JSON.parse(localStorage.getItem("app.settings")) || 'blend-in';
     const palettes = JSON.parse(localStorage.getItem("app.settings")) || 'dark';
-    const appContent = JSON.parse(localStorage.getItem("app.settings")) || true;
+    const appContent = JSON.parse(localStorage.getItem("app.settings")) || 'true';
     const [appSettings, setAppSettings] = useState({
         colorPreset: colors.colorPreset || 'dark-green',
-        contrast: appContrasts.contrast || 'normal',
+        contrast: appContrasts.contrast || 'default',
         layout: appLayout.layout || 'horizontal',
         navColor: navColors.navColor || 'blend-in',
         paletteMode: palettes.paletteMode || 'dark',
-        stretch: appContent.stretch || true
+        stretch: appContent.stretch || 'true'
     });
 
 
@@ -113,8 +113,8 @@ export const UseMode = () => {
             toggleLightOrange: () => setAppSettings({ ...appSettings, colorPreset: 'light-orange' }),
             toggleDarkRed: () => setAppSettings({ ...appSettings, colorPreset: 'dark-red' }),
             //contrast 
-            toggleNormal: () => setAppSettings({ ...appSettings, contrast: 'normal' }),
-            toggleHigh: () => setAppSettings({ ...appSettings, contrast: 'high' }),
+            toggleDefault: () => setAppSettings({ ...appSettings, contrast: 'default' }),
+            toggleBold: () => setAppSettings({ ...appSettings, contrast: 'bold' }),
             //layout
             toggleVertical: () => setAppSettings({ ...appSettings, layout: 'vertical' }),
             toggleHorizontal: () => setAppSettings({ ...appSettings, layout: 'horizontal' }),
@@ -128,7 +128,7 @@ export const UseMode = () => {
             toggleDarkMode: () => setAppSettings({ ...appSettings, paletteMode: 'dark' }),
             //stretch
             toggleStretch: () => {
-                const newStretchValue = appSettings.stretch === true ? false : true;
+                const newStretchValue = appSettings.stretch === 'true' ? 'false' : 'true';
                 setAppSettings({ ...appSettings, stretch: newStretchValue });
             },
             appSettings,
