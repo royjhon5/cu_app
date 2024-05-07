@@ -1,6 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap');
 @import '../../../node_modules/react-perfect-scrollbar/dist/css/styles.css';
 
+html,
+body,
+#root,
+.app,
+.content {
+    height: 100%;
+    width: 100%;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-y: auto;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.app {
+    display: flex;
+    position:relative;
+}
+
 .scrollbar-container .ps__rail-y:hover > .ps__thumb-y,
 .scrollbar-container .ps__rail-y:focus > .ps__thumb-y,
 .scrollbar-container .ps__rail-y.ps--clicking .ps__thumb-y {

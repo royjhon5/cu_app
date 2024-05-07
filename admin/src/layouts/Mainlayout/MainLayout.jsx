@@ -3,7 +3,7 @@ import { useAuth } from '../../modules/context/AuthContext';
 import SidebarContainer from './Sidebar';
 import { Box, Container, useTheme } from '@mui/material'
 import TopNav from './TopNav';
-import { useIdleTimer } from 'react-idle-timer'
+import { useIdleTimer } from 'react-idle-timer';
 
 
 const MainLayout = () => {
@@ -30,16 +30,18 @@ const MainLayout = () => {
   ██    ██   ██████
   ` +"\x1b[0m");
   return (
-    <>
-      <Box sx={{ display: 'flex'}}>   
-        <SidebarContainer />     
-          <Box sx={{ flexGrow: 1 }}>
-            <TopNav />   
-            <Container component="main" maxWidth={theme.palette.appSettings.stretch === 'true' ? "lg" : 'xl'} sx={{ p:4, transition: 'all .2s ease-in-out' }}>
-              <Outlet /> 
-            </Container>  
-          </Box>
-      </Box>  
+    <>  
+        <Box className='app'>
+          <SidebarContainer /> 
+            <Box className='content'>
+              <TopNav />   
+                <Box component="main" sx={{ flexGrow: 1 }}>
+                  <Container component="main" maxWidth={theme.palette.appSettings.stretch === 'true' ? "lg" : 'xl'} sx={{ p:4, transition: 'all .2s ease-in-out' }}>
+                    <Outlet /> 
+                  </Container>  
+                </Box>
+            </Box>
+        </Box>   
     </>
   )
 }

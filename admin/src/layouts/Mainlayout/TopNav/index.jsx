@@ -14,7 +14,7 @@ const TopNav = () => {
     dispatch({ type: SET_MENU, opened: !OpenDrawer });
   };
   return (
-    <Box p={2} display='flex' flexDirection="row" justifyContent='space-between' sx={{ backdropFilter: 'blur(6px)', position: 'sticky', top: 0, paddingLeft: '40px', paddingRight: '40px' }}>
+    <Box p={2} display='flex' flexDirection="row" justifyContent='space-between' sx={{ backdropFilter: 'blur(6px)', top: 0, paddingLeft: '40px', paddingRight: '40px', position: 'sticky' }}>
         <Box>
             <IconButton size="small">
                 <SearchIcon />

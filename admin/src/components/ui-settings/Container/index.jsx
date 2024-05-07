@@ -38,16 +38,7 @@ const DrawerContainer = () => {
             height: '100%',
             overflow: 'hidden'
          }}>
-            <PerfectScrollbar 
-            component="div"
-            style={{
-                overflow: 'hidden',
-                width: 'inherit',
-                height: 'inherit',
-                maxWidth: 'inherit',
-                maxHeight: 'inherit'
-            }}
-            >
+            <PerfectScrollbar >
                 <Box sx={{ 
                     display: 'flex',
                     flexDirection: 'column',

@@ -47,7 +47,7 @@ const SidebarContainer = () => {
         breakPoint='md'
         backgroundColor={setNavColor.navcolor[100]}
         width='280px'
-        style={{ height: '100vh', borderRight: "none", fontSize: "12px" }}
+        style={{ height: '100vh', borderRight: "none", fontSize: "12px"}}
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
             borderRight: '1px dashed',
@@ -84,21 +84,12 @@ const SidebarContainer = () => {
         >
           {theme.palette.appSettings.layout === 'collapsed' ? <SidebarFront /> : <SidebarBack />}
         </IconButton>
-        <PerfectScrollBar
-          component="div"
-          style={{
-            overflow: 'hidden',
-            width: 'inherit',
-            height: 'inherit',
-            maxWidth: 'inherit',
-            maxHeight: 'inherit'
-          }}
-        >
+        <PerfectScrollBar>
           <Box sx={{ padding: 4.5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
             
           </Box>
           <Box sx={{ paddingLeft: '16px', paddingRight: '16px', overflow: 'hidden' }}>
-            
+
           </Box>
         </PerfectScrollBar>
       </Sidebar>
