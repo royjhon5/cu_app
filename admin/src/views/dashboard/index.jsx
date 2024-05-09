@@ -1,14 +1,14 @@
-import { Box } from "@mui/material"
+import { Paper } from "@mui/material"
 
 const Dashboard = () => {
   return (
-    <Box color="primary" sx={{
+    <Paper color="primary" sx={{
       width: '100%',
-      height: '1000px',
+      height: '800px',
       backgroundColor: 'primary.main'
     }}>
 
-    </Box>
+    </Paper>
   )
 }
 

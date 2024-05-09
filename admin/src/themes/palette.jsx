@@ -258,3 +258,28 @@ export const BoxShadowBtnSettings = (appSettings) => ({
         })
     })
 }); 
+
+
+export const TopNavColor = (appSettings) => ({
+    ...(appSettings.paletteMode === "dark" ? {
+        ...(appSettings.contrast === 'default' ? {
+            TopNavColors: {
+                100: 'rgba(22, 28, 36, 0.8)'
+            }
+        } : {
+            TopNavColors: {
+                100: 'rgba(22, 28, 36, 0.8)'
+            }
+        })
+    }:{
+        ...(appSettings.contrast === 'default' ? {
+            TopNavColors: { 
+                100: 'rgba(255, 255, 255, 0.8)'
+            }
+        } : {
+            TopNavColors: {
+                100: 'rgba(244, 246, 248, 0.8)'
+            }
+        })
+    })
+});

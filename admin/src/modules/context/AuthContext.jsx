@@ -7,9 +7,10 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
-  const [logoutMessage, setLogoutMessage] = useState(null);
+  const [ accessToken, setAccessToken ] = useState(null);
   const [ updatePassMessage, setUpdatePassMessage ] = useState(null);
+  const [ error, setError ] = useState('');
+  const [ loadingBtn, setLoadingBtn ]  = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
@@ -39,6 +40,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (id_number, password) => {
+    setLoadingBtn(true);
     try {
       const response = await http.post('/admin-login', { id_number, password });
       const decoded = jwtDecode(response.data.accessToken);
@@ -46,9 +48,30 @@ export const AuthProvider = ({ children }) => {
       setAccessToken(decoded);
       setIsAuthenticated(true);
       checkTokenExpiration(decoded);
+      setLoadingBtn(false);
     } catch (error) {
       console.error(error);
-      throw error;
+      if (error.response && error.response.status === 400) {
+        if (error.response.data.error === "Invalid Id Number") {
+            setError("ID Number or password is incorrect.");
+            setLoadingBtn(false);
+        } else if (error.response.data.error === "Invalid password!") {
+            setError("ID Number or password is incorrect.");
+            setLoadingBtn(false);
+        } else if (error.response.data.error === "User is already logged in on another device.") {
+            setError("User is already logged in on another device.");
+            setLoadingBtn(false);
+        } else if (error.response.data.error === "Account locked. Please contact support.") {
+          setError("Account locked. Please contact support.");
+          setLoadingBtn(false);
+        } else if (error.response.data.error === "Too many failed attempts. Account locked 10min") {
+          setError("Too many failed attempts. Account locked 10min");
+          setLoadingBtn(false);
+        }
+      } else {
+          setError("Server Error");
+          setLoadingBtn(false);
+      }
     }
   };
 
@@ -58,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    setLogoutMessage("Logout successful");
+    setError("Logout successful");
   };
 
   const userUpdatePassword = async (OTP, password) => {
@@ -72,7 +95,7 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    setLogoutMessage("Session expired. For security, inactive accounts auto-logout after 1 day. Please log in again. Thank you.");
+    setError("Session expired. For security, inactive accounts auto-logout after 1 day. Please log in again. Thank you.");
   }
 
   const idleLogout = async () => {
@@ -81,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    setLogoutMessage("Your session has expired due to 15 minutes of inactivity; you have been automatically logged out.");
+    setError("Your session has expired due to 15 minutes of inactivity; you have been automatically logged out.");
   }
 
   const value = {
@@ -90,10 +113,11 @@ export const AuthProvider = ({ children }) => {
     accessToken,
     login,
     logout,
-    logoutMessage,
     idleLogout,
     userUpdatePassword,
-    updatePassMessage
+    updatePassMessage,
+    error,
+    loadingBtn
   };
     
   return (

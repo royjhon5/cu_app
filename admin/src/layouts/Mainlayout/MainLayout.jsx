@@ -21,14 +21,6 @@ const MainLayout = () => {
 
   if (!accessToken) return <Navigate to="/" />;
   else start();
-
-  console.log("\x1b[31m" + `
-  ███████   ███████ 
-  ██    ██       ██  
-  ███████        ██ 
-  ██  ██   ██    ██
-  ██    ██   ██████
-  ` +"\x1b[0m");
   return (
     <>  
         <Box className='app'>

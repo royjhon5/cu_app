@@ -101,7 +101,7 @@ const ForgetpassForm = ({ ...others }) => {
               </LoadingButton>
             </Box>
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-              <ArrowBackIosIcon sx={{ color:'white', fontSize: '12px' }} /><Typography onClick={backToLogin} fontSize="14px" color="white" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}>Return to sign in</Typography>
+              <ArrowBackIosIcon sx={{ fontSize: '12px' }} /><Typography onClick={backToLogin} fontSize="14px" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}>Return to sign in</Typography>
             </Box>
           </form>
         )}

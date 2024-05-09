@@ -3,8 +3,9 @@ import themeTypography from "./typography";
 import { createTheme } from "@mui/material/styles";
 import compStyleOverride from "./compStyleOverride";
 import { navColors, tokens } from "./palette";
+import { useSelector } from "react-redux";
 
-export const ThemeSettings = (appSettings) => {
+export const ThemeSettings = (appSettings, radius) => {
     return {
         palette: {
             appSettings: appSettings,
@@ -54,7 +55,7 @@ export const ThemeSettings = (appSettings) => {
             })
         },
         typography: themeTypography(appSettings),
-        components: compStyleOverride(appSettings),
+        components: compStyleOverride(appSettings, radius),
         tokens: tokens(appSettings),
         navColors: navColors(appSettings)
     };
@@ -87,6 +88,7 @@ export const AppSettingsContext = createContext({
 });
 
 export const UseMode = () => {
+    const radius = useSelector((state) => state.customization.borderRadius);
     const colors = JSON.parse(localStorage.getItem("app.settings")) || 'dark-green';
     const appContrasts = JSON.parse(localStorage.getItem("app.settings")) || 'default';
     const appLayout = JSON.parse(localStorage.getItem("app.settings")) || 'horizontal';
@@ -99,7 +101,7 @@ export const UseMode = () => {
         layout: appLayout.layout || 'horizontal',
         navColor: navColors.navColor || 'blend-in',
         paletteMode: palettes.paletteMode || 'dark',
-        stretch: appContent.stretch || 'true'
+        stretch: appContent.stretch || 'true',
     });
 
 
@@ -131,9 +133,9 @@ export const UseMode = () => {
                 const newStretchValue = appSettings.stretch === 'true' ? 'false' : 'true';
                 setAppSettings({ ...appSettings, stretch: newStretchValue });
             },
-            appSettings,
+            appSettings, radius
         }),
-        [appSettings]
+        [appSettings, radius]
     );
 
     useEffect(() => {
@@ -142,7 +144,7 @@ export const UseMode = () => {
 
 
 
-    const theme = useMemo(() => createTheme(ThemeSettings(appSettings)), [appSettings]);
+    const theme = useMemo(() => createTheme(ThemeSettings(appSettings, radius)), [appSettings, radius]);
     return [theme, appMode];
 
 }

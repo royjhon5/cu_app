@@ -7,7 +7,13 @@ import CssBaseline from '@mui/material/CssBaseline'
 
 function App() {
   const [theme, appMode] = UseMode();
-
+  console.log("\x1b[31m" + `
+  ███████   ███████ 
+  ██    ██       ██  
+  ███████        ██ 
+  ██  ██   ██    ██
+  ██    ██   ██████
+  ` +"\x1b[0m");
   return (
     <AppSettingsContext.Provider value={appMode}>
         <ThemeProvider theme={theme}>

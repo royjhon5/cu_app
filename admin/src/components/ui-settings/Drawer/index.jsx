@@ -7,7 +7,7 @@ const DrawerIndex = ({drawerOpen, drawerToggle}) => {
   const theme = useTheme();
   return (
     <Drawer
-      sx={{ '& .MuiDrawer-paper': {...theme.components.MuiDrawer, backdropFilter: 'blur(20px)'} }}
+      sx={{ '& .MuiDrawer-paper': {...theme.components.MuiDrawer, maxWidth: '280px', backdropFilter: 'blur(20px)'} }}
       open={drawerOpen}
       onClose={drawerToggle}
       BackdropProps={{ invisible: true  }}

@@ -1,10 +1,17 @@
 
 import * as actionTypes from './actions';
 
-export const initialState = {
+const getBorderRadiusFromLocalStorage = () => {
+  const storedBorderRadius = localStorage.getItem('borderRadius');
+  return storedBorderRadius ? parseInt(storedBorderRadius, 10) : 4;
+};
+
+export const initialState = { 
   isOpen: [],
   defaultId: 'default',
-  opened: false
+  borderRadius: getBorderRadiusFromLocalStorage(),
+  opened: false,
+  openNotif: false
 };
 
 const customizationReducer = (state = initialState, action) => {
@@ -20,6 +27,11 @@ const customizationReducer = (state = initialState, action) => {
       return {
         ...state,
         opened: action.opened
+      };
+    case actionTypes.OPEN_NOTIF:
+      return {
+        ...state,
+        openNotif: action.openNotif
       };
     case actionTypes.SET_FONT_FAMILY:
       return {

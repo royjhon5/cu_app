@@ -47,8 +47,34 @@ module.exports.getIdnumber = async function(req, res) {
               const mailOptions = {
                 from: 'cugiftshop7@gmail.com',
                 to: user.email,
-                subject: 'Password Reset OTP',
-                text: `Your OTP for password reset is: ${OTP}`
+                subject: 'Capitol University Giftshop',
+                html: `<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            .container {
+                                background-color: #E5E5E5;
+                                padding: 20px;
+                                width: 35%;
+                                margin: 0 auto;
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <img src="https://www.cu.edu.ph/wp-content/uploads/2021/06/CU-Logo-web.png" style="width: 100%; height: 100%; background-color: #9F1E22; border-radius: 10px;">
+                            <h1>Account Password Reset:</h1>
+                            <p style="font-weight: bold; font-size: 24px;">Hi ${user.first_name}</p>
+                            <p style="font-weight: bold; font-size: 16px;">Here is your One-time passcode:</p>
+                            <div style="padding: 10px; background-color:#F9F9F9;">
+                              <p style="font-size: 35px; letter-spacing: 1em;">${OTP}</p>
+                            </div>
+                            <p>If this request did not come from you, change your account password immediately to prevent further unauthorized access.</p>
+                        </div>
+                    </body>
+                    </html>
+                `
               };
               await transporter.sendMail(mailOptions);
               await db.query('UPDATE admin_user SET OTP = ? WHERE id_number = ?;', [OTP, id_number]);

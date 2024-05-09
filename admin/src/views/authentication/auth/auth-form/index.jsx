@@ -13,16 +13,11 @@ import InfoIcon from '@mui/icons-material/Info';
 const AuthForm = ({ ...others }) => {
   const scriptedRef = useScriptRef();
   const [showPassword, setShowPassword] = useState(false);
-  const [ error, setError ] = useState('');
-  const { login, logoutMessage, updatePassMessage } = useContext(AuthContext);
-  const [ loadingBtn, setLoadingBtn ]  = useState(false);
+  const { login, updatePassMessage, loadingBtn, error } = useContext(AuthContext);
   const [rememberUsername, setRememberUsername] = useState(false);
   const idNumber = localStorage.getItem('rememberedUsername') || '';
-  
   const navigate = useNavigate();
-  
-  
-  
+
   useEffect(() => {
     const rememberedUsername = localStorage.getItem('rememberedUsername');
     if (rememberedUsername) {
@@ -43,80 +38,56 @@ const AuthForm = ({ ...others }) => {
   }
 
   const handleSubmit = async (values) => {
-    setError(null);
-    setLoadingBtn(true);
-    try {
       await login(values.id_number, values.password);
       if (rememberUsername) {
         localStorage.setItem('rememberedUsername', values.id_number);
       } else {
         localStorage.removeItem('rememberedUsername');
       }
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        if (error.response.data.error === "Invalid Id Number") {
-            setError("ID Number or password is incorrect.");
-            setLoadingBtn(false);
-        } else if (error.response.data.error === "Invalid password!") {
-            setError("ID Number or password is incorrect.");
-            setLoadingBtn(false);
-        } else if (error.response.data.error === "User is already logged in on another device.") {
-            setError("User is already logged in on another device.");
-            setLoadingBtn(false);
-        } else if (error.response.data.error === "Account locked. Please contact support.") {
-          setError("Account locked. Please contact support.");
-          setLoadingBtn(false);
-        } else if (error.response.data.error === "Too many failed attempts. Account locked 10min") {
-          setError("Too many failed attempts. Account locked 10min");
-          setLoadingBtn(false);
-        }
-      } else {
-          setError("Server Error");
-          setLoadingBtn(false);
-      }
-    }
   };
 
 
 
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <Typography variant="h2">Sign In</Typography>
-      {logoutMessage && ( <Grow in={true}><Paper elevation={0} 
-      sx={{ 
-        padding: 2, 
-        borderRadius: 1, 
-        background: '#F44336', 
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 2
-        }}
-        > 
-            <Box><InfoIcon fontSize="medium" /></Box>
-            <Typography textAlign="justify">{logoutMessage}</Typography>
-        </Paper>
+      <Typography variant="h">Sign In</Typography>
+      {error ? (
+        <Grow in={true}>
+          <Chip
+            icon={<InfoIcon />}
+            label={<Typography textAlign="justify" sx={{ ml: 1 }}>{error}</Typography>}
+            color="error"
+            sx={{
+              borderRadius: 1,
+              height: 'auto',
+              '& .MuiChip-label': {
+                display: 'block',
+                whiteSpace: 'normal',
+                padding: 1
+              }
+            }}
+          />
         </Grow>
-      )}
-      {updatePassMessage && ( <Grow in={true}><Paper elevation={0} 
-      sx={{ 
-        padding: 1.5, 
-        borderRadius: 1, 
-        background: '#66BB6A', 
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 2
-        }}
-        > 
+      ) : updatePassMessage ? (
+        <Grow in={true}>
+          <Paper
+            elevation={0}
+            sx={{
+              padding: 1.5,
+              borderRadius: 1,
+              background: '#66BB6A',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 2
+            }}
+          >
             <Box><InfoIcon fontSize="medium" /></Box>
             <Typography textAlign="justify">{updatePassMessage}</Typography>
-        </Paper>
+          </Paper>
         </Grow>
-      )}
-      {error && <Grow in={true}><Chip label={<Typography >{error}</Typography>} color="error" sx={{ borderRadius: 1 }} /></Grow>}
+      ) : ( '' )}
       <Formik
         initialValues={{
           id_number: idNumber,

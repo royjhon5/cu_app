@@ -34,7 +34,6 @@ const SidebarContainer = () => {
   return (
     <Box
       sx={{
-        position: 'sticky',
         display: 'flex',
         top: 0,
         bottom: 0,
@@ -72,7 +71,7 @@ const SidebarContainer = () => {
             textAlign: 'center',
             fontSize: '1.125rem',
             padding: '4px',
-            top: '32px',
+            top: '27.5px',
             position: 'fixed',
             left: theme.palette.appSettings.layout === 'collapsed' ? '68px' : '268px',
             zIndex: 1101,

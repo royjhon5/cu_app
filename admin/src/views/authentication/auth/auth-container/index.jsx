@@ -1,13 +1,13 @@
-import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
+import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import loginImg from '../../../../assets/images/loginbg.png'
 import AuthForm from "../auth-form";
 import { Fragment } from "react";
 import { Helmet } from "react-helmet-async";
 
 export default function SignInSide() {
+  const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:900px)');
   const isSmallScreen = useMediaQuery('(max-width:900px)');
-
   return (
     <Fragment>
         <Helmet>
@@ -31,13 +31,13 @@ export default function SignInSide() {
               alignItems: 'center',
               WebkitBoxPack: 'center',
               justifyContent: 'center',
-              background: 'linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)',
+              background: theme.palette.appSettings.paletteMode === 'dark' ? 'linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)' : 'linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)',
               backgroundPosition: 'center'
           }}
         >
            {!isMobile && (
               <>
-                <Typography variant="h2">
+                <Typography variant="h3">
                   Hi, Welcome Back
                 </Typography>
                 <img src={loginImg} alt="Login" style={{ maxWidth: isSmallScreen ? '80%' : '100%', height: 'auto',}} />
