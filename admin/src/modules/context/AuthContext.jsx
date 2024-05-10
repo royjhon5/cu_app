@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
   const [ error, setError ] = useState('');
   const [ loadingBtn, setLoadingBtn ]  = useState(false);
 
+  
+
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
     if (storedToken) {

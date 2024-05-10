@@ -11,7 +11,8 @@ export const initialState = {
   defaultId: 'default',
   borderRadius: getBorderRadiusFromLocalStorage(),
   opened: false,
-  openNotif: false
+  openNotif: false,
+  openSidebarMobile: false
 };
 
 const customizationReducer = (state = initialState, action) => {
@@ -32,6 +33,11 @@ const customizationReducer = (state = initialState, action) => {
       return {
         ...state,
         openNotif: action.openNotif
+      };
+    case actionTypes.OPEN_SIDEBAR_MOBILE:
+      return {
+        ...state,
+        openSidebarMobile: action.openSidebarMobile
       };
     case actionTypes.SET_FONT_FAMILY:
       return {

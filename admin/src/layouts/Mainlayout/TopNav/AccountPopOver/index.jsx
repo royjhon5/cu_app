@@ -3,7 +3,6 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../../../modules/context/AuthContext';
 
 
-// ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
@@ -17,7 +16,6 @@ const MENU_OPTIONS = [
   },
 ];
 
-// ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
@@ -80,19 +78,6 @@ export default function AccountPopover() {
           },
         }}
       >
-        <Box component="span" style={{
-            width: 14,
-            height: 14,
-            position: 'absolute',
-            borderBottomLeftRadius: 3.5,
-            clipPath: 'polygon(0% 0%, 100% 100%, 0% 100%)',
-            border: '1px solid rgba(145, 158, 171, 0.12)',
-            backdropFilter: 'blur(6px)', 
-            background: theme.palette.appSettings.paletteMode === 'dark' ? 'rgba(33, 43, 54, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-            top: '-6.5px',
-            transform: 'rotate(135deg)',
-            right: '20px',
-        }}></Box>
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
             {accessToken.fName}

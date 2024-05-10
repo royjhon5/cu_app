@@ -1,18 +1,18 @@
 import { Sidebar, sidebarClasses } from 'react-pro-sidebar';
 import PerfectScrollBar from 'react-perfect-scrollbar';
-import { Box, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import { navColors, tokens } from '../../../themes/palette';
 import SidebarBack from '../../../components/svg-icons/SidebarBack';
 import SidebarFront from '../../../components/svg-icons/SidebarFront';
 import { useContext, useEffect, useState } from 'react';
 import { AppSettingsContext } from '../../../themes';
+import {motion} from 'framer-motion';
 
 const SidebarContainer = () => {
   const theme = useTheme();
   const color = tokens(theme.palette.appSettings);
   const toggleBtn = useContext(AppSettingsContext);
   const setNavColor = navColors(theme.palette.appSettings);
-  const displayNone = useMediaQuery(theme => theme.breakpoints.down('md'));
   const [collapsed, setCollapsed] = useState(() => {
     const savedCollapsed = localStorage.getItem('sidebarCollapsed');
     return savedCollapsed ? JSON.parse(savedCollapsed) : false;
@@ -31,22 +31,22 @@ const SidebarContainer = () => {
     setCollapsed(!collapsed);
   };
 
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        top: 0,
-        bottom: 0,
-        zIndex: 10000,
-      }}
-    >
+  return ( 
+    <motion.div layout>
+      <Box sx={{
+        flexShrink: 0,
+        width: 280
+      }}>
       <Sidebar
         collapsed={theme.palette.appSettings.layout === 'collapsed' ? true : collapsed}
         transitionDuration={350}
-        breakPoint='md'
+        breakPoint='lg'
         backgroundColor={setNavColor.navcolor[100]}
         width='280px'
-        style={{ height: '100vh', borderRight: "none", fontSize: "12px"}}
+        style={{ height: '100vh', borderRight: "none", fontSize: "12px",
+        display: theme.palette.appSettings.layout === 'vertical' ? 'block' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'block',
+        
+      }}
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
             borderRight: '1px dashed',
@@ -56,7 +56,13 @@ const SidebarContainer = () => {
       >
         <IconButton
           sx={{
-            display: displayNone ? 'none' : 'flex',
+            display: {
+              xl: 'flex',
+              lg: 'none',
+              md: 'none',
+              sm: 'none',
+              xs: 'none'
+            },
             WebkitBoxAlign: 'center',
             alignItems: 'center',
             WebkitBoxPack: 'center',
@@ -84,15 +90,16 @@ const SidebarContainer = () => {
           {theme.palette.appSettings.layout === 'collapsed' ? <SidebarFront /> : <SidebarBack />}
         </IconButton>
         <PerfectScrollBar>
-          <Box sx={{ padding: 4.5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-            
+          <Box sx={{ padding: 4.5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           </Box>
           <Box sx={{ paddingLeft: '16px', paddingRight: '16px', overflow: 'hidden' }}>
 
           </Box>
         </PerfectScrollBar>
       </Sidebar>
-    </Box>
+      </Box>
+    </motion.div>
+      
   )
 }
 

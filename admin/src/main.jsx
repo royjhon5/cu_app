@@ -5,11 +5,13 @@ import './assets/styles/index.css';
 import { Provider } from 'react-redux';
 import { store } from './store/index.js'
 
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Provider store={store}>
-        <HelmetProvider>
+    <HelmetProvider>
+        <Provider store={store}> 
             <App /> 
-        </HelmetProvider>
-    </Provider>
+        </Provider>
+    </HelmetProvider>
      
 )

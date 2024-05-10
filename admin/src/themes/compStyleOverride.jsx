@@ -46,11 +46,6 @@ export default function compStyleOverride(appSettings, radius) {
             },
           },
         },
-        img: {
-          maxWidth: '100%',
-          display: 'inline-block',
-          verticalAlign: 'bottom',
-        },
       },
     },
     MuiButton: {
@@ -85,6 +80,7 @@ export default function compStyleOverride(appSettings, radius) {
           backgroundPosition: 'right top, left bottom',
           backgroundSize: '50%, 50%',
           boxShadow: boxShadowDrawer
+          
       },
       MuiCard: {
         styleOverrides: {

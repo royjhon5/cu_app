@@ -3,7 +3,7 @@ import { useResponsive } from "../../hooks/use-responsive"
 import PropTypes from 'prop-types';
 
 const MainCard = ({ sx, ...other }) => {
-  const lgUp = useResponsive();
+  const lgUp = useResponsive('up', 'lg');
   return (
     <Box
         sx={{

@@ -5,6 +5,8 @@ import { AppSettingsContext, UseMode } from "./themes"
 import { ThemeProvider } from "@mui/material/styles"
 import CssBaseline from '@mui/material/CssBaseline'
 
+
+
 function App() {
   const [theme, appMode] = UseMode();
   console.log("\x1b[31m" + `

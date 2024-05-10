@@ -210,26 +210,62 @@ export const SvgIconColors = (appSettings) => ({
     ...(appSettings.colorPreset === 'dark-green' ? {
         svgcolor: {
             100: "#00A76F",
+            200: 'rgb(0, 75, 80)',
+            300: 'linear-gradient(135deg, rgba(91, 228, 155, 0.2), rgba(0, 167, 111, 0.2)) rgb(255, 255, 255)',
+            // top
+            400: '#5BE49B',
+            // bottom
+            500: '#007867'
         }
     } : appSettings.colorPreset === 'light-blue' ? {
         svgcolor: {
             100: "#078DEE",
+            200: 'rgb(1, 41, 114)',
+            300: 'linear-gradient(135deg, rgba(104, 205, 249, 0.2), rgba(7, 141, 238, 0.2)) rgb(255, 255, 255)',
+            // top
+            400: '#68CDF9',
+            // bottom
+            500: '#0351AB'
         }
     } : appSettings.colorPreset === 'dark-purple' ? {
         svgcolor: {
             100: "#7635DC",
+            200: 'rgb(32, 10, 105)',
+            300: 'linear-gradient(135deg, rgba(185, 133, 244, 0.2), rgba(118, 53, 220, 0.2)) rgb(255, 255, 255)',
+            // top
+            400: '#B985F4',
+            // bottom
+            500: '#431A9E'
         }
     } : appSettings.colorPreset === "dark-blue" ? {
         svgcolor: {
             100: "#2065D1",
+            200: 'rgb(6, 27, 100)',
+            300: 'linear-gradient(135deg, rgba(118, 176, 241, 0.2), rgba(32, 101, 209, 0.2)) rgb(255, 255, 255)',
+            // top
+            400: '#76B0F1',
+            // bottom
+            500: '#103996'
         }
     } : appSettings.colorPreset === "light-orange" ? {
         svgcolor: {
             100: "#FDA92D",
+            200: 'rgb(121, 57, 8)',
+            300: 'linear-gradient(135deg, rgba(254, 214, 128, 0.2), rgba(253, 169, 45, 0.2)) rgb(255, 255, 255)',
+            // top
+            400: '#FED680',
+            // bottom
+            500: '#B66816'
         }
     } : {
         svgcolor: {
             100: "#FF3030",
+            200: 'rgb(122, 9, 48)',
+            300: 'linear-gradient(135deg, rgba(255, 193, 172, 0.2), rgba(255, 48, 48, 0.2)) rgb(255, 255, 255)',
+            // top
+            400: '#FFC1AC',
+            // bottom
+            500: '#B71833'
         }
     })
 });
@@ -279,6 +315,30 @@ export const TopNavColor = (appSettings) => ({
         } : {
             TopNavColors: {
                 100: 'rgba(244, 246, 248, 0.8)'
+            }
+        })
+    })
+});
+
+export const HorizontalTopNav = (appSettings) => ({
+    ...(appSettings.paletteMode === "dark" ? {
+        ...(appSettings.contrast === 'default' ? {
+            HorizontalNav: {
+                100: 'rgb(22, 28, 36)'
+            }
+        } : {
+            HorizontalNav: {
+                100: 'rgb(22, 28, 36)'
+            }
+        })
+    }:{
+        ...(appSettings.contrast === 'default' ? {
+            HorizontalNav: { 
+                100: 'rgb(255, 255, 255)'
+            }
+        } : {
+            HorizontalNav: {
+                100: 'rgb(244, 246, 248)'
             }
         })
     })

@@ -1,9 +1,12 @@
 import { Outlet, Navigate } from 'react-router-dom'
 import { useAuth } from '../../modules/context/AuthContext';
-import SidebarContainer from './Sidebar';
 import { Box, Container, useTheme } from '@mui/material'
 import TopNav from './TopNav';
 import { useIdleTimer } from 'react-idle-timer';
+import { motion } from 'framer-motion';
+import Nav from './Sidebar/Sidebar';
+import MainCard from '../../components/Cards/MainCard';
+
 
 
 const MainLayout = () => {
@@ -18,22 +21,29 @@ const MainLayout = () => {
     onIdle: handleIdleTimeout,
   });
 
-
   if (!accessToken) return <Navigate to="/" />;
   else start();
+
+  
   return (
     <>  
-        <Box className='app'>
-          <SidebarContainer /> 
-            <Box className='content'>
-              <TopNav />   
-                <Box component="main" sx={{ flexGrow: 1 }}>
-                  <Container component="main" maxWidth={theme.palette.appSettings.stretch === 'true' ? "lg" : 'xl'} sx={{ p:4, transition: 'all .2s ease-in-out' }}>
-                    <Outlet /> 
-                  </Container>  
-                </Box>
-            </Box>
-        </Box>   
+        <TopNav />
+        <Box
+        sx={{
+          minHeight: 1,
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+        }}
+      >
+          <Nav />
+          <MainCard>
+          <motion.div layout>
+            <Container maxWidth={theme.palette.appSettings.stretch === 'true' ? 'xl' : 'xxl'}>
+              <Outlet />
+            </Container>
+          </motion.div>
+          </MainCard>
+      </Box>
     </>
   )
 }

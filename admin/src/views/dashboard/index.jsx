@@ -1,14 +1,21 @@
-import { Paper } from "@mui/material"
-
+import { Box, Grid } from "@mui/material"
+import WelcomeUser from "./WelcomeUser"
+  
+  
 const Dashboard = () => {
   return (
-    <Paper color="primary" sx={{
-      width: '100%',
-      height: '800px',
-      backgroundColor: 'primary.main'
-    }}>
+    <Grid container direction="row" spacing={3}>
+        <Grid item xs={12} md={12}>
+            <WelcomeUser />
+        </Grid>
+        <Grid item xs={12} md={12}>
+            <Box sx={{
+              height: '1000px'
+            }}>
 
-    </Paper>
+            </Box>
+        </Grid>
+    </Grid>
   )
 }
 
