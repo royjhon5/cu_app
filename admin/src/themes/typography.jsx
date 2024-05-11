@@ -24,7 +24,7 @@ export default function themeTypography(appSettings){
     const paletteMode = appSettings && appSettings.paletteMode ? appSettings.paletteMode : 'light'; // Default to 'light' if appSettings or paletteMode is not defined
     const textColor = paletteMode === 'dark' ? 'white' : 'black';
     return {
-        fontFamily: ["'Plus Jakarta Sans', sans-serif"].join(","),
+        fontFamily: [`${appSettings.UiFont}`].join(","),
           h6: {
             fontWeight: 500,
             color: textColor,

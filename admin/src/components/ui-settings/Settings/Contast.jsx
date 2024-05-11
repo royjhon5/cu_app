@@ -33,7 +33,7 @@ const Contrast = () => {
         setContrastDefault(false);
         setContrastBold(true);
     }
-  }, [theme.palette.appSettings.contrast])
+  }, [theme.palette.appSettings.contrast]);
 
   return (
     <Box>

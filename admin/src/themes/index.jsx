@@ -85,6 +85,12 @@ export const AppSettingsContext = createContext({
     toggleDarkMode: () => {},
     //stretch
     toggleStretch: () => {},
+    //UiFont
+    toggleRobotSlab: () => {},
+    togglePoetsenOne: () => {},
+    togglePublicSans: () => {},
+    togglePlusJakarta: () => {},
+    toggleDMSans: () => {},
 });
 
 export const UseMode = () => {
@@ -95,6 +101,7 @@ export const UseMode = () => {
     const navColors = JSON.parse(localStorage.getItem("app.settings")) || 'blend-in';
     const palettes = JSON.parse(localStorage.getItem("app.settings")) || 'dark';
     const appContent = JSON.parse(localStorage.getItem("app.settings")) || 'true';
+    const UiFont = JSON.parse(localStorage.getItem("app.settings")) || "'Plus Jakarta Sans', sans-serif";
     const [appSettings, setAppSettings] = useState({
         colorPreset: colors.colorPreset || 'dark-green',
         contrast: appContrasts.contrast || 'default',
@@ -102,6 +109,7 @@ export const UseMode = () => {
         navColor: navColors.navColor || 'blend-in',
         paletteMode: palettes.paletteMode || 'dark',
         stretch: appContent.stretch || 'true',
+        UiFont: UiFont.UiFont || "'Plus Jakarta Sans', sans-serif"
     });
 
 
@@ -133,6 +141,11 @@ export const UseMode = () => {
                 const newStretchValue = appSettings.stretch === 'true' ? 'false' : 'true';
                 setAppSettings({ ...appSettings, stretch: newStretchValue });
             },
+            toggleRobotSlab: () => setAppSettings({ ...appSettings, UiFont: "'Roboto Slab', serif" }),
+            togglePoetsenOne: () => setAppSettings({ ...appSettings, UiFont: "'Poetsen One', sans-serif" }),
+            togglePublicSans: () => setAppSettings({ ...appSettings, UiFont: "'Public Sans', sans-serif" }),
+            togglePlusJakarta: () => setAppSettings({ ...appSettings, UiFont: "'Plus Jakarta Sans', sans-serif" }),
+            toggleDMSans: () => setAppSettings({ ...appSettings, UiFont: "'DM Sans', sans-serif" }),
             appSettings, radius
         }),
         [appSettings, radius]

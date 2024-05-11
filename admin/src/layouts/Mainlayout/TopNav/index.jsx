@@ -1,4 +1,4 @@
-import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material';
+import { AppBar, Box, IconButton, Stack, Toolbar, useTheme } from '@mui/material';
 import SearchIcon from '../../../components/svg-icons/SearchIcon'
 import NotificationIcon from '../../../components/svg-icons/NotificationIcon'
 import SettingsIcon from '../../../components/svg-icons/SettingsIcon'
@@ -7,13 +7,12 @@ import { OPEN_NOTIF, SET_MENU, OPEN_SIDEBAR_MOBILE } from '../../../store/action
 import DrawerIndex from '../../../components/ui-settings/Drawer';
 import AnimateButton from '../../../components/AnimatedButton';
 import AccountPopover from './AccountPopOver';
-import { useTheme } from '@emotion/react';
-import { HorizontalTopNav, TopNavColor } from '../../../themes/palette';
+import { HorizontalTopNav, TopNavColor, tokens } from '../../../themes/palette';
 import { useResponsive } from '../../../hooks/use-responsive';
 import Iconify from '../../../components/iconify/Iconify';
 import NotificationDrawer from '../../../components/Notification/Drawer';
 import {motion} from 'framer-motion'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SidebarMobileMode from '../Sidebar/SidebarMobileMode';
 
 
@@ -21,6 +20,7 @@ const TopNav = () => {
   const theme = useTheme();
   const color = TopNavColor(theme.palette.appSettings);
   const color2 = HorizontalTopNav(theme.palette.appSettings);
+  const btmColor = tokens(theme.palette.appSettings);
   const OpenDrawer = useSelector((state) => state.customization.opened);
   const OpenNotif = useSelector((state) => state.customization.openNotif);
   const OpenSidebar = useSelector((state) => state.customization.openSidebarMobile);
@@ -28,14 +28,19 @@ const TopNav = () => {
   const lgUp = useResponsive('up', 'lg');
   const [navBar, setNavbar] = useState(false)
 
-  const triggerHeight = () => {
-    if(window.scrollY >= 100) {
-      setNavbar(true)
-    } else {
-      setNavbar(false)
+  useEffect(() => {
+    const triggerHeight = () => {
+      if (window.scrollY >= 80) {
+        setNavbar(true);
+      } else {
+        setNavbar(false);
+      }
     }
-  }
-  window.addEventListener('scroll', triggerHeight)
+    window.addEventListener('scroll', triggerHeight);
+    return () => {
+      window.removeEventListener('scroll', triggerHeight);
+    };
+  }, []);
 
   const handleRightDrawerToggle = () => {
     dispatch({ type: SET_MENU, opened: !OpenDrawer });
@@ -78,6 +83,11 @@ const TopNav = () => {
 <>
   <motion.div layout animate={{ opacity: 1 }} initial={{ opacity: 0 }} exit={{ opacity: 0 }}></motion.div>
     <AppBar sx={{ 
+      borderBottom: 
+      theme.palette.appSettings.layout === 'vertical' ? '0px' : 
+      theme.palette.appSettings.layout === 'horizontal' ? '1px dashed' : 
+      '0px',
+      borderColor: `${btmColor.sidebarColor[200]} !important`,
       width: 
         {
         xl: theme.palette.appSettings.layout === 'vertical' ? `calc(100% - ${280 + 1}px)` : theme.palette.appSettings.layout === 'horizontal' ? 'calc(100%)px' : `calc(100% - ${88 + 1}px)`,
@@ -98,7 +108,10 @@ const TopNav = () => {
         sm: theme.palette.appSettings.layout === 'vertical' ? '64px' : theme.palette.appSettings.layout === 'horizontal' ? '64px' : '64px',
         xs: theme.palette.appSettings.layout === 'vertical' ? '64px' : theme.palette.appSettings.layout === 'horizontal' ? '64px' : '64px',
         },
-      backgroundColor: theme.palette.appSettings.layout === 'vertical' ? `${color.TopNavColors[100]}` : theme.palette.appSettings === 'horizontal' ? `${color2.HorizontalNav[100]}` : `${color.TopNavColors[100]}`,
+      backgroundColor: 
+      theme.palette.appSettings.layout === 'vertical' ? `${color.TopNavColors[100]}` : 
+      theme.palette.appSettings.layout === 'horizontal' ? `${color2.HorizontalNav[100]}` : 
+      `${color.TopNavColors[100]}`,
       transition:
       theme.palette.appSettings.layout === 'vertical' ? 
       theme.transitions.create(['width', 'margin', 'height'], {

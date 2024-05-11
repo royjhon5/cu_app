@@ -29,7 +29,7 @@ export default function Sidebar() {
             width: theme.palette.appSettings.layout === 'vertical' ? 280 : theme.palette.appSettings.layout === 'horizontal' ? 0 : 88,
             boxSizing: 'border-box',
             background: `${navColor.navcolor[100]} !important`,
-            borderRight: '1px dashed',
+            borderRight: theme.palette.appSettings.layout === 'vertical' ? '1px dashed' : theme.palette.appSettings.layout === 'horizontal' ? '0px' : '1px dashed',
             borderColor: `${color.sidebarColor[200]} !important`,
             transition: 
             theme.palette.appSettings.layout === 'vertical' ? 
