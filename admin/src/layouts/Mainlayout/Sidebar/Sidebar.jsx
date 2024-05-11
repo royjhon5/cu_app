@@ -1,6 +1,8 @@
 import { Box, Drawer, useTheme } from "@mui/material";
 import { navColors, tokens } from "../../../themes/palette";
 import ToggleNavButton from "./ToggleButton";
+import PerfectScrollBar from 'react-perfect-scrollbar';
+import SidebarLogo from "./Logo";
 
 export default function Sidebar() {
   const theme = useTheme();
@@ -49,6 +51,9 @@ export default function Sidebar() {
         variant="permanent"
         anchor="left">
             <ToggleNavButton />
+            <PerfectScrollBar>
+                <SidebarLogo />
+            </PerfectScrollBar>
       </Drawer>
     </Box>
   );

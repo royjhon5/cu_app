@@ -33,8 +33,8 @@ const MainLayout = () => {
           minHeight: 1,
           display: 'flex',
           flexDirection: { xs: 'column', lg: 'row' },
-        }}
-      >
+          }}
+        >
           <Nav />
           <MainCard>
           <motion.div layout>

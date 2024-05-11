@@ -14,6 +14,7 @@ import NotificationDrawer from '../../../components/Notification/Drawer';
 import {motion} from 'framer-motion'
 import { useEffect, useState } from 'react';
 import SidebarMobileMode from '../Sidebar/SidebarMobileMode';
+import TopNavLogo from './Logo';
 
 
 const TopNav = () => {
@@ -61,9 +62,12 @@ const TopNav = () => {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
-
+      {lgUp && (
+      <TopNavLogo />
+      )}
+      <IconButton size="small">
         <SearchIcon />
-
+      </IconButton>
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
