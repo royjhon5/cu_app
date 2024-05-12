@@ -40,3 +40,12 @@
   animation: spin 10s linear infinite;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+
+

@@ -5,18 +5,68 @@ const db = require('../../config/dbConnection');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
 var https = require('follow-redirects').https;
-var fs = require('fs');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
-module.exports.getUsers = async function(req, res) {
+
+module.exports.storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+  const id_number = req.body.id_number;
+  const folderPath = path.join('user_profile_picture', 'admin-profile', id_number);
+  if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+  }
+  cb(null, folderPath) 
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+});
+
+
+module.exports.UploadProfilePicture = async function(req, res) {
   try {
-    const query = 'SELECT id, id_number, first_name FROM admin_user';
-    const users = await db.query(query);
-    res.json(users);
+    const id_number = req.body.id_number;
+    const oldImage = req.body.old_image; 
+    const newImage = req.file.filename;
+    await db.query('UPDATE admin_user SET profile_picture = ? WHERE id_number = ?;', [newImage, id_number], async (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+      } else {
+        if (oldImage) {
+          const imagePath = path.join('user_profile_picture', 'admin-profile', id_number, oldImage);
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error("Error deleting old image:", err);
+            } else {
+              console.log("Old image deleted successfully");
+            }
+          });
+        }
+        res.status(200).send('Profile picture updated successfully!');
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+}
+
+module.exports.getUserProfile = async function(req, res) {
+  const { id_number } = req.query;
+  try {
+    db.query('SELECT * FROM admin_user WHERE id_number = ?',[id_number], (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
 }
+
 
 module.exports.getIdnumber = async function(req, res) {
   const { id_number } = req.query; 
@@ -179,9 +229,9 @@ module.exports.userLogin = async function(req, res) {
   const { id_number, password } = req.body;
   try {
       const user = await adminUser.findIdNumberLogin(id_number);
-      if (user.is_disable === 1) return res.status(400).json({ error: 'Account locked. Please contact support.' });
       if (!user) return res.status(400).json({ error: 'Invalid Id Number' });
       if (user.access_token) return res.status(400).json({ error: 'User is already logged in on another device.' });
+      if (user.is_disable === 1) return res.status(400).json({ error: 'Account locked. Please contact support.' });
       const match = await bcrypt.compare(password , user.password);
         if (!match) {
           if (user.failed_login_attempts >= 5) {
@@ -227,3 +277,4 @@ module.exports.userLogout = async function(req, res) {
   res.clearCookie('accessToken');
   return res.sendStatus(200);
 }
+

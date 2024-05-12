@@ -12,8 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [ error, setError ] = useState('');
   const [ loadingBtn, setLoadingBtn ]  = useState(false);
 
-  
-
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
     if (storedToken) {
@@ -49,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('accessToken', response.data.accessToken);
       setAccessToken(decoded);
       setIsAuthenticated(true);
+      
       checkTokenExpiration(decoded);
       setLoadingBtn(false);
     } catch (error) {

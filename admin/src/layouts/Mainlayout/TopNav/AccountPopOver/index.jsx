@@ -1,6 +1,7 @@
 import { Avatar, Box, Divider, IconButton, MenuItem, Popover, Stack, Typography, useTheme } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../../modules/context/AuthContext';
+import http from '../../../../api/http';
 
 
 
@@ -21,6 +22,7 @@ export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const theme = useTheme();
   const { logout, accessToken } = useContext(AuthContext);
+  const [profilePicture, setProfilePicture] = useState("")
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -35,6 +37,19 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await http.get(`/user-profile?id_number=${accessToken.idNumber}`)
+        setProfilePicture(response.data[0].profile_picture)
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        throw error;
+      }
+    };
+    fetchData();
+  }, [accessToken.idNumber]);
 
   return (
     <>
@@ -52,6 +67,7 @@ export default function AccountPopover() {
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
+          src={profilePicture ? `http://localhost:8000/admin-profile/${accessToken.idNumber}/` + profilePicture : ''}
         >
         </Avatar>
       </IconButton>

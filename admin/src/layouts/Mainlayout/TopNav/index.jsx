@@ -68,15 +68,36 @@ const TopNav = () => {
       <IconButton size="small">
         <SearchIcon />
       </IconButton>
+      <Box component="span" sx={{
+        height: '24px',
+        minWidth: '24px',
+        lineHeight: 0,
+        borderRadius: '6px',
+        cursor: 'default',
+        WebkitBoxAlign: 'center',
+        alignItems: 'center',
+        whiteSpace: 'nowrap',
+        display: 'inline-flex',
+        WebkitBoxPack: 'center', 
+        justifyContent: 'center',
+        textTransform: 'capitalize',
+        padding: '0px 6px',
+        fontWeight: 700,
+        transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+        background: theme.palette.appSettings.paletteMode === 'dark' ? 'rgba(145, 158, 171, 0.16)' : 'rgba(145, 158, 171, 0.16)',
+        fontSize: '12px',
+        color: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(145, 158, 171)' : 'rgb(99, 115, 129)',
+      }}>
+          ⌘K
+      </Box>
       <Box sx={{ flexGrow: 1 }} />
-
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton size="small" onClick={handleRightNotifDrawer}>
           <NotificationIcon />  
         </IconButton>  
         <AnimateButton type="rotate">
           <IconButton size="small" onClick={handleRightDrawerToggle}>
-              <SettingsIcon />
+            <SettingsIcon />
           </IconButton>
         </AnimateButton> 
         <AccountPopover />
