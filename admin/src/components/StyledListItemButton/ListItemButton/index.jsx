@@ -16,9 +16,9 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick}) => {
             display: 'flex',
             justifyContent: theme.palette.appSettings.layout === 'collapsed' ? 'center' : 'flex-start',
             flexDirection: theme.palette.appSettings.layout === 'collapsed' ? 'column' : 'row',
-            borderRadius: theme.palette.appSettings.layout === 'collapsed' ? '6px' : '8px',
-            minHeight: '44px',
-            fontSize: theme.palette.appSettings.layout === 'collapsed' ? '10px' : '0.875rem',
+            borderRadius: theme.palette.appSettings.layout === 'vertical' ? '8px' : theme.palette.appSettings.layout === 'horizontal' ? '6px' : '6px',
+            minHeight: theme.palette.appSettings.layout === 'vertical' ? '44px' : theme.palette.appSettings.layout === 'horizontal' ? '32px' : '56px',
+            fontSize: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0.875rem' : '10px',
             textAlign: 'center',
             background: isActive ? `${sideActiveColor.svgcolor[600]}` : 'none',
             '&:hover': {

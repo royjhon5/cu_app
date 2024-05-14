@@ -15,6 +15,8 @@ import {motion} from 'framer-motion'
 import { useEffect, useState } from 'react';
 import SidebarMobileMode from '../Sidebar/SidebarMobileMode';
 import TopNavLogo from './Logo';
+import PerfectScrollBar from 'react-perfect-scrollbar';
+import TopNavContainer from './TopNavContainer';
 
 
 const TopNav = () => {
@@ -184,11 +186,14 @@ const TopNav = () => {
     }}>
         <Toolbar
           sx={{
-            height: 1,
             px: { lg: 5 },
+            paddingLeft: '24px',
+            paddingRight: '24px'
           }}
         >
-
+          <PerfectScrollBar>
+              <TopNavContainer />
+          </PerfectScrollBar>
         </Toolbar>
     </AppBar>
     

@@ -1,7 +1,7 @@
-import { List } from "@mui/material"
 import ListSubHeaderStyle from "../../../../../components/StyledListItemButton/ListSubHeader";
 import ListItemButtonStyle from "../../../../../components/StyledListItemButton/ListItemButton";
 import { useNavigate } from "react-router-dom";
+import CustomList from "../../../../../components/StyledListItemButton/CustomeList";
 
 
 const OverView = () => {
@@ -14,12 +14,12 @@ const OverView = () => {
     navigate('/dashboard/user/account-settings')
   }
   return (
-    <List sx={{ background: 'none' }}>
+    <CustomList >
         <ListSubHeaderStyle ListLabel="OVERVIEW" />
         <ListItemButtonStyle ListbtnLabel="Dashboard" activePath="/dashboard" MenuClick={navigateDashboard} />
         <ListItemButtonStyle ListbtnLabel="User Account" activePath="/dashboard/user/account-settings" MenuClick={navigateSample} />
         <ListItemButtonStyle ListbtnLabel="E-commerce" />
-    </List>
+    </CustomList>
   )
 }
 

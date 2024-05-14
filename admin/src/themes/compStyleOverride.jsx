@@ -55,7 +55,7 @@ export default function compStyleOverride(appSettings, radius) {
         },
       },
     },
-    MuiButton: {
+     MuiButton: {
         styleOverrides: {
           root: {
             fontWeight: 500,
@@ -109,6 +109,37 @@ export default function compStyleOverride(appSettings, radius) {
         styleOverrides: {
           root: {
             // padding: theme.spacing(3, 3, 0),
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: '1px solid',
+              borderColor: 'light-dark(rgb(118, 118, 118), rgb(133, 133, 133))',
+              borderRadius:`${radius}px`
+            },
+            '&:hover $notchedOutline': {
+              borderColor: appSettings.paletteMode === 'dark' ? 'white' : 'black',
+              borderRadius:`${radius}px`,
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: appSettings.paletteMode === 'dark' ? 'white' : 'black',
+              borderRadius: `${radius}px`,
+            },
+            '&.MuiInputBase-multiline': {
+              padding: 1
+            }
+          },
+        }
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            '&.Mui-focused': {
+              color: appSettings.paletteMode === 'dark' ? 'white' : 'black',
+            },
           },
         },
       },
