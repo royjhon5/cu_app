@@ -3,6 +3,7 @@ import { navColors, tokens } from "../../../themes/palette";
 import ToggleNavButton from "./ToggleButton";
 import PerfectScrollBar from 'react-perfect-scrollbar';
 import SidebarLogo from "./Logo";
+import SidebarContainer from "./SidebarContainer";
 
 export default function Sidebar() {
   const theme = useTheme();
@@ -53,6 +54,7 @@ export default function Sidebar() {
             <ToggleNavButton />
             <PerfectScrollBar>
                 <SidebarLogo />
+                <SidebarContainer />
             </PerfectScrollBar>
       </Drawer>
     </Box>

@@ -5,6 +5,7 @@ import NotifAccSett from '../../components/svg-icons/NotifAccSett';
 import SecurityIcon from '../../components/svg-icons/SecurityIcon';
 import CustomTabPanel from './CustomTabPanel'
 import GeneralTab from './General';
+import BreadCrumbs from '../../components/BreadCrumbs';
 const AccountSettings = () => {
   const [tabValue, setTabValue] = useState(0);
   const tabChange = (event, newValue) => {
@@ -12,8 +13,9 @@ const AccountSettings = () => {
   }
   return (
     <Fragment>
-        <Box sx={{ mb: '40px' }}>
+        <Box sx={{ mb: '40px', display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography variant="h4">Account Settings</Typography>
+            <BreadCrumbs />
         </Box>
         <Tabs value={tabValue} onChange={tabChange} >          
             <Tab icon={<GeneralIcon />} iconPosition="start"  label="General" disableRipple sx={{ minHeight: '48px', minWidth: '48px', marginRight: '40px', padding: 0}} />

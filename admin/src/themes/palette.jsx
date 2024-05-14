@@ -215,7 +215,9 @@ export const SvgIconColors = (appSettings) => ({
             // top
             400: '#5BE49B',
             // bottom
-            500: '#007867'
+            500: '#007867',
+            //sidebar active color
+            600: 'rgba(0, 167, 111, 0.08)'
         }
     } : appSettings.colorPreset === 'light-blue' ? {
         svgcolor: {
@@ -225,7 +227,9 @@ export const SvgIconColors = (appSettings) => ({
             // top
             400: '#68CDF9',
             // bottom
-            500: '#0351AB'
+            500: '#0351AB',
+            //sidebar active color
+            600: 'rgba(7, 141, 238, 0.08)'
         }
     } : appSettings.colorPreset === 'dark-purple' ? {
         svgcolor: {
@@ -235,7 +239,9 @@ export const SvgIconColors = (appSettings) => ({
             // top
             400: '#B985F4',
             // bottom
-            500: '#431A9E'
+            500: '#431A9E',
+            //sidebar active color
+            600: 'rgba(118, 53, 220, 0.08)'
         }
     } : appSettings.colorPreset === "dark-blue" ? {
         svgcolor: {
@@ -245,7 +251,9 @@ export const SvgIconColors = (appSettings) => ({
             // top
             400: '#76B0F1',
             // bottom
-            500: '#103996'
+            500: '#103996',
+            //sidebar active color
+            600: 'rgba(32, 101, 209, 0.08)'
         }
     } : appSettings.colorPreset === "light-orange" ? {
         svgcolor: {
@@ -255,7 +263,9 @@ export const SvgIconColors = (appSettings) => ({
             // top
             400: '#FED680',
             // bottom
-            500: '#B66816'
+            500: '#B66816',
+            //sidebar active color
+            600: 'rgba(253, 169, 45, 0.08)'
         }
     } : {
         svgcolor: {
@@ -265,7 +275,9 @@ export const SvgIconColors = (appSettings) => ({
             // top
             400: '#FFC1AC',
             // bottom
-            500: '#B71833'
+            500: '#B71833',
+            //sidebar active color
+            600: 'rgba(255, 48, 48, 0.08)'
         }
     })
 });

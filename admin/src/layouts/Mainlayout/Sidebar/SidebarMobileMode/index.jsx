@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import { Drawer, useTheme } from "@mui/material"
+import PerfectScrollBar from 'react-perfect-scrollbar';
+import SidebarLogo from '../Logo';
+import SidebarContainer from '../SidebarContainer';
 
 const SidebarMobileMode = ({sideBarMobileOpen, sideBarMobileToggle}) => {
   const theme = useTheme();
@@ -16,7 +19,10 @@ const SidebarMobileMode = ({sideBarMobileOpen, sideBarMobileToggle}) => {
       BackdropProps={{ invisible: false  }}
       anchor="left"
     >
-        
+        <PerfectScrollBar>
+                <SidebarLogo />
+                <SidebarContainer />
+          </PerfectScrollBar>
     </Drawer>
   )
 }

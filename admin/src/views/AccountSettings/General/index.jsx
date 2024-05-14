@@ -1,10 +1,11 @@
-import { Box, Button, Grid, Paper, Stack, Typography, useTheme } from '@mui/material'
+import { Box, Button, CircularProgress, Grid, Paper, Stack, Typography, useTheme } from '@mui/material'
 import { useEffect, useRef, useState } from 'react';
 import ModalCrop from '../../../components/ModalCrop';
 import UploadPictureIcon from '../../../components/svg-icons/UploadPictureIcon';
 import { useAuth } from '../../../modules/context/AuthContext';
 import http from '../../../api/http';
 import { toast } from 'sonner';
+import CustomLoadingButton from '../../../components/CustomLoadingButton';
 const GeneralTab = () => {
   const theme = useTheme();
   const { accessToken } = useAuth();
@@ -18,13 +19,18 @@ const GeneralTab = () => {
   const [file, setFile] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const convertBytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
+  const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const response = await http.get(`/user-profile?id_number=${accessToken.idNumber}`)
         setProfilePicture(response.data[0].profile_picture);
         setOldImage(response.data[0].profile_picture);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching user profile:", error);
         throw error;
@@ -37,11 +43,22 @@ const GeneralTab = () => {
     e.preventDefault();
     inputRef.current.click();
   };
+
+ 
+
+  const checkFileSize = (file) => {
+    if (file.size > MAX_FILE_SIZE) {
+      setErrorMessage("File is larger than 3145728 bytes");
+      return false;
+    }
+      setErrorMessage("");
+      return true;
+  };
+
   const handleImgChange = (e) => {
     const files = e.target.files[0];
     if (files) {
-      if (files.size > 3 * 1024 * 1024) { 
-        setErrorMessage("File is larger than 3145728 bytes");
+      if (!checkFileSize(files)) { 
         setFile(files);
         return;
       }
@@ -53,7 +70,10 @@ const GeneralTab = () => {
   };
 
   const handleUpload = async () => {
-    try {
+    if(!file) return toast.error('Error: No image has been attached.');
+    if (!checkFileSize(file)) return toast.error('Error: File is larger than 3145728 bytes');
+    setIsDisabled(true);
+    try { 
       const formdata = new FormData();
       formdata.append('id_number', accessToken.idNumber);
       formdata.append('old_image', oldImage);
@@ -64,7 +84,8 @@ const GeneralTab = () => {
         }
       })
       if (response.status === 200) {
-        toast('Upload successfully')
+        setIsDisabled(false);
+        toast.success('Upload successfully')
         setInterval(() => {
           window.location.reload();
         }, 2000);
@@ -119,14 +140,18 @@ const GeneralTab = () => {
                                 height: '100%',
                                 borderRadius: '50%'
                               }}>
-                                  <Box component="span" className='component-image-wrapper lazy-load-image-background blur lazy-load-image-loaded' sx={{ color: 'transparent', display: 'inline-block' }}>
+                                  <Box component="span" className='component-image-wrapper lazy-load-image-background blur lazy-load-image-loaded' 
+                                  sx={{ color: 'transparent', display: 'inline-block' 
+                                  }}>
+                                  {loading ? (<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}><CircularProgress /></Box>): (
                                   <img
                                       src={
                                         preview ||
                                         `http://localhost:8000/admin-profile/${accessToken.idNumber}/` + profilePicture
                                         }
                                       style={{ maxWidth: '100%' }}
-                                    />
+                                  />
+                                  )}
                                   </Box>
                               </Box>
                               <Stack onClick={handleInputClick} sx={{
@@ -162,19 +187,22 @@ const GeneralTab = () => {
                       alignItems: 'center',
                       gap: 2
                     }}>
-                    <Button size="small" color="error" variant='contained'>
-                      Delete Image
+                    <Button size="small" variant='contained' color="error">
+                      Delete
                     </Button>
-                    <Button size="small" onClick={handleUpload} variant='contained'>
-                      Upload Image
-                    </Button>
+                    <CustomLoadingButton 
+                    btnClick={handleUpload} 
+                    isDisabled={isDisabled} 
+                    label={isDisabled ? 'Uploading...' : 'Upload Image'} 
+                    btnSize={"small"} btnVariant={"contained"} 
+                    />
                     </Box>
                     <Typography fontSize="0.75rem" sx={{ lineHeight: 1.5, margin: '24px auto 0px', color: 'rgb(99, 115, 129)', display: 'block', textAlign: 'center' }}>
                       Allowed *.jpeg, *.jpg, *.png, *.gif
                       <br />
                       max size of 3 Mb
                     </Typography>
-                    {file && (
+                    {errorMessage && (
                       <Paper variant='outlined' sx={{
                         color: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(33, 43, 54)',
                         transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
@@ -186,12 +214,10 @@ const GeneralTab = () => {
                         background: 'rgba(255, 86, 48, 0.08)',
                         border: '1px dashed rgb(255, 86, 48)'
                       }}>
-                        <Typography fontSize='0.875rem'>{file.name} - {convertBytesToMB(file.size)} Mb</Typography>
-                        {errorMessage && (
+                        <Typography fontSize='0.875rem'>{file.name} - {convertBytesToMB(file.size)} Mb</Typography>                  
                           <Typography fontSize="0.75rem">
                             - {errorMessage}
                           </Typography>
-                        )}
                       </Paper>
                     )}
                 </div>
