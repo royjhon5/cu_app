@@ -57,9 +57,7 @@ const WelcomeUser = () => {
                 whiteSpace: 'pre-line',
                 color: `${bgColor.svgcolor[200]}`
             }}>Welcome back 👋 <br/> {accessToken.fName}</Typography>
-            <Typography variant="body2" sx={{ color: `${bgColor.svgcolor[200]}`, mb: '38px' }}>We offer a unique user experience on our web application 
-            <br/> where you can edit your preferred design by simply clicking the settings button below 
-            <br/> or the settings button beside your profile icon. <br /> Enjoy! 😃</Typography>
+            <Typography variant="body2" textAlign="justify" sx={{ color: `${bgColor.svgcolor[200]}`, mb: '35px' }}>Customize your design effortlessly with our unique web app. Click the settings button below or beside your profile icon. <br /> Enjoy! 😃</Typography>
             <Button onClick={openSettings} variant="contained" color="primary">Settings</Button>
         </Stack>
         <Stack component="span" sx={{

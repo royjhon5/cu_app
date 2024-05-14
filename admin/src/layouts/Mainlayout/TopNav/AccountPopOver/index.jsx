@@ -2,27 +2,33 @@ import { Avatar, Box, Divider, IconButton, MenuItem, Popover, Stack, Typography,
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../../modules/context/AuthContext';
 import http from '../../../../api/http';
-
-
-
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-  },
-  {
-    label: 'Profile',
-  },
-  {
-    label: 'Settings',
-  },
-];
-
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const theme = useTheme();
+  const navigate = useNavigate();
   const { logout, accessToken } = useContext(AuthContext);
-  const [profilePicture, setProfilePicture] = useState("")
+  const [profilePicture, setProfilePicture] = useState("");
+
+  const navigateAccountSettings = () => {
+    navigate('/dashboard/user/account-settings');
+    handleClose();
+  }
+
+  const MENU_OPTIONS = [
+    {
+      label: 'Home',
+    },
+    {
+      label: 'Profile',
+    },
+    {
+      label: 'Settings',
+      onClick: navigateAccountSettings,
+    },
+  ];
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -37,7 +43,7 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,8 +53,8 @@ export default function AccountPopover() {
         console.error("Error fetching user profile:", error);
         throw error;
       }
-    };
-    fetchData();
+    }; 
+      fetchData();
   }, [accessToken.idNumber]);
 
   return (
@@ -111,7 +117,7 @@ export default function AccountPopover() {
           padding: '8px'
         }}>
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose} sx={{ borderRadius: '8px', fontSize: '13.5px', padding: 1}}>
+          <MenuItem key={option.label} onClick={option.onClick ? option.onClick : handleClose} sx={{ borderRadius: '8px', fontSize: '13.5px', padding: 1}}>
             {option.label}
           </MenuItem> 
         ))}

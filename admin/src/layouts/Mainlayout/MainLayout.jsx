@@ -8,6 +8,7 @@ import Nav from './Sidebar/Sidebar';
 import MainCard from '../../components/Cards/MainCard';
 import PageLoader from '../../components/Loaders/SteveBlox';
 import { useEffect, useState } from 'react';
+import ToastNotification from '../../components/ToastNotification';
 
 
 
@@ -43,6 +44,7 @@ const MainLayout = () => {
     <>  
       {loading ? ( <Box className="loading"><PageLoader /></Box>  ) : (
         <>
+        <ToastNotification />
         <TopNav />
         <Box
         sx={{

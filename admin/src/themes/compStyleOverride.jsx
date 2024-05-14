@@ -10,6 +10,13 @@ export default function compStyleOverride(appSettings, radius) {
       paperDrawerColor = AppContrast === 'bold' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.9)';
   }
 
+  let paperBoxSadow;
+  if (paletteMode === 'dark') {
+      paperBoxSadow = AppContrast === 'bold' ? 'rgba(0, 0, 0, 0.16) 0px 1px 2px 0px' : 'rgba(0, 0, 0, 0.2) 0px 0px 2px 0px, rgba(0, 0, 0, 0.12) 0px 12px 24px -4px';
+  } else {
+      paperBoxSadow = AppContrast === 'bold' ? 'rgba(145, 158, 171, 0.16) 0px 1px 2px 0px' : 'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px';
+  }
+
   return {
     MuiCssBaseline: {
       styleOverrides: {
@@ -62,7 +69,9 @@ export default function compStyleOverride(appSettings, radius) {
           },
           styleOverrides: {
               root: {
-                  backgroundImage: 'none'
+                  backgroundImage: 'none',
+                  background: appSettings.paletteMode === 'dark' ? 'rgb(33,43,54)' : 'rgb(255,255,255)',
+                  boxShadow: paperBoxSadow,
               },
               rounded: {
                 borderRadius: `${radius}px`
