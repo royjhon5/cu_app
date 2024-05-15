@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { Box, ListItemButton, Stack, useTheme } from "@mui/material"
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-const CustomCollapseButton = ({ CollpaseBtnLabel, CollpaseClick, children, IconChildren }) => {
+const CustomCollapseButton = ({ CollpaseBtnLabel, CollpaseClick, children, IconChildren, onMouseEnter, onMouseLeave }) => {
   const theme = useTheme();
   return (
-    <ListItemButton sx=
+    <ListItemButton onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} sx=
       {{
         margin: '0px 0px 4px',
         display: 'flex',
@@ -13,6 +13,7 @@ const CustomCollapseButton = ({ CollpaseBtnLabel, CollpaseClick, children, IconC
         flexDirection: theme.palette.appSettings.layout === 'collapsed' ? 'column' : 'row',
         borderRadius: theme.palette.appSettings.layout === 'vertical' ? '8px' : theme.palette.appSettings.layout === 'horizontal' ? '6px' : '6px',
         minHeight: theme.palette.appSettings.layout === 'vertical' ? '44px' : theme.palette.appSettings.layout === 'horizontal' ? '32px' : '56px', 
+        color: '#637381'
       }}
       onClick={CollpaseClick}
     >
@@ -49,8 +50,10 @@ const CustomCollapseButton = ({ CollpaseBtnLabel, CollpaseClick, children, IconC
 CustomCollapseButton.propTypes = {
   children: PropTypes.any,
   CollpaseBtnLabel: PropTypes.any,
-  CollpaseClick: PropTypes.any,
+  CollpaseClick: PropTypes.func,
   IconChildren: PropTypes.any,
+  onMouseEnter: PropTypes.any,
+  onMouseLeave: PropTypes.any
 };
 
 

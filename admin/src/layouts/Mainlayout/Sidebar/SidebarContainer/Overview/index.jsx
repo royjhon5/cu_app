@@ -9,14 +9,12 @@ import { useTheme } from "@mui/material";
 import ForwardToInboxTwoToneIcon from '@mui/icons-material/ForwardToInboxTwoTone';
 import CustomCollapseButton from "../../../../../components/StyledListItemButton/CustomCollapseListButton";
 import Collapsebtn from "../../../../../components/StyledListItemButton/CustomCollapseListButton/Collapsebtn";
-import PopoverStyled from "../../../../../components/Popover";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const OverView = () => {
   const theme = useTheme()
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [anchorElHere, setanchorElHere] = useState(null);
-  const opens = Boolean(anchorElHere);
   const navigateDashboard = () => {
     navigate('/dashboard'); 
   }
@@ -25,13 +23,8 @@ const OverView = () => {
     navigate('/dashboard/user/account-settings')
   }
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setOpen(!open);
-    setanchorElHere(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setanchorElHere(null);
   };
 
   
@@ -42,22 +35,20 @@ const OverView = () => {
         <ListItemButtonStyle ListbtnLabel="Dashboard" activePath="/dashboard" MenuClick={navigateDashboard} />
         <ListItemButtonStyle ListbtnLabel="User Account" activePath="/dashboard/user/account-settings" MenuClick={navigateSample} />
         <ListItemButtonStyle ListbtnLabel="E-commerce" />
-        <CustomCollapseButton CollpaseClick={handleClick} CollpaseBtnLabel="Collapsed" IconChildren={<ForwardToInboxTwoToneIcon />} >
+        <CustomCollapseButton CollpaseClick={handleClick}  CollpaseBtnLabel="Collapsed" IconChildren={<ForwardToInboxTwoToneIcon />} >
            {open ? 
              <ArrowDropDownTwoToneIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex'}} />:
              <ArrowRightIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex'}} />
            }
              <ArrowDropDownTwoToneIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'flex' : 'none'}} />
         </CustomCollapseButton>
-        <PopoverStyled opens={opens} anchorElHere={anchorElHere} ClosePopOver={handlePopoverClose} />
         <Collapsebtn stateOpen={open} >
-          <ListItemButtonStyle ListbtnLabel="E-commerce" />
+          <ListItemButtonStyle ListbtnLabel="E-commerce" IconChildrens={<FiberManualRecordIcon sx={{ fontSize: '5px', transition: 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms', transform: 'scale(1)' }} />} />
           <ListItemButtonStyle ListbtnLabel="E-commerce" />
           <ListItemButtonStyle ListbtnLabel="E-commerce" />
           <ListItemButtonStyle ListbtnLabel="E-commerce" />
         </Collapsebtn>
         <ListItemButtonStyle ListbtnLabel="E-commerce" />
-        
     </CustomList>
   )
 }

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { useTheme } from "@emotion/react"
-import { ListItemButton } from "@mui/material"
+import { Box, ListItemButton } from "@mui/material"
 import { useLocation } from 'react-router-dom'
 import { SvgIconColors } from '../../../themes/palette'
 
-const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick}) => {
+const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick, IconChildrens}) => {
   const theme = useTheme();
   const sideActiveColor = SvgIconColors(theme.palette.appSettings)
   const location = useLocation();
@@ -19,7 +19,7 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick}) => {
             borderRadius: theme.palette.appSettings.layout === 'vertical' ? '8px' : theme.palette.appSettings.layout === 'horizontal' ? '6px' : '6px',
             minHeight: theme.palette.appSettings.layout === 'vertical' ? '44px' : theme.palette.appSettings.layout === 'horizontal' ? '32px' : '56px',
             fontSize: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0.875rem' : '10px',
-            padding: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0px' : '4px',
+            padding: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0px 6px' : '4px',
             textAlign: 'center',
             background: isActive ? `${sideActiveColor.svgcolor[600]}` : 'none',
             '&:hover': {
@@ -29,6 +29,19 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick}) => {
         }}
         onClick={MenuClick}
     >
+      <Box 
+        sx={{ 
+          display: theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex', 
+          justifyContent:'center', 
+          alignItems: 'center', 
+          width: '24px', 
+          height: '24px', 
+          flexShrink: 0, 
+          marginRight: theme.palette.appSettings.layout === 'collapsed' ? '0px' : '16px',
+          marginLeft: theme.palette.appSettings.layout === 'collapsed' ? '20px' : '0px',
+          }}>
+        {IconChildrens}
+      </Box>
         {ListbtnLabel}
     </ListItemButton>
   )
@@ -38,6 +51,7 @@ ListItemButtonStyle.propTypes = {
     ListbtnLabel: PropTypes.any,
     activePath: PropTypes.string,
     MenuClick: PropTypes.any,
+    IconChildrens: PropTypes.any
 };
 
 export default ListItemButtonStyle
