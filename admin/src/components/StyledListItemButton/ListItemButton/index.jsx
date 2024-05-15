@@ -19,6 +19,7 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick}) => {
             borderRadius: theme.palette.appSettings.layout === 'vertical' ? '8px' : theme.palette.appSettings.layout === 'horizontal' ? '6px' : '6px',
             minHeight: theme.palette.appSettings.layout === 'vertical' ? '44px' : theme.palette.appSettings.layout === 'horizontal' ? '32px' : '56px',
             fontSize: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0.875rem' : '10px',
+            padding: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0px' : '4px',
             textAlign: 'center',
             background: isActive ? `${sideActiveColor.svgcolor[600]}` : 'none',
             '&:hover': {

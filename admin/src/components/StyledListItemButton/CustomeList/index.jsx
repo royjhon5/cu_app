@@ -4,7 +4,7 @@ import { List, useTheme } from '@mui/material'
 const CustomList = ({children}) => {
   const theme = useTheme();
   return (
-    <List 
+    <List disablePadding
         sx={{ 
             background: 'none', 
             display: 'flex', 
