@@ -108,7 +108,7 @@ const ProfileHeader = () => {
                   preview ||
                     `http://localhost:8000/admin-profile/${accessToken.idNumber}/` + coverPicture
                   }
-                style={{ height: '100%',width: '100%', objectFit: 'fit', }}
+                style={{ height: '100%',width: '100%', objectFit: 'cover', }}
             />
             <input
               accept="image/*"  
