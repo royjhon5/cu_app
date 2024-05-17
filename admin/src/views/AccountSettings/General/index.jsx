@@ -175,9 +175,9 @@ const GeneralTab = () => {
                                 transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                                 opacity: isHovered ? 1 : 0
                               }}>
-                            <UploadPictureIcon />
-                            <Typography fontSize="0.75rem">Upload Image</Typography>
-                          </Stack>
+                                <UploadPictureIcon />
+                                <Typography fontSize="0.75rem">Upload Image</Typography>
+                              </Stack>
                           </Box>           
                     </Box>
                     <Box sx={{

@@ -1,18 +1,39 @@
 import { Avatar, Box, ListItemText, Paper, Stack, Typography } from "@mui/material"
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import http from "../../api/http";
 import { AuthContext } from "../../modules/context/AuthContext";
+import UploadPictureIcon from "../../components/svg-icons/UploadPictureIcon";
+import ModalCropCoverPhoto from "../../components/ModalCropCoverPhoto";
+import { toast } from "sonner";
+import CustomLoadingButton from "../../components/CustomLoadingButton";
 
 const ProfileHeader = () => {
   const { accessToken } = useContext(AuthContext);
   const [profilePicture, setProfilePicture] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+  const [src, setSrc] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const inputRef = useRef(null);
+  const [file, setFile] = useState();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [oldImage, setOldImage] = useState("");
+  const [coverPicture, setCoverPicture] = useState("");
+
+  const handleInputClick = (e) => {
+    e.preventDefault();
+    inputRef.current.click();
+  };
 
 
+  console.log(oldImage)
   useEffect(() => {
    const fetchData = async () => {
     try {
       const response = await http.get(`/user-profile?id_number=${accessToken.idNumber}`)
-      setProfilePicture(response.data[0].profile_picture)
+      setProfilePicture(response.data[0].profile_picture);
+      setCoverPicture(response.data[0].cover_photo);
+      setOldImage(response.data[0].cover_photo);
     } catch (error) {
       console.error("Error fetching user profile:", error);
       throw error;
@@ -22,9 +43,47 @@ const ProfileHeader = () => {
   }, [accessToken.idNumber]);
 
 
+  const handleImgChange = (e) => {
+    const files = e.target.files[0];
+    if (files) {
+      setFile(files);
+      setSrc(files);
+      setModalOpen(true);
+    }
+  };
+
+  const handleUpload = async () => {
+    if(!file) return toast.error('Error: No image has been attached.');
+    setIsDisabled(true);
+    try { 
+      const formdata = new FormData();
+      formdata.append('id_number', accessToken.idNumber);
+      formdata.append('old_image', oldImage);
+      formdata.append('image', file);
+      const response = await http.post('/upload-cover', formdata, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      if (response.status === 200) {
+        setIsDisabled(false);
+        toast.success('Upload successfully')
+        setInterval(() => {
+          window.location.reload();
+        }, 2000);
+      } else {
+          return;
+      }
+    } catch(error) {
+      console.error(error);
+    } 
+  }
+
   return (
+    <>
+    <ModalCropCoverPhoto modalOpen={modalOpen} src={src} setPreview={setPreview} setModalOpen={setModalOpen} setFile={setFile}  />
     <Paper sx={{
-        height: '290px',
+        height: '350px',
         mb: '24px',
         position: 'relative',
         backgroundImage: 'none', 
@@ -35,8 +94,52 @@ const ProfileHeader = () => {
             height: '100%',
             color: 'white',
             background: 'linear-gradient(rgba(0, 75, 80, 0.8), rgba(0, 75, 80, 0.8)) center center / cover no-repeat',
-            backgroundPosition: 'center center'
-        }}>
+            backgroundPosition: 'center center',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        >
+            <img
+                src={
+                  preview ||
+                    `http://localhost:8000/admin-profile/${accessToken.idNumber}/` + coverPicture
+                  }
+                style={{ height: '100%',width: '100%', objectFit: 'fit', }}
+            />
+            <input
+              accept="image/*"  
+              type="file"
+              ref={inputRef}
+              onChange={handleImgChange}
+              style={{ display: 'none' }}
+              tabIndex="-1"
+            />
+            <Stack onClick={handleInputClick} sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                WebkitBoxAlign: 'center',
+                alignItems: 'center',
+                WebkitBoxPack: 'center',
+                justifyContent: 'center',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: 9,
+                position: 'absolute',
+                color: 'rgb(255, 255, 255)',
+                backgroundColor: 'rgba(22, 28, 36, 0.64)',
+                transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                opacity: isHovered ? 1 : 0
+              }}>
+                <UploadPictureIcon />
+                <Typography fontSize="0.75rem">Upload Cover Image</Typography>
+            </Stack>
             <Stack sx={{
                 display: 'flex',
                 left: '24px',
@@ -71,7 +174,7 @@ const ProfileHeader = () => {
                 </ListItemText>
             </Stack>
         </Box>
-        <Box sx={{
+        <Paper sx={{
             overflow: 'hidden',
             minHeight: '48px',
             display: 'flex',
@@ -79,11 +182,20 @@ const ProfileHeader = () => {
             bottom: '0px',
             zIndex:9,
             position: 'absolute',
-            background: 'rgb(33, 43, 54)'
+            justifyContent: 'flex-end',
+            borderRadius: 0,
+            alignItems: 'center', 
+            paddingRight: 2
         }}>
-           
-        </Box>
+            <CustomLoadingButton 
+                btnClick={handleUpload} 
+                isDisabled={isDisabled} 
+                label={isDisabled ? 'Uploading...' : 'Upload Image'} 
+                btnSize={"small"} btnVariant={"contained"} 
+            />
+        </Paper>
     </Paper>
+    </>
   )
 }
 

@@ -54,6 +54,35 @@ module.exports.UploadProfilePicture = async function(req, res) {
   }
 }
 
+module.exports.UploadCoverPicture = async function(req, res) {
+  try {
+    const id_number = req.body.id_number;
+    const oldImage = req.body.old_image; 
+    const newImage = req.file.filename;
+    await db.query('UPDATE admin_user SET cover_photo = ? WHERE id_number = ?;', [newImage, id_number], async (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+      } else {
+        if (oldImage) {
+          const imagePath = path.join('user_profile_picture', 'admin-profile', id_number, oldImage);
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error("Error deleting old image:", err);
+            } else {
+              console.log("Old image Cover Photo deleted successfully");
+            }
+          });
+        }
+        res.status(200).send('Cover Photo updated successfully!');
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+}
+
 module.exports.getUserProfile = async function(req, res) {
   const { id_number } = req.query;
   try {

@@ -13,6 +13,7 @@ router.get('/user-profile', UserController.getUserProfile);
 router.post('/admin-register', UserController.adminUserReg);
 router.post('/admin-login', UserController.userLogin);
 router.post('/upload-profile', upload.single('image'), UserController.UploadProfilePicture);
+router.post('/upload-cover', upload.single('image'), UserController.UploadCoverPicture);
 
 
 //DELETE//
