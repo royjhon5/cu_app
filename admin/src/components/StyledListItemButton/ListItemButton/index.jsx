@@ -4,7 +4,7 @@ import { Box, ListItemButton } from "@mui/material"
 import { useLocation } from 'react-router-dom'
 import { SvgIconColors } from '../../../themes/palette'
 
-const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick, IconChildrens}) => {
+const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick, IconChildrens, onMouseEnter}) => {
   const theme = useTheme();
   const sideActiveColor = SvgIconColors(theme.palette.appSettings)
   const location = useLocation();
@@ -19,7 +19,7 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick, IconChildrens
             borderRadius: theme.palette.appSettings.layout === 'vertical' ? '8px' : theme.palette.appSettings.layout === 'horizontal' ? '6px' : '6px',
             minHeight: theme.palette.appSettings.layout === 'vertical' ? '44px' : theme.palette.appSettings.layout === 'horizontal' ? '32px' : '56px',
             fontSize: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0.875rem' : '10px',
-            padding: theme.palette.appSettings.layout === 'vertical' ? '0.875rem' : theme.palette.appSettings.layout === 'horizontal' ? '0px 6px' : '4px',
+            padding: theme.palette.appSettings.layout === 'vertical' ? '4px 8px 4px 12px' : theme.palette.appSettings.layout === 'horizontal' ? '0px' : '4px',
             textAlign: 'center',
             background: isActive ? `${sideActiveColor.svgcolor[600]}` : 'none',
             '&:hover': {
@@ -28,6 +28,7 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick, IconChildrens
             color: isActive ? `${sideActiveColor.svgcolor[100]}` : '#637381'
         }}
         onClick={MenuClick}
+        onMouseEnter={onMouseEnter}
     >
       <Box 
         sx={{ 
@@ -51,7 +52,8 @@ ListItemButtonStyle.propTypes = {
     ListbtnLabel: PropTypes.any,
     activePath: PropTypes.string,
     MenuClick: PropTypes.any,
-    IconChildrens: PropTypes.any
+    IconChildrens: PropTypes.any,
+    onMouseEnter: PropTypes.func
 };
 
 export default ListItemButtonStyle

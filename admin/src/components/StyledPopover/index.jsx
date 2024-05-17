@@ -1,27 +1,30 @@
 import PropTypes from 'prop-types'
-import { Popover, Typography, useTheme } from '@mui/material'
-const PopoverStyled = ({ id, opens, anchorElHere, ClosePopOver  }) => {
+import { Popover, Typography, useTheme } from "@mui/material"
+
+const StyledPopover = ({ id, open, anchorEl, handlePopoverClose, onMouseLeave, onMouseEnter, popoverRef}) => {
   const theme = useTheme();
   return (
-       <>
-       {theme.palette.appSettings.layout === 'vertical' ? (
-        ''
-       ): (
-         <Popover
-          id={id}
-          open={opens}
-          anchorEl={anchorElHere}
-          onClose={ClosePopOver}
-          anchorOrigin={{
+    <Popover
+        id={id}
+        sx={{
+          pointerEvents: 'none',
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
             vertical: theme.palette.appSettings.layout === 'collapsed' ? 'top' : 'bottom',
             horizontal: theme.palette.appSettings.layout === 'collapsed' ? 'right' : 'left',
-          }}
-          transformOrigin={{
+        }}
+        transformOrigin={{
             vertical: 'top',
             horizontal: 'left',
-          }}
-          disableRestoreFocus
-          PaperProps={{
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+        PaperProps={{
+            onMouseEnter:onMouseEnter,
+            onMouseLeave:onMouseLeave,
+            ref: popoverRef,
             sx: {
               p: 4,
               width: 160,
@@ -38,21 +41,27 @@ const PopoverStyled = ({ id, opens, anchorElHere, ClosePopOver  }) => {
               maxHeight: 'calc(100% - 32px)',
               minWidth: '160px',
               pointerEvents: 'auto',
-            },
-          }}
-        >
-          <Typography sx={{ p: 2 }}>The content of the popover.</Typography>
-        </Popover>
-       )}
-       </>
+          },
+        }}      
+      >
+        <Typography sx={{ p: 4 }}>I use Popover.</Typography>
+      </Popover>
   )
 }
 
-PopoverStyled.propTypes = {
+
+StyledPopover.propTypes = {
     id: PropTypes.string,
-    opens: PropTypes.bool,
-    anchorElHere: PropTypes.instanceOf(Element),
-    ClosePopOver: PropTypes.func.isRequired,
+    open: PropTypes.bool,
+    anchorEl: PropTypes.instanceOf(Element),
+    handlePopoverClose: PropTypes.func,
+    onMouseLeave: PropTypes.func.isRequired,
+    onMouseEnter: PropTypes.func.isRequired,
+    popoverRef: PropTypes.oneOfType([
+      PropTypes.func, 
+      PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+    ]),
 };
 
-export default PopoverStyled
+
+export default StyledPopover

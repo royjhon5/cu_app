@@ -1,4 +1,4 @@
-import { Box, Grid, LinearProgress } from "@mui/material"
+import { Box, Grid, LinearProgress} from "@mui/material"
 import WelcomeUser from "./WelcomeUser"
 import { Helmet } from "react-helmet-async"
 import InfoSlider from "./InfoSlider"
@@ -16,7 +16,7 @@ const Dashboard = () => {
         if (oldProgress === 100) {
           return 0;
         }
-        const diff = Math.random() * 50;
+        const diff = Math.random() * 10;
         return Math.min(oldProgress + diff, 100);
       });
     }, 500);
@@ -31,6 +31,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, [])
+;
 
   return (
     <>
@@ -46,7 +47,6 @@ const Dashboard = () => {
               <InfoSlider />
           </Grid>
           <Grid item xs={12} md={12}>
-             
           </Grid>
       </Grid>
       )}   
