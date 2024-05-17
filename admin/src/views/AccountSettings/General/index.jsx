@@ -6,6 +6,7 @@ import { useAuth } from '../../../modules/context/AuthContext';
 import http from '../../../api/http';
 import { toast } from 'sonner';
 import CustomLoadingButton from '../../../components/CustomLoadingButton';
+import UserInfo from './UserInfo';
 const GeneralTab = () => {
   const theme = useTheme();
   const { accessToken } = useAuth();
@@ -224,7 +225,7 @@ const GeneralTab = () => {
             </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
-
+            <UserInfo />
         </Grid>
     </Grid>
     </form>
