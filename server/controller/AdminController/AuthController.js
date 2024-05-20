@@ -126,7 +126,7 @@ module.exports.getIdnumber = async function(req, res) {
               const mailOptions = {
                 from: 'cugiftshop7@gmail.com',
                 to: user.email,
-                subject: 'Capitol University Giftshop',
+                subject: 'Email Confirmation',
                 html: `<!DOCTYPE html>
                     <html>
                     <head>

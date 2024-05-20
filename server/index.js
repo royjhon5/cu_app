@@ -15,9 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('user_profile_picture'))
 app.use(cookieParser()); 
 app.use(cors({
-    origin: ["http://localhost:3000"],
-    method: ["GET", "POST", "DELETE"],
+    origin: "http://localhost:3000",
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
+    optionsSuccessStatus: 204
 }));
 require('./routes/routerManager')(app);
 module.exports = socketServer;
