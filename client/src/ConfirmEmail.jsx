@@ -1,25 +1,32 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import http from "./api/http";
 
 const ConfirmEmail = () => {
-
   const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const token = query.get('token');
+  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const confirmEmail = async () => {
-        try {
-            await http.get(`/confirm-email?token=${token}`);
-        } catch (err) {
-            alert('Invalid or expired token');
-        }
-      };
-    confirmEmail();
-    }, [token]);
+    const fetchData = async () => {
+      try {
+        const token = new URLSearchParams(location.search).get('token');
+        const response = await http.get(`/verify-email?token=${token}`);
+        const data = response.data;
+        setMessage("Email Verified");
+        navigate('/set-password', {state: { data }})
+      } catch (error) {
+        console.error("Error verifying email:", error);
+        setMessage('Invalid or expired token.');
+      }
+    }; 
+    fetchData();
+  }, [location.search, navigate]);
   return (
-    <div>Confirming email...</div>
+    <div>
+    <h1>Email Verification</h1>
+    {message && <p>{message}</p>}
+    </div>     
   )
 }
 

@@ -17,7 +17,7 @@ const SetPassword = () => {
     } catch (error) {
         setMessage('Failed to set password.');
     }
-};
+  };
   return (
     <div>
         <h1>Set Password</h1>

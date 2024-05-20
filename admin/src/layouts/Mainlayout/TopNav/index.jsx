@@ -1,4 +1,4 @@
-import { AppBar, Box, IconButton, Stack, Toolbar, useTheme } from '@mui/material';
+import { AppBar, Badge, Box, IconButton, Stack, Toolbar, useTheme } from '@mui/material';
 import SearchIcon from '../../../components/svg-icons/SearchIcon'
 import NotificationIcon from '../../../components/svg-icons/NotificationIcon'
 import SettingsIcon from '../../../components/svg-icons/SettingsIcon'
@@ -17,6 +17,8 @@ import SidebarMobileMode from '../Sidebar/SidebarMobileMode';
 import TopNavLogo from './Logo';
 import PerfectScrollBar from 'react-perfect-scrollbar';
 import TopNavContainer from './TopNavContainer';
+import http from '../../../api/http';
+import { WebSocket } from '../../../main';
 
 
 const TopNav = () => {
@@ -29,7 +31,10 @@ const TopNav = () => {
   const OpenSidebar = useSelector((state) => state.customization.openSidebarMobile);
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
-  const [navBar, setNavbar] = useState(false)
+  const [navBar, setNavbar] = useState(false);
+  const [notify, setNotify] = useState([]);
+  const AppSocket = WebSocket();
+
 
   useEffect(() => {
     const triggerHeight = () => {
@@ -49,13 +54,31 @@ const TopNav = () => {
     dispatch({ type: SET_MENU, opened: !OpenDrawer });
   };
 
-  const handleRightNotifDrawer = () => {
+  const handleRightNotifDrawer = async () => {
     dispatch({ type: OPEN_NOTIF, openNotif: !OpenNotif });
+    await http.post('/is-open-notification');
+    Notify();
   };
 
   const handleSidebarOpen = () => {
     dispatch({ type: OPEN_SIDEBAR_MOBILE, openSidebarMobile: !OpenSidebar });
   };
+
+  async function Notify() {
+    const response = await http('/newreg-notify');
+    const data = response.data[0].count;
+    setNotify(data);
+  }
+
+  useEffect(() => {  
+    Notify();
+    AppSocket.on('notifications', () => {
+      Notify();
+    })
+    return () => {
+      AppSocket.off('notifications');
+    };
+  }, [AppSocket])
 
   const renderContent = (
     <>
@@ -94,9 +117,13 @@ const TopNav = () => {
       </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Stack direction="row" alignItems="center" spacing={1}>
+        
         <IconButton size="small" onClick={handleRightNotifDrawer}>
-          <NotificationIcon />  
+           <Badge badgeContent={notify} color="error">
+           <NotificationIcon color="action" /> 
+           </Badge>
         </IconButton>  
+        
         <AnimateButton type="rotate">
           <IconButton size="small" onClick={handleRightDrawerToggle}>
             <SettingsIcon />

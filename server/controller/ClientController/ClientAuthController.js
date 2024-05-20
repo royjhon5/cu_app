@@ -62,7 +62,7 @@ module.exports.clientRegistration = async function(req, res) {
                   <p style="font-weight: bold; font-size: 24px;">Hi ${first_name}</p>
                   <p style="font-weight: bold; font-size: 16px;">Please confirm your email by clicking the link below:</p>
                   <div style="padding: 10px; background-color:#F9F9F9;">
-                      <a href="http://localhost:3000/verify-email?token=${token}" class="button">Confirm Email</a>
+                      <a href="http://localhost:3100/verify-email?token=${token}" class="button">Confirm Email</a>
                   </div>
                   <p>If this request did not come from you, change your account password immediately to prevent further unauthorized access.</p>
               </div>
@@ -103,6 +103,14 @@ module.exports.setPassword = async function(req, res) {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         await db.query('UPDATE client_user SET password = ? WHERE id_number = ?', [hashedPassword, id_number]);
+
+        const PushNotification = {
+          id_number: id_number,
+          type_of_notification: 'New User Registration',
+          is_open: false,
+          status: 'unread',
+        }
+        await db.query('INSERT INTO notifications SET ?', [PushNotification]);
         res.status(200).json({ message: 'Password set successfully.' });
     } catch (error) {
         console.error(error);

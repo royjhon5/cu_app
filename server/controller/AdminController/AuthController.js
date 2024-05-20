@@ -307,3 +307,25 @@ module.exports.userLogout = async function(req, res) {
   return res.sendStatus(200);
 }
 
+module.exports.newClientRegistrationNotification = async function(req, res) {
+  const query = 'SELECT COUNT(*) AS count from notifications WHERE is_open = 0'
+  await db.query(query, (err, results) => {
+    if(err) {
+      console.error('Error executing the query', err.stack);
+      return
+    }
+    res.status(200).send(results)
+  })
+}
+
+module.exports.isOpenNotification = async function(req, res) {
+  const query = 'UPDATE notifications SET is_open = 1';
+  await db.query(query, (err, results) => {
+    if(err){
+      console.error('Error executing the query', err.stack);
+      return;
+    }
+    res.status(200).send(results)
+  })
+}
+

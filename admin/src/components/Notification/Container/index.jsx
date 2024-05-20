@@ -1,7 +1,8 @@
-import { Box, Button, Divider, IconButton, Stack, Typography } from "@mui/material"
+import { Box, Divider, IconButton, Stack, Typography } from "@mui/material"
 import { Fragment } from "react";
 import CloseIcon from "../../svg-icons/CloseIcon";
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import NotificationData from "../Data";
 
 const NotifDrawerContainer = () => {
   return (
@@ -37,16 +38,9 @@ const NotifDrawerContainer = () => {
                     gap: '24px',
                     padding: '24px'
                 }}>
-
+                    <NotificationData />
                 </Box>
             </PerfectScrollbar>
-         </Box>
-         <Box sx={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Button fullWidth sx={{
-                border: '1px solid rgba(145, 158, 171, 0.08)',
-            }}>
-               
-            </Button>
          </Box>
     </Fragment>
   )
