@@ -32,14 +32,7 @@ const NotifDrawerContainer = () => {
             overflow: 'hidden'
          }}>
             <PerfectScrollbar >
-                <Box sx={{ 
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '24px',
-                    padding: '24px'
-                }}>
-                    <NotificationData />
-                </Box>
+                <NotificationData />
             </PerfectScrollbar>
          </Box>
     </Fragment>
