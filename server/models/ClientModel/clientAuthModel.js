@@ -18,6 +18,22 @@ const clientModel = {
         });
     },
 
+    findUserEmail: function(email) {
+      const query = 'SELECT * FROM client_user WHERE email = ?';
+      return new Promise((resolve, reject) => {
+        db.query(query, [email], function(err, results) {
+          if (err) {
+            return reject(err);
+          }
+          if (results.length === 0) {
+            return resolve(null);
+          }
+          const user = results[0];
+          resolve(user);
+        });
+      });
+  },
+
     register: async function(user, req, res) {
         try {
             const query = 'INSERT INTO client_user SET ?';

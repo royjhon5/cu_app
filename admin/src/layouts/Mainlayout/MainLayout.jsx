@@ -9,6 +9,9 @@ import MainCard from '../../components/Cards/MainCard';
 import PageLoader from '../../components/Loaders/SteveBlox';
 import { useEffect, useState } from 'react';
 import ToastNotification from '../../components/ToastNotification';
+import useSound from 'use-sound';
+import notifSound from '../../assets/NotifSound/notifSound.mp3'
+import { WebSocket } from '../../main';
 
 
 
@@ -16,9 +19,21 @@ const MainLayout = () => {
   const theme = useTheme();
   const { accessToken, idleLogout } = useAuth();
   const [loading, setLoading] = useState(false);
+  const AppSocket = WebSocket()
+  const [play] = useSound(notifSound)
   const handleIdleTimeout = () => {
     idleLogout();
   };
+
+  useEffect(() => {  
+    const playSoundNotif = () => {
+      play();
+    };
+    AppSocket.on('NotifSound', playSoundNotif);
+    return () => {
+      AppSocket.off('NotifSound');
+    };
+  }, [AppSocket, play]);
 
   const { start  } = useIdleTimer({
     timeout: 15 * 60 * 1000,

@@ -39,6 +39,10 @@ socketServer.on('connection', (socket) => {
         socketServer.emit('containerNotif');
     })
 
+    socket.on('playNotifSound', () => {
+        socketServer.emit('NotifSound');
+    })
+
     socket.on('disconnect', () => {
         socket.disconnect()
     });

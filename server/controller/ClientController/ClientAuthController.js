@@ -7,9 +7,11 @@ const jwt = require('jsonwebtoken');
 module.exports.clientRegistration = async function(req, res) {
     const { id_number, first_name, last_name, email } = req.body;
     try {  
-    const user = await clientUser.findIdNumberRegister(id_number)
+    const user = await clientUser.findIdNumberRegister(id_number);
+    const userEmail = await clientUser.findUserEmail(email);
     if (user) return res.status(400).json({ error: 'ID Number already exist!' });
-    const token = jwt.sign({ id_number, email }, process.env.REFRESH_KEY, { expiresIn: '1h' });
+    if (userEmail) return res.status(400).json({ error: 'Email address already exist!' });
+    const token = jwt.sign({ id_number, email }, process.env.REFRESH_KEY, { expiresIn: '5m' });
     const newUser = {
       id_number, 
       first_name,
@@ -108,7 +110,7 @@ module.exports.setPassword = async function(req, res) {
           user_id_number: id_number,
           type_of_notification: 'New User Registration',
           is_open: false,
-          status: false,
+          notif_status: false,
         }
         await db.query('INSERT INTO notifications SET ?', [PushNotification]);
         res.status(200).json({ message: 'Password set successfully.' });
