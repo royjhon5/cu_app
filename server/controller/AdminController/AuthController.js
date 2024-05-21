@@ -329,3 +329,43 @@ module.exports.isOpenNotification = async function(req, res) {
   })
 }
 
+module.exports.unreadNotification = async function (req, res) {
+  const query = `SELECT notifications.*, client_user.* 
+                 FROM notifications
+                 INNER JOIN client_user on notifications.user_id_number = client_user.id_number
+                 ORDER BY notifications.id DESC`;
+  await db.query(query, (err, results) => {
+    if(err) {
+      console.error('Error executing the query', err.stack);
+      return;
+    }
+    res.status(200).send(results)
+  })
+}
+
+module.exports.readNotification = async function(req, res) {
+  const query = 'UPDATE notifications SET notif_status = 1';
+  await db.query(query, (err, results) => {
+    if(err){
+      console.error('Error executing the query', err.stack);
+      return;
+    }
+    res.status(200).send(results)
+  })
+}
+
+
+module.exports.acceptNewClient = async function(req, res) {
+  const { id_number } = req.query;
+  try {
+    db.query('UPDATE client_user SET status = ? WHERE id_number = ?', ['activated', id_number], (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    });
+    db.query('UPDATE notifications SET notif_status = ? WHERE user_id_number = ?', ['1', id_number]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
+

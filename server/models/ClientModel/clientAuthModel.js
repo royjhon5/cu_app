@@ -3,7 +3,7 @@ const db = require('../../config/dbConnection')
 
 const clientModel = {
     findIdNumberRegister: function(id_number) {
-        const query = 'SELECT * FROM admin_user WHERE id_number = ?';
+        const query = 'SELECT * FROM client_user WHERE id_number = ?';
         return new Promise((resolve, reject) => {
           db.query(query, [id_number], function(err, results) {
             if (err) {

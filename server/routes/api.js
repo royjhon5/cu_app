@@ -12,12 +12,15 @@ router.get('/find-user', UserController.getIdnumber);
 router.get('/update-password', UserController.UpdatePassword);
 router.get('/user-profile', UserController.getUserProfile);
 router.get('/newreg-notify', UserController.newClientRegistrationNotification);
+router.get('/unread-notify', UserController.unreadNotification);
 //POST//
 router.post('/admin-register', UserController.adminUserReg);
 router.post('/admin-login', UserController.userLogin);
 router.post('/upload-profile', upload.single('image'), UserController.UploadProfilePicture);
 router.post('/upload-cover', upload.single('image'), UserController.UploadCoverPicture);
 router.post('/is-open-notification', UserController.isOpenNotification);
+router.post('/read-notification', UserController.readNotification);
+router.post('/activate-client', UserController.acceptNewClient);
 
 //DELETE//
 router.delete('/admin-logout', UserController.userLogout);

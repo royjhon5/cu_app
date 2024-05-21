@@ -105,10 +105,10 @@ module.exports.setPassword = async function(req, res) {
         await db.query('UPDATE client_user SET password = ? WHERE id_number = ?', [hashedPassword, id_number]);
 
         const PushNotification = {
-          id_number: id_number,
+          user_id_number: id_number,
           type_of_notification: 'New User Registration',
           is_open: false,
-          status: 'unread',
+          status: false,
         }
         await db.query('INSERT INTO notifications SET ?', [PushNotification]);
         res.status(200).json({ message: 'Password set successfully.' });

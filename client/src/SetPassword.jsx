@@ -15,6 +15,7 @@ const SetPassword = () => {
       try {
           await http.post('/set-password', { id_number, password });
           AppSocket.emit('SubmitNotif');
+          AppSocket.emit('ShowNotif');
           setMessage('Password set successfully.');
       } catch (error) {
           setMessage('Failed to set password.');
