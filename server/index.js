@@ -48,4 +48,4 @@ socketServer.on('connection', (socket) => {
     });
 })
 
-http.listen(8000);
+http.listen(proecss.env.PORT || 8000);
