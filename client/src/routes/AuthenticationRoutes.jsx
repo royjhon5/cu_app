@@ -3,10 +3,10 @@ import Loadable from '../component/Loadable/Loadable';
 import { lazy } from "react"
 import GuestLayout from '../layout/GuestLayout';
 const Login = Loadable(lazy(() => import('../views/authentication/auth/container/index')));
-const Register = Loadable(lazy(() => import('../views/authentication/registration/container')));
-const Success = Loadable(lazy(() => import('../views/authentication/registration/success registration')));
-const Verified = Loadable(lazy(() => import('../views/authentication/verified account')));
-const SetPassword = Loadable(lazy(() => import('../views/authentication/set password/form')));
+const Register = Loadable(lazy(() => import('../views/authentication/registration/container/index')));
+const Success = Loadable(lazy(() => import('../views/authentication/registration/SuccessRegistration/index')));
+const Verified = Loadable(lazy(() => import('../views/authentication/verifiedaccount/index')));
+const SetPasswordContainer = Loadable(lazy(() => import('../views/authentication/setpassword/container')));
 
 const AuthenticationRoutes = {
   path: '/',
@@ -30,7 +30,7 @@ const AuthenticationRoutes = {
     },
     {
       path: '/set-password',
-      element: <SetPassword />
+      element: <SetPasswordContainer />
     },
   ]
 }
