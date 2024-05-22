@@ -1,12 +1,18 @@
-import { Box, Link, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import cuLogo from '../../../../assets/images/cuLogo.png'
 import RegistrationForm from '../form'
 import CustomContainer from '../../../../component/CustomContainer'
 import CustomPaper from '../../../../component/CustomPaper'
+import { useNavigate } from 'react-router-dom'
 const RegistrationContainer = () => {
+  const navigate = useNavigate();
+  const userLogin = () => {navigate('/')}
+
+
   return (
     <CustomContainer>
         <CustomPaper>
+            
             <Box sx={{ padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <img src={cuLogo} style={{ padding: 0, height: '30%', width: '30%' }} />
             </Box>
@@ -22,7 +28,10 @@ const RegistrationContainer = () => {
                 <Typography variant='h5' color="#9f1e22">Giftshop</Typography>
             </Stack>
                 <RegistrationForm />
-                <Typography fontSize="12px" sx={{ mt:1 }}>Already have an account? <span><Link>Sign In</Link></span></Typography>
+                <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
+                    <Typography fontSize="14px">Already have an account? </Typography>
+                    <Typography onClick={userLogin} fontSize="14px" color="primary" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Sign In</Typography>
+                </Box>
         </CustomPaper>
     </CustomContainer>
   )

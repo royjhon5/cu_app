@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
-import App from "../App";
 import ConfirmEmail from "../ConfirmEmail";
 import Register from "../Register";
 import SetPassword from "../SetPassword";
+import MainLayout from "../layout/MainLayout";
 
 const MainRoutes = {
   path: '/',
-  element: <App />,
+  element: <MainLayout />,
   children: [
     { path: '', element: <Navigate to="/register" /> },
     {

@@ -1,7 +1,9 @@
 import { ThemeProvider } from "@mui/material/styles"
 import { AppSettingsContext, UseMode } from "./themes"
 import { CssBaseline } from "@mui/material"
-import RegistrationContainer from "./views/authentication/registration/container"
+import { AuthProvider } from "./modules/context/AuthContext"
+import { RouterProvider } from "react-router-dom"
+import routes from "./routes"
 function App() {
   const [theme, appMode] = UseMode()
   return (
@@ -9,7 +11,9 @@ function App() {
       <AppSettingsContext.Provider value={appMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-            <RegistrationContainer />
+            <AuthProvider>
+                <RouterProvider router={routes} />
+            </AuthProvider>
         </ThemeProvider>
       </AppSettingsContext.Provider>
     </>

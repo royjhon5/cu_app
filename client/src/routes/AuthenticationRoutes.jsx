@@ -1,10 +1,12 @@
 
-import GuestLayout from '../layouts/Guestlayout/GuestLayout'
+import Loadable from '../component/Loadable/Loadable';
 import { lazy } from "react"
-import Loadable from '../components/Loadable/Loadable'
-const Login = Loadable(lazy(() => import('../views/authentication/auth/auth-container/index')));
-const ForgetPassword = Loadable(lazy(() => import('../views/authentication/forgot-password/forgetpass-container/index')));
-const UpdatePassword = Loadable(lazy(() => import('../views/authentication/update-password/updatepass-container/index')));
+import GuestLayout from '../layout/GuestLayout';
+const Login = Loadable(lazy(() => import('../views/authentication/auth/container/index')));
+const Register = Loadable(lazy(() => import('../views/authentication/registration/container')));
+const Success = Loadable(lazy(() => import('../views/authentication/registration/success registration')));
+const Verified = Loadable(lazy(() => import('../views/authentication/verified account')));
+const SetPassword = Loadable(lazy(() => import('../views/authentication/set password/form')));
 
 const AuthenticationRoutes = {
   path: '/',
@@ -15,12 +17,20 @@ const AuthenticationRoutes = {
         element: <Login />
     },
     {
-      path: '/forgot-password',
-      element: <ForgetPassword />
+      path: '/user/registration',
+      element: <Register />
     },
     {
-      path: '/new-password/initiate',
-      element: <UpdatePassword />
+      path: '/user/registration/success',
+      element: <Success />
+    },
+    {
+      path: '/verify-email',
+      element: <Verified />
+    },
+    {
+      path: '/set-password',
+      element: <SetPassword />
     },
   ]
 }

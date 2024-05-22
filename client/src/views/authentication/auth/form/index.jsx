@@ -1,18 +1,27 @@
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import useScriptRef from "../../../../hooks/useScriptRef";
-import { Box, Chip, FormHelperText, Grow, TextField, Typography } from "@mui/material";
+import { Box, Chip, FormHelperText, Grow, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import CustomLoadingButton from "../../../../component/CustomLoadingButton";
 import { useState } from "react";
 import http from "../../../../api/http";
-import { useNavigate } from "react-router-dom";
-const RegistrationForm = ({ ...others }) => {
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+const LoginForm = ({...others}) => {
   const scriptedRef = useScriptRef();
   const [ error, setError ] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleSubmit = async (values) => {
     setError(null);
@@ -26,25 +35,22 @@ const RegistrationForm = ({ ...others }) => {
         });
         if (response.status === 200) {
           setIsDisabled(false);
-          navigate('/user/registration/success')
+          clearData();
         } else {
           throw new Error(response.data.error)
         }
     } catch (error) {
       if (error.response && error.response.status === 400) {
         if (error.response.data.error === "ID Number already exist!") {
-            setIsDisabled(false);
+          setIsDisabled(false);
             setError("ID Number already exist!");
-            clearData();
         } else if (error.response.data.error === "Email address already exist!") {
           setIsDisabled(false);
           setError("Email address already exist!");
-          clearData();
         } 
       } else {
           setIsDisabled(false);
           setError("Server lost connection");
-          clearData();
       }
     }
   };
@@ -60,24 +66,20 @@ const RegistrationForm = ({ ...others }) => {
   return (
     <>
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb:1 }}>
-      <Typography variant="h4">Sign Up</Typography>
+      <Typography variant="h4">Sign In</Typography>
     </Box>
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb:1, width: '100%' }}>
     {error && <Grow in={true}><Chip label={<Typography >{error}</Typography>} color="error" sx={{ borderRadius: 1, width: '100%' }} /></Grow>}
     </Box>
     <Formik 
       initialValues={{
-        first_name: '',
-        last_name: '',
         id_number: '',
-        email: '',
+        password: '',
         submit: null
       }}
       validationSchema={Yup.object().shape({
-        first_name: Yup.string().typeError('Firstname is required').max(255).required('Firstname is required'),
-        last_name: Yup.string().typeError('Lastname is required').max(255).required('Lastname is required'),
         id_number: Yup.number().typeError('ID Number must be a number').required('ID Number is required'),
-        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+        password: Yup.string().max(255).required('Password is required')
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         handleSubmit(values);
@@ -98,48 +100,6 @@ const RegistrationForm = ({ ...others }) => {
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
         <form noValidate onSubmit={handleSubmit} {...others}>
-            <Box sx={{ display: 
-              'grid', 
-              gap: '10px',
-              gridTemplateColumns: {
-                xl: 'repeat(2, 1fr)',
-                lg: 'repeat(2, 1fr)',
-                md: 'repeat(2, 1fr)',
-                sm: 'repeat(1, 1fr)', 
-                xs: 'repeat(1, 1fr)'
-              }  
-              }}>
-              <TextField
-                fullWidth
-                label="First name"
-                variant="outlined"
-                type="first_name" 
-                value={values.first_name}
-                name="first_name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.first_name && Boolean(errors.first_name)}
-                helperText={touched.first_name && errors.first_name}
-              />
-              {errors.submit && (
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              )}
-              <TextField
-                fullWidth
-                label="Last name"
-                variant="outlined"
-                type="last_name" 
-                value={values.last_name}
-                name="last_name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.last_name && Boolean(errors.last_name)}
-                helperText={touched.last_name && errors.last_name}
-              />
-              {errors.submit && (
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              )}
-            </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', mt: '10.5px'}}>
               <TextField
                   fullWidth
@@ -157,26 +117,38 @@ const RegistrationForm = ({ ...others }) => {
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 )}
                 <TextField
-                  fullWidth
-                  label="Email address"
-                  variant="outlined"
-                  type="email" 
-                  value={values.email}
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={touched.email && Boolean(errors.email)}
-                  helperText={touched.email && errors.email}
-                />
-                {errors.submit && (
-                  <FormHelperText error>{errors.submit}</FormHelperText>
-                )}
-                <CustomLoadingButton 
+                fullWidth
+                label="Password"
+                variant="outlined"
+                type={showPassword ? 'text' : 'password'}
+                value={values.password}
+                name="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        size="large"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <CustomLoadingButton 
                 btnClick={handleSubmit} 
                 isDisabled={isDisabled} 
                 btnVariant="contained" 
-                label={isDisabled ? 'Creating Account...' : 'Create Account'} 
-                />
+                label={isDisabled ? 'Logging In...' : 'Login'} 
+              />
             </Box>
             
         </form>
@@ -186,4 +158,4 @@ const RegistrationForm = ({ ...others }) => {
   )
 }
 
-export default RegistrationForm
+export default LoginForm
