@@ -6,6 +6,7 @@ const MainLayout = Loadable(lazy(() => import('../layouts/Mainlayout/MainLayout'
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/index')));
 const AccountSettings = Loadable(lazy(() => import('../views/AccountSettings')));
 const UserProfile = Loadable(lazy(() => import('../views/User Profile')));
+const UserRoles = Loadable(lazy(() => import('../views/Administrative/UserRoles')));
 
 const MainRoutes = {
   path: '/',
@@ -31,6 +32,10 @@ const MainRoutes = {
       path: '/set-password',
       element: <SetPassword />
     },
+    {
+      path: '/dashboard/user-roles',
+      element: <UserRoles />
+    }
   ]
 }
 

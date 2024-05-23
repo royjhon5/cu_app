@@ -1,18 +1,21 @@
 import { Formik } from "formik";
 import * as Yup from 'yup';
-import { Box, Chip, FormHelperText, Grow, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Box, Button, Chip, FormHelperText, Grow, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import useScriptRef from "../../../../hooks/useScriptRef";
 import { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useNavigate } from "react-router-dom";
-import CustomLoadingButton from "../../../../component/CustomLoadingButton";
+import { useLocation, useNavigate } from "react-router-dom";
+import { WebSocket } from "../../../../main";
+import http from "../../../../api/http";
 const SetPasswordForm = ({...others}) => {
   const scriptedRef = useScriptRef();
   const [ error, setError ] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const AppSocket = WebSocket();
+  const location = useLocation();
+  const id_number = location.state.data;
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -23,11 +26,17 @@ const SetPasswordForm = ({...others}) => {
   };
 
   const handleSubmit = async (values) => {
-    setError(null);
+    const password = values.password
     try {
-      navigate('/');     
+        await http.post('/set-password', {id_number, password});
+        AppSocket.emit('SubmitNotif');
+        AppSocket.emit('ShowNotif');
+        AppSocket.emit('playNotifSound');
+        setError('Success')
+        navigate('/')
     } catch (error) {
-      console.error(error)
+        console.error(error)
+        setError('Error')
     }
   };
   return (
@@ -132,8 +141,8 @@ const SetPasswordForm = ({...others}) => {
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
+              <Button variant="contained" fullWidth onClick={handleSubmit}>Set password</Button>
             </Box>
-            
         </form>
       )}
     </Formik>
