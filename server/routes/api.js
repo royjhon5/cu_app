@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controller/AdminController/AuthController');
-const ClientUserController = require('../controller/ClientController/ClientAuthController')
+const AdminController = require('../controller/AdminController/AdminController');
+const ClientUserController = require('../controller/ClientController/ClientAuthController');
 const multer = require('multer');
 const upload = multer({ storage: UserController.storage });
 
@@ -13,6 +14,7 @@ router.get('/update-password', UserController.UpdatePassword);
 router.get('/user-profile', UserController.getUserProfile);
 router.get('/newreg-notify', UserController.newClientRegistrationNotification);
 router.get('/unread-notify', UserController.unreadNotification);
+router.get('/get-roles', AdminController.getRoles)
 //POST//
 router.post('/admin-register', UserController.adminUserReg);
 router.post('/admin-login', UserController.userLogin);
@@ -21,9 +23,12 @@ router.post('/upload-cover', upload.single('image'), UserController.UploadCoverP
 router.post('/is-open-notification', UserController.isOpenNotification);
 router.post('/read-notification', UserController.readNotification);
 router.post('/activate-client', UserController.acceptNewClient);
+router.post('/upload-roles', AdminController.saveNewRole);
+router.post('/update-roles', AdminController.updateRole);
 
 //DELETE//
 router.delete('/admin-logout', UserController.userLogout);
+router.delete('/delete-roles', AdminController.deleteRole);
 // ENDS HERE
 
 
