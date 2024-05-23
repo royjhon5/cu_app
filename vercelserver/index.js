@@ -6,6 +6,7 @@ const PORT = 8000
 
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 require('./routes/routerManager')(app);
 app.get('/', (req, res) => {
   res.send('This is my serverless server')
