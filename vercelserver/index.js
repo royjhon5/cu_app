@@ -4,6 +4,15 @@ const app = express();
 const mysql = require('mysql');
 const PORT = 8000
 
+const db = mysql.createConnection({
+  host: '103.62.153.118',
+  port: '3306',
+  user: 'vienna',
+  passowrd: '',
+  database: 'dbgshop',
+  insecureAuth: false
+});
+
 
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
