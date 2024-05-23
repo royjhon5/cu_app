@@ -34,6 +34,25 @@ app.use(cors({
 require('./routes/routerManager')(app);
 app.get('/', (req, res) => {
   res.send('This is my serverless server')
+});
+
+socketServer.on('connection', (socket) => {
+
+  socket.on('SubmitNotif', () => {
+      socketServer.emit('notifications');
+  })
+
+  socket.on('ShowNotif', () => {
+      socketServer.emit('containerNotif');
+  })
+
+  socket.on('playNotifSound', () => {
+      socketServer.emit('NotifSound');
+  })
+
+  socket.on('disconnect', () => {
+      socket.disconnect()
+  });
 })
 
 app.listen(PORT, () => {
