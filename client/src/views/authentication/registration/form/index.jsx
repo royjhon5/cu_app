@@ -35,26 +35,16 @@ const RegistrationForm = ({ ...others }) => {
         if (error.response.data.error === "ID Number already exist!") {
             setIsDisabled(false);
             setError("ID Number already exist!");
-            clearData();
         } else if (error.response.data.error === "Email address already exist!") {
           setIsDisabled(false);
           setError("Email address already exist!");
-          clearData();
         } 
       } else {
           setIsDisabled(false);
           setError("Server lost connection");
-          clearData();
       }
     }
   };
-
-  const clearData = (values) => {
-    values.first_name = ''
-    values.last_name = ''
-    values.id_number = ''
-    values.email = ''
-  }
 
 
   return (
@@ -172,13 +162,13 @@ const RegistrationForm = ({ ...others }) => {
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 )}
                 <CustomLoadingButton 
-                btnClick={handleSubmit} 
-                isDisabled={isDisabled} 
-                btnVariant="contained" 
-                label={isDisabled ? 'Creating Account...' : 'Create Account'} 
+                  btnClick={handleSubmit} 
+                  isDisabled={isDisabled} 
+                  btnVariant="contained" 
+                  label={isDisabled ? 'Creating Account...' : 'Create Account'} 
+                  type="submit"
                 />
-            </Box>
-            
+            </Box>   
         </form>
       )}
     </Formik>

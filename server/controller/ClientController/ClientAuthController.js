@@ -11,7 +11,7 @@ module.exports.clientRegistration = async function(req, res) {
     const userEmail = await clientUser.findUserEmail(email);
     if (user) return res.status(400).json({ error: 'ID Number already exist!' });
     if (userEmail) return res.status(400).json({ error: 'Email address already exist!' });
-    const token = jwt.sign({ id_number, email }, process.env.REFRESH_KEY, { expiresIn: '5m' });
+    const token = jwt.sign({ id_number, email }, process.env.REFRESH_KEY, { expiresIn: '1d' });
     const newUser = {
       id_number, 
       first_name,

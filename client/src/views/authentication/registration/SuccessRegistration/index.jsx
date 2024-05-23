@@ -3,8 +3,19 @@ import CustomContainer from "../../../../component/CustomContainer"
 import CustomPaper from "../../../../component/CustomPaper"
 import { Checkmark } from 'react-checkmark'
 import Confetti from 'react-confetti'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from "react"
 
 const SuccessRegistration = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/');
+    }, 5000);
+    return () => clearTimeout(timer);
+  })
+  
   return (
     <CustomContainer>
         <CustomPaper>

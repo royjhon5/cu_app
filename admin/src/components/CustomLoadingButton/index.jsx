@@ -2,10 +2,11 @@ import PropTypes from 'prop-types'
 import { Button, CircularProgress } from "@mui/material"
 import { useTheme } from '@emotion/react'
 
-const CustomLoadingButton = ( {isDisabled, label, btnSize, btnVariant, btnClick} ) => {
+const CustomLoadingButton = ( {isDisabled, label, btnSize, btnVariant, btnClick, type} ) => {
   const theme = useTheme();
   return (
     <Button 
+     type={type}
      onClick={btnClick}
      size={btnSize}
      startIcon={isDisabled ? <CircularProgress size={13} sx={{ color: theme.palette.appSettings.paletteMode === 'dark' ? 'white' : 'black' }} /> : ''}
@@ -22,7 +23,8 @@ CustomLoadingButton.propTypes = {
     label: PropTypes.any,
     btnSize: PropTypes.any,
     btnVariant: PropTypes.any,
-    btnClick: PropTypes.any
+    btnClick: PropTypes.any,
+    type: PropTypes.string
 };
 
 export default CustomLoadingButton

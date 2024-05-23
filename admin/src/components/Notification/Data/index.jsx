@@ -24,12 +24,11 @@ const NotificationData = () => {
     try {
       await http.post(`/activate-client?id_number=${useriDNumber}`);
       unreadNotify();
-      toast.success(`User ${unRead[0].first_name} has now been activated`)
+      toast.success(`User id number ${useriDNumber} has now been activated`);
     } catch (error) {
       console.error(error);
     }
   }
-  
 
   useEffect(() => {  
     unreadNotify();

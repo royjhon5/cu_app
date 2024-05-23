@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as Yup from 'yup';
-import { Box, Button, Chip, FormHelperText, Grow, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Box, Chip, FormHelperText, Grow, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import useScriptRef from "../../../../hooks/useScriptRef";
 import { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
@@ -8,6 +8,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useLocation, useNavigate } from "react-router-dom";
 import { WebSocket } from "../../../../main";
 import http from "../../../../api/http";
+import CustomLoadingButton from "../../../../component/CustomLoadingButton";
 const SetPasswordForm = ({...others}) => {
   const scriptedRef = useScriptRef();
   const [ error, setError ] = useState('');
@@ -16,6 +17,7 @@ const SetPasswordForm = ({...others}) => {
   const AppSocket = WebSocket();
   const location = useLocation();
   const id_number = location.state.data;
+  const [isDisbled, setIsDisabled] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -26,16 +28,19 @@ const SetPasswordForm = ({...others}) => {
   };
 
   const handleSubmit = async (values) => {
+    setIsDisabled(true)
     const password = values.password
     try {
         await http.post('/set-password', {id_number, password});
+        navigate('/')
         AppSocket.emit('SubmitNotif');
         AppSocket.emit('ShowNotif');
         AppSocket.emit('playNotifSound');
-        setError('Success')
-        navigate('/')
+        setIsDisabled(false)
+        setError('Success');       
     } catch (error) {
         console.error(error)
+        setIsDisabled(false)
         setError('Error')
     }
   };
@@ -141,7 +146,13 @@ const SetPasswordForm = ({...others}) => {
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant="contained" fullWidth onClick={handleSubmit}>Set password</Button>
+              <CustomLoadingButton
+                isDisabled={isDisbled} 
+                type="submit"
+                btnVariant="contained"
+                label={isDisbled ? 'Setting Password...' : 'Set Password'} 
+                btnClick={handleSubmit}
+              />
             </Box>
         </form>
       )}

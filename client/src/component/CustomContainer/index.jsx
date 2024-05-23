@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { Box } from "@mui/material"
+import bgImage from '../../assets/images/culoginbg.png'
 
 const CustomContainer = ({children}) => {
   return (
@@ -13,7 +14,7 @@ const CustomContainer = ({children}) => {
         height: '100%',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center', 
-        backgroundImage: 'url(src/assets/images/culoginbg.png)',
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
     }}>
         {children}
