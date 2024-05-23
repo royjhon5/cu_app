@@ -7,8 +7,9 @@ import { useEffect, useState } from "react"
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-
+  const [getData, setGetData] = useState([])
   
+  console.log(getData)
   const fetchData = async () => {
     setLoading(true);
     const timer = setInterval(() => {
@@ -30,8 +31,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
+    samplefetch();
   }, [])
-;
+
+
+  const samplefetch = async () => {
+    const response = await fetch('https://cu-app-sample-server.vercel.app/api/get-roles')
+    setGetData(response.data)
+  }
 
   return (
     <>
