@@ -4,33 +4,6 @@ const app = express();
 const mysql = require('mysql');
 const PORT = 8000
 
-const db = mysql.createConnection({
-  host: 'http://103.62.153.118/',
-  port: '3306',
-  user: 'vienna',
-  passowrd: '',
-  database: 'dbgshop',
-  insecureAuth: false
-});
-
-
-db.connect((err) => {
-  if (err) {
-    throw err;
-  }
-  console.log('MySQL Connected');
-});
-
-app.get('/get-roles', (req, res) => {
-  const sql = 'SELECT * FROM role_type'; 
-  db.query(sql, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    res.json(result);
-  });
-});
-
 
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
