@@ -13,6 +13,16 @@ const db = mysql.createConnection({
   insecureAuth: false
 });
 
+app.get('/get-roles', (req, res) => {
+  const sql = 'SELECT * FROM role_type';
+  db.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.json(result);
+  });
+});
+
 
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
