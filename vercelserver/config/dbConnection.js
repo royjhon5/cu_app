@@ -4,11 +4,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: process.env.PORT,
-    user: process.env.DB_USER,
-    passowrd: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: 'http://103.62.153.118/',
+    port: '3306',
+    user: 'vienna',
+    passowrd: '',
+    database: 'dbgshop',
     insecureAuth: false
 });
 
