@@ -7,7 +7,6 @@ import { useEffect, useState } from "react"
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  
   const fetchData = async () => {
     setLoading(true);
     const timer = setInterval(() => {
