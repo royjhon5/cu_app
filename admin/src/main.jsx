@@ -12,8 +12,7 @@ import ru from "javascript-time-ago/locale/ru.json";
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
 import socketIO from 'socket.io-client';
-const baseUrl = window.location.origin;
-const socketConnect = socketIO.connect(baseUrl.split(':')[0]+':'+baseUrl.split(':')[1]+':8000');
+const socketConnect = socketIO.connect('https://server-kappa-nine-47.vercel.app/');
 
 export const WebSocket = () => {
     return socketConnect;
