@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import AuthenticationRoutes from "./AuthenticationRoutes";
-import MainRoutes from "./Mainroutes";
+import MainRoutes from "./Mainroutes.jsx";
+import AuthenticationRoutes from "./AuthenticationRoutes.jsx";
 const routes = createBrowserRouter([AuthenticationRoutes, MainRoutes])
 export default routes;
