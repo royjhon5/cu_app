@@ -1,27 +1,28 @@
-import { Paper, Stack, TextField, TableContainer, Table, TableHead, TableRow, TableCell, Box, TablePagination } from '@mui/material'
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Paper, Stack, TableCell, TextField } from '@mui/material'
+import useFetch from '../../../hooks/useFetch';
+import CustomTable from '../../../components/CustomDataTable';
+import TableHeader from '../../../components/CustomDataTable/TableHeader';
+import CustomHeaderCell from '../../../components/CustomDataTable/CustomHeaderCell';
+import CustomTableBody from '../../../components/CustomDataTable/TableBody';
+import NoData from '../../../components/CustomDataTable/NoData';
 const ContentData = () => {
+  const { data, loading, error } = useFetch('/get-roles');
+  if(loading) return <h1>Loading ...</h1>
+  if(error) console.log9error;
+  console.log(data)
   return (
     <Paper>
         <Stack sx={{ display: 'flex', padding: '20px'}}>
             <TextField variant='outlined' label="Search" sx={{ width: { xl: '50%', lg: '50%' }}} />
         </Stack>
-        <TableContainer>
-            <PerfectScrollbar>
-                <Table sx={{ display: 'table', width: '100%', borderCollapse: 'collapse', borderSpacing: '0px', minWidth: '960px' }}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ backgroundColor: 'rgba(145, 158, 171, 0.12)' }}>
-                                User role
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                </Table>
-            </PerfectScrollbar>
-        </TableContainer>
-        <Box sx={{ position: 'relative' }}>
-            <TablePagination component="div" rowsPerPageOptions={[5, 10, 25]} />
-        </Box>
+        <CustomTable>
+            <TableHeader>
+                <CustomHeaderCell>User</CustomHeaderCell>
+            </TableHeader>
+            <CustomTableBody>
+                <TableCell><NoData/></TableCell>
+            </CustomTableBody>
+        </CustomTable>
     </Paper>
   )
 }
