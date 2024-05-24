@@ -7,8 +7,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../modules/context/AuthContext";
-import LoadingButton from '@mui/lab/LoadingButton';
 import InfoIcon from '@mui/icons-material/Info';
+import CustomLoadingButton from "../../../../components/CustomLoadingButton";
 
 const AuthForm = ({ ...others }) => {
   const scriptedRef = useScriptRef();
@@ -115,7 +115,7 @@ const AuthForm = ({ ...others }) => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <TextField
@@ -182,9 +182,13 @@ const AuthForm = ({ ...others }) => {
               </Box>
             )}
             <Box sx={{ mt: 2 }}>
-              <LoadingButton loading={loadingBtn} variant="contained" disabled={isSubmitting} onClick={handleSubmit} fullWidth size="large" type="submit" color="primary">
-                  Login
-              </LoadingButton>
+              <CustomLoadingButton
+                btnClick={handleSubmit}
+                isDisabled={loadingBtn}
+                btnVariant="contained"
+                label={loadingBtn ? 'Logging In...' : 'Login'}
+                type="submit"
+              />
             </Box>
           </form>
         )}

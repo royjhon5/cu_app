@@ -1,4 +1,3 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Chip, FormHelperText, Grow, TextField, Typography } from "@mui/material"
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -7,6 +6,7 @@ import { useState } from "react";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import http from "../../../../api/http";
 import { useNavigate } from "react-router-dom";
+import CustomLoadingButton from "../../../../components/CustomLoadingButton";
 
 const ForgetpassForm = ({ ...others }) => {
   const scriptedRef = useScriptRef();
@@ -74,7 +74,7 @@ const ForgetpassForm = ({ ...others }) => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <TextField
@@ -96,9 +96,13 @@ const ForgetpassForm = ({ ...others }) => {
               </Box>
             )}
             <Box sx={{ mt: 2 }}>
-              <LoadingButton loading={loadingBtn} variant="contained" disabled={isSubmitting} onClick={handleSubmit} fullWidth size="large" type="submit" color="primary" sx={{ textTransform: 'none', }}>
-                  Send Request
-              </LoadingButton>
+              <CustomLoadingButton 
+                  btnClick={handleSubmit}
+                  isDisabled={loadingBtn}
+                  btnVariant="contained"
+                  label={loadingBtn ? 'Sending Request ...' : 'Send Request'}
+                  type="submit"
+              />
             </Box>
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
               <ArrowBackIosIcon sx={{ fontSize: '12px' }} /><Typography onClick={backToLogin} fontSize="14px" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}>Return to sign in</Typography>

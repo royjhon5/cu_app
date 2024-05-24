@@ -1,4 +1,3 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Chip, CircularProgress, FormHelperText, Grow, IconButton, InputAdornment, Snackbar, TextField, Typography } from "@mui/material"
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -12,6 +11,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useEffect } from "react";
 import { useAuth } from "../../../../modules/context/AuthContext";
+import CustomLoadingButton from "../../../../components/CustomLoadingButton";
 
 const UpdateFormPass = ({ ...others }) => {
   const scriptedRef = useScriptRef();
@@ -168,7 +168,7 @@ const UpdateFormPass = ({ ...others }) => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <TextField
@@ -239,9 +239,13 @@ const UpdateFormPass = ({ ...others }) => {
               </Box>
             )}
             <Box sx={{ mt: 2 }}>
-              <LoadingButton loading={loadingBtn} variant="contained" disabled={isSubmitting} onClick={handleSubmit} fullWidth size="large" type="submit" color="primary" sx={{ textTransform: 'none', }}>
-                  Update Password
-              </LoadingButton>
+              <CustomLoadingButton 
+                btnClick={handleSubmit}
+                isDisabled={loadingBtn}
+                btnVariant="contained"
+                label={loadingBtn ? 'Changing Password ...' : 'Change Password'}
+                type="submit"
+              />
             </Box>
           </form>
         )}
