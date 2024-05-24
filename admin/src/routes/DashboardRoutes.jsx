@@ -6,7 +6,7 @@ const AccountSettings = Loadable(lazy(() => import('../views/AccountSettings')))
 const UserProfile = Loadable(lazy(() => import('../views/User Profile')));
 const UserRoles = Loadable(lazy(() => import('../views/Administrative/UserRoles')));
 
-const MainRoutes = {
+const DashboardRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
@@ -29,4 +29,4 @@ const MainRoutes = {
   ]
 }
 
-export default MainRoutes
+export default DashboardRoutes
