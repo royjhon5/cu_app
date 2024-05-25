@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
-import { Box, Paper, Stack, TableCell, TableRow, TextField } from '@mui/material'
+import { Box, CircularProgress, IconButton, Paper, Stack, TableCell, TableRow, TextField, Tooltip } from '@mui/material'
 import CustomTable from '../../../components/CustomDataTable';
 import TableHeader from '../../../components/CustomDataTable/TableHeader';
 import CustomHeaderCell from '../../../components/CustomDataTable/CustomHeaderCell';
 import CustomTableBody from '../../../components/CustomDataTable/TableBody';
 import NoData from '../../../components/CustomDataTable/NoData';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Fragment } from 'react';
 const ContentData = ({roles, loading}) => {
   return (
     <Paper>
@@ -14,18 +16,32 @@ const ContentData = ({roles, loading}) => {
         <CustomTable>
             <TableHeader>
                 <CustomHeaderCell>User Role</CustomHeaderCell>
+                <CustomHeaderCell></CustomHeaderCell>
             </TableHeader>
             <CustomTableBody>
                 {loading? (<TableRow>
-                        <TableCell colSpan={1}><h1>Loading ...</h1></TableCell>
+                        <TableCell colSpan={1}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <CircularProgress color="inherit"/>
+                            </Box>
+                        </TableCell>
                     </TableRow>) : 
                     (
                     <>
                     {Array.isArray(roles) && roles.length > 0 ? (
                         roles.map((variable) => (
-                        <TableRow hover key={variable.id}>
-                            <TableCell sx={{ border: '1px dashed rgb(46, 50, 54)' }}>{variable.role}</TableCell>
-                        </TableRow>
+                            <Fragment key={variable.id}>
+                                <TableRow hover >
+                                    <TableCell sx={{ border: '1px dashed rgb(46, 50, 54)', width: '100%', borderLeft: 'none', borderRight: 'none' }}>{variable.role}</TableCell>
+                                    <TableCell sx={{ border: '1px dashed rgb(46, 50, 54)', borderLeft: 'none', borderRight: 'none' }}>
+                                        <Tooltip placement='left' title="Edit | Delete">
+                                            <IconButton>
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
+                                </TableRow>
+                            </Fragment>
                         ))
                         ) : (
                             <TableRow>
