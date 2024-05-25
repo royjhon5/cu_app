@@ -6,8 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import './assets/styles/index.css'
 const socketConnect = socketIO.connect('https://server-kappa-nine-47.vercel.app/', {
-  withCredentials: true,
-  transports: ['polling']
+  addTrailingSlash: false
 });
 
 export const WebSocket = () => {
