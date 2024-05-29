@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Paper, Select, Stack, Tab, Tabs, TextField, useTheme } from "@mui/material"
+import { Box, Checkbox, Chip, FormControl, InputLabel, ListItemText, MenuItem, Paper, Select, Stack, Tab, Tabs, TextField, useTheme } from "@mui/material"
 import { useEffect, useState } from "react";
 import BoxBadge from "./BoxBadge";
 import http from "../../../../../client/src/api/http";
@@ -8,7 +8,8 @@ const Container = () => {
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [selectRole, setSelectRole] = useState([]);
-  const [roleData, setRoleData] = useState([])
+  const [roleData, setRoleData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const tabChange = (event, newValue) => {
     setTabValue(newValue)
   }
@@ -22,11 +23,21 @@ const Container = () => {
     );
   };
 
-  
+  const removeRole = (roleToDelete) => {
+    setSelectRole((prevRoles) => prevRoles.filter((role) => role !== roleToDelete));
+  };
+
+  const removeSearch = () => { 
+    setSearchQuery("")
+  }
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   useEffect(() => {
     const getRoles = async () => {
-        http.get('/get-roles')
+        await http.get('/get-roles')
         .then((response) => {
             setRoleData(response.data)
         })
@@ -36,9 +47,6 @@ const Container = () => {
       } 
     getRoles()
   }, [])
-
-  console.log(roleData)
-
 
   return (
     <Paper>
@@ -104,7 +112,61 @@ const Container = () => {
                 <TextField 
                     fullWidth
                     label="Search"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
                 />
+        </Stack>
+        <Stack sx={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0px 20px 20px' }}>
+             <Box sx={{ 
+                display: 'none',
+                flexDirection: 'row',
+                lineHeight: 1.57143,
+                fontSize: '0.875rem',
+                fontWeight: 400
+             }}>
+                <strong>3</strong>
+                <Box sx={{ color: 'rgb(145, 158, 171)', marginLeft: '5px' }}>results found</Box>
+             </Box>
+             <Stack sx={{ 
+                display: 'flex',
+                flexFlow: 'wrap',
+                gap: '8px',
+                flexGrow: 1,
+                alignItems: 'center'
+             }}>
+                {selectRole.length > 0 && (
+                    <Paper sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '8px',
+                        padding: '8px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        color: 'inherit',
+                        border: '1px dashed rgba(145, 158, 171, 0.16)'
+                    }}>
+                        <Box component="span" sx={{ fontWeight: 600, lineHeight:1.57143, fontSize: '0.875rem' }}>Role:</Box>
+                        {selectRole.map((role) => (
+                            <Chip key={role} label={role} sx={{ borderRadius: '8px', height: '24px' }} onDelete={() => removeRole(role)} />
+                        ))}
+                    </Paper>
+                )}
+                {searchQuery && (
+                    <Paper sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '8px',
+                        padding: '8px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        color: 'inherit',
+                        border: '1px dashed rgba(145, 158, 171, 0.16)'
+                    }}>
+                        <Box component="span" sx={{ fontWeight: 600, lineHeight:1.57143, fontSize: '0.875rem' }}>Keyword:</Box>
+                        <Chip sx={{ borderRadius: '8px', height: '24px' }} label={searchQuery} onDelete={removeSearch} />
+                    </Paper>
+                )}
+             </Stack>
         </Stack>
     </Paper>
   )
