@@ -1,13 +1,45 @@
-import { Paper, Tab, Tabs, useTheme } from "@mui/material"
-import { useState } from "react";
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Paper, Select, Stack, Tab, Tabs, TextField, useTheme } from "@mui/material"
+import { useEffect, useState } from "react";
 import BoxBadge from "./BoxBadge";
+import http from "../../../../../client/src/api/http";
+import { toast } from "sonner";
 
 const Container = () => {
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
+  const [selectRole, setSelectRole] = useState([]);
+  const [roleData, setRoleData] = useState([])
   const tabChange = (event, newValue) => {
     setTabValue(newValue)
   }
+
+  const handleSelectChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectRole(
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  
+
+  useEffect(() => {
+    const getRoles = async () => {
+        http.get('/get-roles')
+        .then((response) => {
+            setRoleData(response.data)
+        })
+        .catch((err) => {
+            toast.error(err, 'Cannot connect to the server!')
+        })
+      } 
+    getRoles()
+  }, [])
+
+  console.log(roleData)
+
+
   return (
     <Paper>
         <Tabs 
@@ -52,6 +84,28 @@ const Container = () => {
              bgcolor={tabValue === 4 ? theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(33, 43, 54)' : 'rgba(145, 158, 171, 0.16)'}>23</BoxBadge>} 
              iconPosition="end" label="Rejected" disableRipple sx={{ minHeight: '48px', minWidth: '48px', marginRight: '40px', padding: 0, '&.Mui-selected': { color: 'inherit' }}} />
         </Tabs>
+        <Stack sx={{ display: 'flex', flexDirection: {xl: 'row', lg: 'row', md: 'row', sm: 'column', xs: 'column'}, gap: '16px', padding: '20px'  }}>
+                <FormControl sx={{width: { xl: '15%', lg:'15%', md: '30%', sm: '100%', xs: 'column' }}}>
+                    <InputLabel id="demo-multiple-checkbox-label">Role</InputLabel>
+                    <Select multiple
+                    value={selectRole} 
+                    onChange={handleSelectChange}
+                    label="Role"
+                    renderValue={(selected) => selected.join(', ')}
+                    >
+                        {roleData.map((name) => (
+                            <MenuItem key={name.id} value={name.role}>
+                            <Checkbox checked={selectRole.indexOf(name.role) > -1} />
+                            <ListItemText primary={name.role} />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <TextField 
+                    fullWidth
+                    label="Search"
+                />
+        </Stack>
     </Paper>
   )
 }
