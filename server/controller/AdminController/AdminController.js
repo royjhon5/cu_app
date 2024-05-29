@@ -56,16 +56,27 @@ module.exports.updateRole = async function(req, res) {
 }
 
 module.exports.deleteRole = async function(req, res) {
-    const { id } = req.body;
-    try {
-        const query = 'DELETE FROM role_type WHERE id = ?'
-        await db.query(query, [id], async (err) => {
-            if(err) {
-                res.status(400).send('Deletion failed')
-            }
-            res.status(200).send('Role Deletion Complete')
-        })
-    } catch(error) {
-        console.error(error)
+    const { id } = req.query;
+    if (!id) {
+        return res.status(400).send('ID is required');
     }
-}
+    try {
+        const query = 'DELETE FROM role_type WHERE id = ?';       
+        const result = await new Promise((resolve, reject) => {
+            db.query(query, [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Role not found');
+        }
+        res.status(200).send('Role Deletion Complete');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+    }
+};

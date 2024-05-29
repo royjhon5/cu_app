@@ -1,5 +1,6 @@
 import { lazy } from "react"
 import Loadable from '../components/Loadable/Loadable'
+import UserList from "../views/Administrative/UserList";
 const MainLayout = Loadable(lazy(() => import('../layouts/Mainlayout/MainLayout')));
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/index')));
 const AccountSettings = Loadable(lazy(() => import('../views/AccountSettings')));
@@ -23,8 +24,12 @@ const DashboardRoutes = {
         element: <AccountSettings  />
     },
     {
-      path: '/dashboard/user-roles',
+      path: '/dashboard/administrative/user-roles',
       element: <UserRoles />
+    },
+    {
+      path: '/dashboard/administrative/user-list',
+      element: <UserList />
     }
   ]
 }

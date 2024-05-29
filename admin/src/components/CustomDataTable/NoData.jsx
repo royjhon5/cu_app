@@ -1,9 +1,10 @@
-import { Stack, Typography } from "@mui/material"
+import { Box, Stack, Typography } from "@mui/material"
 import NoDataIcon from "../svg-icons/NoDataIcon"
 
 const NoData = () => {
   return (
-    <Stack sx={{
+    <Box sx={{ padding: 2 }}>
+      <Stack sx={{
         display: 'flex',
         flexDirection: 'colum',
         alignItems: 'center',
@@ -19,6 +20,7 @@ const NoData = () => {
         <NoDataIcon />
         <Typography>No Data</Typography>
     </Stack>
+    </Box>
   )
 }
 

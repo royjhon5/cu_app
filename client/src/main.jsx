@@ -5,9 +5,8 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import './assets/styles/index.css'
-const socketConnect = socketIO.connect('https://server-kappa-nine-47.vercel.app/', {
-  addTrailingSlash: false
-});
+const baseUrl = window.location.origin;
+const socketConnect = socketIO.connect(baseUrl.split(':')[0]+':'+baseUrl.split(':')[1]+':8000');
 
 export const WebSocket = () => {
     return socketConnect;
