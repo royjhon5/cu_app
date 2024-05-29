@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
-const CustomTabPanel = ({ children, value, index, ...other }) => {
+const CustomTabPanel = ({ children, value, index, mt, ...other }) => {
     return (
         <div
           role="tabpanel"
@@ -10,7 +10,7 @@ const CustomTabPanel = ({ children, value, index, ...other }) => {
           {...other}
         >
           {value === index && (
-            <Box sx={{ padding:0, mt: '40px' }}>
+            <Box sx={{ padding:0, mt: mt }}>
               {children}
             </Box>
           )}
@@ -22,6 +22,7 @@ CustomTabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
+    mt: PropTypes.string,
 };
 
 export default CustomTabPanel

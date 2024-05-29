@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import BoxBadge from "./BoxBadge";
 import http from "../../../../../client/src/api/http";
 import { toast } from "sonner";
+import CustomTabPanel from "../../AccountSettings/CustomTabPanel";
+import AllData from "./TabContents/AllData";
+import ActiveData from "./TabContents/ActiveData";
+import PendingData from "./TabContents/PendingData";
+import BannedData from "./TabContents/BannedData";
+import RejectedData from "./TabContents/RejectedData";
 
 const Container = () => {
   const theme = useTheme();
@@ -168,6 +174,21 @@ const Container = () => {
                 )}
              </Stack>
         </Stack>
+        <CustomTabPanel value={tabValue} index={0}>
+            <AllData />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={1}>
+            <ActiveData />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={2}>
+            <PendingData />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={3}>
+            <BannedData />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={4}>
+            <RejectedData />
+        </CustomTabPanel>
     </Paper>
   )
 }
