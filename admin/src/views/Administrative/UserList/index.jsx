@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material"
 import { Fragment } from "react"
 import BreadCrumbs from "../../../components/BreadCrumbs"
+import Container from "./Container"
 
 const UserList = () => {
   return (
@@ -17,6 +18,7 @@ const UserList = () => {
                 </Box>
             </Stack>
         </Box>
+        <Container />
     </Fragment>
   )
 }
