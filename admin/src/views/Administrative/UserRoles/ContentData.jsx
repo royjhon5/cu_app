@@ -13,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import CustomDialog from '../../../components/CustomDialog';
 import { toast } from 'sonner'
-import http from '../../../../../client/src/api/http';
+import http from '../../../api/http';
 
 const ContentData = ({ openDialog, closeDialog  }) => {
   const [page, setPage] = useState(0);
