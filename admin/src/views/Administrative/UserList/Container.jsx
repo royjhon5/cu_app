@@ -1,7 +1,6 @@
 import { Box, Checkbox, Chip, FormControl, InputLabel, ListItemText, MenuItem, Paper, Select, Stack, Tab, Tabs, TextField, useTheme } from "@mui/material"
 import { useEffect, useState } from "react";
 import BoxBadge from "./BoxBadge";
-import http from "../../../../../client/src/api/http";
 import { toast } from "sonner";
 import CustomTabPanel from "../../AccountSettings/CustomTabPanel";
 import AllData from "./TabContents/AllData";
@@ -9,6 +8,7 @@ import ActiveData from "./TabContents/ActiveData";
 import PendingData from "./TabContents/PendingData";
 import BannedData from "./TabContents/BannedData";
 import RejectedData from "./TabContents/RejectedData";
+import http from "../../../api/http";
 
 const Container = () => {
   const theme = useTheme();
