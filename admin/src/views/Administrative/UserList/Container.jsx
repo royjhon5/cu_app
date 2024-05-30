@@ -63,9 +63,10 @@ const Container = () => {
         sx={{ 
             paddingLeft: { xs: '20px', sm: '20px', md: '0px', lg: '0px', xl:'0px'}, 
             paddingRight: { xs: '20px', sm: '20px', md: '0px', lg: '0px', xl:'0px'},
+            boxShadow: 'rgba(145, 158, 171, 0.08) 0px -2px 0px 0px inset',
             '& .MuiTabs-indicator': { 
                 backgroundColor: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(255,255,255)' : 'rgb(33,43,54)' } 
-            }} 
+            }}
             value={tabValue} 
             onChange={tabChange}
             >

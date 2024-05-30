@@ -5,8 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import './assets/styles/index.css'
-const baseUrl = window.location.origin;
-const socketConnect = socketIO.connect(baseUrl.split(':')[0]+':'+baseUrl.split(':')[1]+':8000');
+const socketConnect = socketIO.connect('https://cu-app-websocket-eec58bf9cc60.herokuapp.com');
 
 export const WebSocket = () => {
     return socketConnect;
