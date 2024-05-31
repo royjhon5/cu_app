@@ -13,6 +13,8 @@ TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
 import socketIO from 'socket.io-client';
 const socketConnect = socketIO.connect('https://cu-app-websocket-eec58bf9cc60.herokuapp.com');
+// const baseUrl = window.location.origin;
+// const socketConnect = socketIO.connect(baseUrl.split(':')[0]+':'+baseUrl.split(':')[1]+':8000');
 
 export const WebSocket = () => {
     return socketConnect;

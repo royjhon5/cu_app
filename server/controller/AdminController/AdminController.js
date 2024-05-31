@@ -80,3 +80,15 @@ module.exports.deleteRole = async function(req, res) {
         res.status(500).send('Internal server error');
     }
 };
+
+
+module.exports.AllClientListData = async function (req, res) {
+    const query = `SELECT * FROM client_user`;
+    await db.query(query, (err, results) => {
+      if(err) {
+        console.error('Error executing the query', err.stack);
+        return;
+      }
+      res.status(200).send(results)
+    })
+}

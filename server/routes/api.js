@@ -15,6 +15,7 @@ router.get('/user-profile', UserController.getUserProfile);
 router.get('/newreg-notify', UserController.newClientRegistrationNotification);
 router.get('/unread-notify', UserController.unreadNotification);
 router.get('/get-roles', AdminController.getRoles)
+router.get('/client-user-list', AdminController.AllClientListData)
 //POST//
 router.post('/admin-register', UserController.adminUserReg);
 router.post('/admin-login', UserController.userLogin);
