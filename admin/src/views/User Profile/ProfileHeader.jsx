@@ -106,7 +106,7 @@ const ProfileHeader = () => {
             <img
                 src={
                   preview ||
-                    `http://localhost:8000/admin-profile/${accessToken.idNumber}/` + coverPicture
+                    `https://cu-app-admin.vercel.app/admin-profile/${accessToken.idNumber}/` + coverPicture
                   }
                 style={{ height: '100%',width: '100%', objectFit: 'cover', }}
             />
