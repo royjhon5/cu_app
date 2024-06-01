@@ -50,7 +50,7 @@ const AuthForm = ({ ...others }) => {
 
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <Typography variant="h">Sign In</Typography>
+      <Typography variant="h4" sx={{ mb: 3, textAlign: 'center' }}>Sign In to CU giftshop admin</Typography>
       {error ? (
         <Grow in={true}>
           <Chip
@@ -188,6 +188,8 @@ const AuthForm = ({ ...others }) => {
                 btnVariant="contained"
                 label={loadingBtn ? 'Logging In...' : 'Login'}
                 type="submit"
+                btnSize="large"
+                fullWidth={true}
               />
             </Box>
           </form>
