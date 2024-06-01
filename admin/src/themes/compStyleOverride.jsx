@@ -1,3 +1,5 @@
+import CyanBlur from '../assets/images/cyan-blur.png'
+import RedBlur from '../assets/images/red-blur.png'
 export default function compStyleOverride(appSettings, radius) {
   const paletteMode = appSettings && appSettings.paletteMode ? appSettings.paletteMode : 'light';
   const AppContrast = appSettings && appSettings.contrast ? appSettings.contrast : 'normal';
@@ -84,7 +86,7 @@ export default function compStyleOverride(appSettings, radius) {
           },
           width: '100%',
           background: paperDrawerColor,
-          backgroundImage: 'url(src/assets/images/cyan-blur.png), url(src/assets/images/red-blur.png)',
+          backgroundImage: `url(${CyanBlur}), url(${RedBlur})`,
           backgroundRepeat: 'no-repeat, no-repeat',
           backgroundPosition: 'right top, left bottom',
           backgroundSize: '50%, 50%',

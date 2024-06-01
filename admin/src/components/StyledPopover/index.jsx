@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import { Popover, Typography, useTheme } from "@mui/material"
+import CyanBlur from '../../assets/images/cyan-blur.png'
+import RedBlur from '../../assets/images/red-blur.png'
 
 const StyledPopover = ({ id, open, anchorEl, handlePopoverClose, onMouseLeave, onMouseEnter, popoverRef}) => {
   const theme = useTheme();
@@ -30,7 +32,7 @@ const StyledPopover = ({ id, open, anchorEl, handlePopoverClose, onMouseLeave, o
               width: 160,
               background: theme.palette.appSettings.paletteMode === 'dark' ? 'rgba(33, 43, 54, 0.9)' : 'rgba(255, 255, 255, 0.9)',
               backdropFilter: 'blur(20px)',
-              backgroundImage: 'url(src/assets/images/cyan-blur.png), url(src/assets/images/red-blur.png)',
+              backgroundImage: `url(${CyanBlur}), url(${RedBlur})`,
               backgroundRepeat: 'no-repeat, no-repeat',
               backgroundPosition: 'right top, left bottom',
               backgroundSize: '50%, 50%',

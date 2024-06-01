@@ -3,6 +3,7 @@ import ForgetpassForm from "../forgetpass-form";
 import Forgotpassowrdicon from "../../../../components/svg-icons/Forgotpassowrdicon";
 import { Fragment } from "react";
 import { Helmet } from "react-helmet-async";
+import OverLayImage from '../../../../assets/images/overlay_2.jpg'
 
 const ForgetContainer = () => {
   const theme = useTheme();
@@ -28,7 +29,7 @@ const ForgetContainer = () => {
                 alignItems: 'center',
                 WebkitBoxPack: 'center',
                 justifyContent: 'center',
-                background: theme.palette.appSettings.paletteMode === 'dark' ? 'linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)' : 'linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)',
+                background: theme.palette.appSettings.paletteMode === 'dark' ? `linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(${OverLayImage})` : `linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(${OverLayImage})`,
                 backgroundPosition: 'center',
             }}
             >

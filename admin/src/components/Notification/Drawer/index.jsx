@@ -7,7 +7,10 @@ const NotificationDrawer = ({notifDrawerOpen, notifdrawerToggle}) => {
   const theme = useTheme();
   return (
     <Drawer
-      sx={{ '& .MuiDrawer-paper': {...theme.components.MuiDrawer, maxWidth: '420px', backdropFilter: 'blur(20px)'} }}
+      sx={{ '& .MuiDrawer-paper': {...theme.components.MuiDrawer, maxWidth: '420px', backdropFilter: 'blur(20px)', 
+      background: theme.palette.appSettings.paletteMode === 'dark' ? 'rgba(33, 43, 54, 0.9)' : 'rgba(255, 255, 255, 0.9)'
+      } 
+    }}
       open={notifDrawerOpen}
       onClose={notifdrawerToggle}
       BackdropProps={{ invisible: true  }}

@@ -73,7 +73,8 @@ export default function AccountPopover() {
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
-          src={profilePicture ? `https://cu-app-admin.vercel.app/admin-profile/${accessToken.idNumber}/` + profilePicture : ''}
+          // src={profilePicture ? `http://localhost:8000/admin-profile/${accessToken.idNumber}/` + profilePicture : ''}
+          src={profilePicture ? `https://cu-app-server.vercel.app/admin-profile/${accessToken.idNumber}/` + profilePicture : ''}
         >
         </Avatar>
       </IconButton>

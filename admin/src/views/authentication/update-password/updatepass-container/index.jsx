@@ -1,6 +1,7 @@
 import { Grid, Typography, useTheme } from "@mui/material"
 import UpdateFormPass from "../updatepass-form";
 import SendIconSvg from '../../../../components/svg-icons/Sendicon'
+import OverLayImage from '../../../../assets/images/overlay_2.jpg'
 
 const ForgetContainer = () => {
   const theme = useTheme();
@@ -22,7 +23,7 @@ const ForgetContainer = () => {
                 alignItems: 'center',
                 WebkitBoxPack: 'center',
                 justifyContent: 'center',
-                background: theme.palette.appSettings.paletteMode === 'dark' ? 'linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)' : 'linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)',
+                background: theme.palette.appSettings.paletteMode === 'dark' ? `linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(${OverLayImage})` : `linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(${OverLayImage})`,
                 backgroundPosition: 'center',
             }}
             >

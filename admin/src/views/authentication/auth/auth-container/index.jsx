@@ -3,6 +3,8 @@ import loginImg from '../../../../assets/images/loginbg.png'
 import AuthForm from "../auth-form";
 import { Fragment } from "react";
 import { Helmet } from "react-helmet-async";
+import OverlayImage from '../../../../assets/images/overlay_2.jpg'
+import OverlayImageTwo from '../../../../assets/images/overlay_4.jpg'
 
 export default function SignInSide() {
   const theme = useTheme();
@@ -31,7 +33,7 @@ export default function SignInSide() {
               alignItems: 'center',
               WebkitBoxPack: 'center',
               justifyContent: 'center',
-              background: theme.palette.appSettings.paletteMode === 'dark' ? 'linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)' : 'linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(src/assets/images/overlay_2.jpg)',
+              background: theme.palette.appSettings.paletteMode === 'dark' ? `linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(${OverlayImage})` : `linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(${OverlayImage})`,
               backgroundPosition: 'center'
           }}
         >
@@ -49,14 +51,28 @@ export default function SignInSide() {
               </>
            )}
         </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={4.5} xl={3}>
+        <Grid item xs={12} sm={12} md={6} lg={4.5} xl={3} sx={{ padding:2, 
+          background: {
+            xs: theme.palette.appSettings.paletteMode === 'dark' ? `linear-gradient(rgba(22, 28, 36, 0.94), rgba(22, 28, 36, 0.94)) center center / cover no-repeat, url(${OverlayImageTwo})` : `linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)) center center / cover no-repeat, url(${OverlayImageTwo})`,
+            lg: 'inherit'
+          },
+          }}>
           <Box
             sx={{
-              padding: '64px',
+              padding: {
+                xs: 2,
+                sm: 2,
+                lg: 2
+              },
               my: 25,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              background: {
+                xs: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(33, 43, 54)' : 'rgb(255, 255, 255)',
+                lg: 'inherit'
+              },
+              borderRadius: '16px'
             }}
           >
               <AuthForm />
