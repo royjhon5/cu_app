@@ -54,6 +54,8 @@ export default function SignInSide() {
         <Grid item xs={12} sm={12} md={6} lg={4.5} xl={3} sx={{ padding:2, 
           background: {
             xs: theme.palette.appSettings.paletteMode === 'dark' ? `linear-gradient(rgba(22, 28, 36, 0.74), rgba(22, 28, 36, 0.74)) center center / cover no-repeat, url(${OverlayImageTwo})` : `linear-gradient(rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.74)) center center / cover no-repeat, url(${OverlayImageTwo})`,
+            sm: theme.palette.appSettings.paletteMode === 'dark' ? `linear-gradient(rgba(22, 28, 36, 0.74), rgba(22, 28, 36, 0.74)) center center / cover no-repeat, url(${OverlayImageTwo})` : `linear-gradient(rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.74)) center center / cover no-repeat, url(${OverlayImageTwo})`,
+            md: 'inherit',
             lg: 'inherit'
           },
           }}>
@@ -70,9 +72,25 @@ export default function SignInSide() {
               alignItems: 'center',
               background: {
                 xs: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(33, 43, 54)' : 'rgb(255, 255, 255)',
+                sm: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(33, 43, 54)' : 'rgb(255, 255, 255)',
+                md: 'inherit',
                 lg: 'inherit'
               },
-              borderRadius: '16px'
+              borderRadius: '16px',
+              width: {
+                xs: '100%',
+                sm: '480px',
+                md: '100%',
+                lg: '100%'
+              },
+              marginLeft: {
+                xs: '0px',
+                sm: 'auto'
+              },
+              marginRight: {
+                xs: '0px',
+                sm: 'auto'
+              },
             }}
           >
               <AuthForm />
