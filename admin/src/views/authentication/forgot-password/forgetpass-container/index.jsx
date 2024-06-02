@@ -33,7 +33,28 @@ const ForgetContainer = () => {
                 backgroundPosition: 'center',
             }}
             >
-                <Grid item xs={12} md={6} lg={6} xl={6} sx={{ marginLeft: '24px', marginRight: '24px', width: '400px', textAlign: 'center', marginTop: '70px', marginBottom: '96px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
+                <Grid item xs={12} md={6} lg={6} xl={6} sx={{ 
+                 marginLeft: '24px',
+                 marginRight: '24px', 
+                 width: {
+                  xs: '390px',
+                  sm: '390px',
+                  md: '440px',
+                  lg: '440px'
+                 },  
+                 textAlign: 'center', 
+                 marginTop: '70px', 
+                 marginBottom: '96px', 
+                 display: 'flex', 
+                 flexDirection: 'column', 
+                 alignItems: 'center', 
+                 justifyContent: 'center', 
+                 gap: '20px',
+                 background: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(33, 43, 54)' : 'rgb(255, 255, 255)',
+                 padding: 2,
+                 borderRadius: '16px',
+                 }}
+                 >
                   <Forgotpassowrdicon />
                   <Typography variant="h4">Forgot your password?</Typography>
                   <Typography fontSize="14px">Please enter the ID Number associated with your account and We will email you a link to reset your password.</Typography>

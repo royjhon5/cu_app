@@ -245,6 +245,7 @@ const UpdateFormPass = ({ ...others }) => {
                 btnVariant="contained"
                 label={loadingBtn ? 'Changing Password ...' : 'Change Password'}
                 type="submit"
+                fullWidth={true}
               />
             </Box>
           </form>

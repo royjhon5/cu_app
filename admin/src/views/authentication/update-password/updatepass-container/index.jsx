@@ -27,7 +27,28 @@ const ForgetContainer = () => {
                 backgroundPosition: 'center',
             }}
             >
-                <Grid item xs={12} md={6} lg={6} xl={6} sx={{ marginLeft: '24px', marginRight: '24px', width: '400px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
+                <Grid item xs={12} md={6} lg={6} xl={6} sx={{ 
+                  marginLeft: '24px', 
+                  marginRight: '24px', 
+                  width: {
+                    xs: '390px',
+                    sm: '390px',
+                    md: '440px',
+                    lg: '440px'
+                  }, 
+                  textAlign: 'center', 
+                  marginTop: '70px', 
+                  marginBottom: '86px', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  gap: '20px',
+                  background: theme.palette.appSettings.paletteMode === 'dark' ? 'rgb(33, 43, 54)' : 'rgb(255, 255, 255)',
+                  padding: 2,
+                  borderRadius: '16px',
+                  }}
+                  >
                   <SendIconSvg />
                   <Typography variant="h3">Request sent successfully!</Typography>
                   <Typography fontSize="14px">We&apos;ve sent a 6-digit confirmation to your email.Please enter the code in below box to verify your email.</Typography>

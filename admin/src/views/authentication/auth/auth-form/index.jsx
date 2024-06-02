@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../modules/context/AuthContext";
 import InfoIcon from '@mui/icons-material/Info';
 import CustomLoadingButton from "../../../../components/CustomLoadingButton";
+import XSDotFlash from "../../../../components/DotFlash/xsDotFlash";
 
 const AuthForm = ({ ...others }) => {
   const scriptedRef = useScriptRef();
@@ -186,7 +187,7 @@ const AuthForm = ({ ...others }) => {
                 btnClick={handleSubmit}
                 isDisabled={loadingBtn}
                 btnVariant="contained"
-                label={loadingBtn ? 'Logging In...' : 'Login'}
+                label={loadingBtn ? <>Logging In <Box sx={{ml:1}}><XSDotFlash /></Box></> : 'Login'}
                 type="submit"
                 btnSize="large"
                 fullWidth={true}

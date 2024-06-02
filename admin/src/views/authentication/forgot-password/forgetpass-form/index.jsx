@@ -7,6 +7,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import http from "../../../../api/http";
 import { useNavigate } from "react-router-dom";
 import CustomLoadingButton from "../../../../components/CustomLoadingButton";
+import XSDotFlash from "../../../../components/DotFlash/xsDotFlash";
 
 const ForgetpassForm = ({ ...others }) => {
   const scriptedRef = useScriptRef();
@@ -100,8 +101,9 @@ const ForgetpassForm = ({ ...others }) => {
                   btnClick={handleSubmit}
                   isDisabled={loadingBtn}
                   btnVariant="contained"
-                  label={loadingBtn ? 'Sending Request ...' : 'Send Request'}
+                  label={loadingBtn ? <>Sending Request <Box sx={{ml:1}}><XSDotFlash /></Box></> : 'Send Request'}
                   type="submit"
+                  fullWidth={true}
               />
             </Box>
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
