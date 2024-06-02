@@ -16,6 +16,7 @@ const CustomContainer = ({children}) => {
         backgroundPosition: 'center center', 
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
+        padding: 2
     }}>
         {children}
     </Box>

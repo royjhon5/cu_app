@@ -11,7 +11,8 @@ const CustomPaper = ({children}) => {
             zIndex: 0,
             padding: '30px 24px',
             width: '100%',
-            maxWidth: '470px'
+            maxWidth: '470px',
+            borderRadius: '16px'
         }}
     >
         {children}

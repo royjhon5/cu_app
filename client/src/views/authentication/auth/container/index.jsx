@@ -24,15 +24,33 @@ const LoginContainer = () => {
                 marginTop: '14px',
                 marginBottom: '60px'
             }}>
-                <Typography variant='h4' color="#9f1e22">Capitol University</Typography>
+                <Typography variant='h3' color="#9f1e22">Capitol University</Typography>
                 <Typography variant='h5' color="#9f1e22">Giftshop</Typography>
             </Stack>
             <LoginForm />
             <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
-            <Typography fontSize="14px">New User? </Typography>
-            <Typography onClick={createAccount} fontSize="14px" color="primary" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Create an Account</Typography>
+              <Typography 
+              fontSize={{
+                xs: '12px',
+                sm: '12px',
+                md: '14px',
+                lg: '14px'
+              }}>
+                New User? 
+              </Typography>
+            <Typography onClick={createAccount} fontSize={{
+                xs: '12px',
+                sm: '12px',
+                md: '14px',
+                lg: '14px'
+              }} color="primary" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Create an Account</Typography>
             <Box sx={{ flexGrow: 1}}></Box>
-            <Typography fontSize="14px" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}>Forgot password? </Typography>
+              <Typography fontSize={{
+                xs: '12px',
+                sm: '12px',
+                md: '14px',
+                lg: '14px'
+              }} sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}>Forgot password? </Typography>
             </Box>
             
       </CustomPaper>
