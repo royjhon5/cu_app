@@ -47,6 +47,7 @@ const LoginForm = ({...others}) => {
     {error ? (
         <Grow in={true}>
           <Chip
+            fullWidth={true}
             icon={<InfoIcon />}
             label={<Typography textAlign="justify" sx={{ ml: 1 }}>{error}</Typography>}
             color="error"
