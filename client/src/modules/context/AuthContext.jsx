@@ -7,16 +7,16 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [ accessToken, setAccessToken ] = useState(null);
+  const [ CleintAccessToken, setClientAccessToken ] = useState(null);
   const [ updatePassMessage, setUpdatePassMessage ] = useState(null);
   const [ error, setError ] = useState('');
   const [ loadingBtn, setLoadingBtn ]  = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('accessToken');
+    const storedToken = localStorage.getItem('CleintAccessToken');
     if (storedToken) {
       const decoded = jwtDecode(storedToken);
-      setAccessToken(decoded);
+      setClientAccessToken(decoded);
       setIsAuthenticated(true);
       checkTokenExpiration(decoded); 
     }
@@ -24,13 +24,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     let interval;
-    if (accessToken) {
+    if (CleintAccessToken) {
       interval = setInterval(() => {
-        checkTokenExpiration(accessToken);
+        checkTokenExpiration(CleintAccessToken);
       }, 1000); 
     }
     return () => clearInterval(interval);
-  }, [accessToken]);
+  }, [CleintAccessToken]);
 
   const checkTokenExpiration = (token) => {
     const currentTime = Date.now() / 1000;
@@ -42,12 +42,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (id_number, password) => {
     setLoadingBtn(true);
     try {
-      const response = await http.post('/admin-login', { id_number, password });
-      const decoded = jwtDecode(response.data.accessToken);
-      localStorage.setItem('accessToken', response.data.accessToken);
-      setAccessToken(decoded);
+      const response = await http.post('/client-login', { id_number, password });
+      const decoded = jwtDecode(response.data.clientaccessToken);
+      localStorage.setItem('CleintAccessToken', response.data.clientaccessToken);
+      setClientAccessToken(decoded);
       setIsAuthenticated(true);
-      
       checkTokenExpiration(decoded);
       setLoadingBtn(false);
     } catch (error) {
@@ -65,21 +64,29 @@ export const AuthProvider = ({ children }) => {
         } else if (error.response.data.error === "Account locked. Please contact support.") {
           setError("Account locked. Please contact support.");
           setLoadingBtn(false);
-        } else if (error.response.data.error === "Too many failed attempts. Account locked 10min") {
-          setError("Too many failed attempts. Account locked 10min");
+        } else if (error.response.data.error === "Your account is currently pending for approval. Please contact the administrator to update your account status.") {
+          setError("Your account is currently pending for approval. Please contact the administrator to update your account status.");
+          setLoadingBtn(false);
+        } else if (error.response.data.error === "Your account has been rejected. Please contact the administrator for further assistance.") {
+          setError("Your account has been rejected. Please contact the administrator for further assistance.");
+          setLoadingBtn(false);
+        } else if (error.response.data.error === "Your account has been banned. Please contact the administrator to resolve this issue.") {
+          setError("Your account has been banned. Please contact the administrator to resolve this issue.");
           setLoadingBtn(false);
         }
       } else {
           setError("Server Error");
           setLoadingBtn(false);
       }
+    } finally { 
+      setLoadingBtn(false);
     }
   };
 
   const logout = async () => {
     await http.delete('/admin-logout');
-    localStorage.removeItem('accessToken');
-    setAccessToken(null);
+    localStorage.removeItem('CleintAccessToken');
+    setClientAccessToken(null);
     setUser(null);
     setIsAuthenticated(false);
     setError("Logout successful");
@@ -92,8 +99,8 @@ export const AuthProvider = ({ children }) => {
 
   const tokenexpirationLogout = async () => {
     await http.delete('/admin-logout');
-    localStorage.removeItem('accessToken');
-    setAccessToken(null);
+    localStorage.removeItem('CleintAccessToken');
+    setClientAccessToken(null);
     setUser(null);
     setIsAuthenticated(false);
     setError("Session expired. For security, inactive accounts auto-logout after 1 day. Please log in again. Thank you.");
@@ -101,8 +108,8 @@ export const AuthProvider = ({ children }) => {
 
   const idleLogout = async () => {
     await http.delete('/admin-logout');
-    localStorage.removeItem('accessToken');
-    setAccessToken(null);
+    localStorage.removeItem('CleintAccessToken');
+    setClientAccessToken(null);
     setUser(null);
     setIsAuthenticated(false);
     setError("Your session has expired due to 15 minutes of inactivity; you have been automatically logged out.");
@@ -111,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     isAuthenticated,
     user,
-    accessToken,
+    CleintAccessToken,
     login,
     logout,
     idleLogout,

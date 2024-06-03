@@ -1,11 +1,13 @@
-import { Navigate } from "react-router-dom";
-import MainLayout from "../layout/MainLayout";
+import Loadable from '../component/Loadable/Loadable';
+import { lazy } from "react"
+const MainLayout = Loadable(lazy(() => import('../layout/MainLayout')));
+const FrontLandingPage = Loadable(lazy(() => import('../views/Landing Page')));
 
 const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
-    { path: '', element: <Navigate to="/" /> },
+    { path: '/main', element: <FrontLandingPage /> },
 
   ]
 }

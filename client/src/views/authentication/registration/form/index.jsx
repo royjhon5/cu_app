@@ -228,7 +228,7 @@ const RegistrationForm = ({ ...others }) => {
                   btnClick={handleSubmit} 
                   isDisabled={isDisabled} 
                   btnVariant="contained" 
-                  label={isDisabled ? <>Creating Account <Box sx={{ ml:1 }}><XSDotFlash /></Box></> : 'Create Account'} 
+                  label={isDisabled ? <>Creating Account <Box sx={{ ml:1  }}><XSDotFlash /></Box></> : 'Create Account'} 
                   type="submit"
                 />
             </Box>   

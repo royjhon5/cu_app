@@ -97,7 +97,7 @@ export const UseMode = () => {
     const radius = useSelector((state) => state.customization.borderRadius);
     const colors = JSON.parse(localStorage.getItem("system.settings")) || 'dark-green';
     const appContrasts = JSON.parse(localStorage.getItem("system.settings")) || 'default';
-    const appLayout = JSON.parse(localStorage.getItem("system.settings")) || 'horizontal';
+    const appLayout = JSON.parse(localStorage.getItem("system.settings")) || 'vertical';
     const navColors = JSON.parse(localStorage.getItem("system.settings")) || 'blend-in';
     const palettes = JSON.parse(localStorage.getItem("system.settings")) || 'light';
     const appContent = JSON.parse(localStorage.getItem("system.settings")) || 'true';
@@ -105,7 +105,7 @@ export const UseMode = () => {
     const [appSettings, setAppSettings] = useState({
         colorPreset: colors.colorPreset || 'dark-green',
         contrast: appContrasts.contrast || 'default',
-        layout: appLayout.layout || 'horizontal',
+        layout: appLayout.layout || 'vertical',
         navColor: navColors.navColor || 'blend-in',
         paletteMode: palettes.paletteMode || 'light',
         stretch: appContent.stretch || 'true',

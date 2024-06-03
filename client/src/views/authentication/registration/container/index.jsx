@@ -29,8 +29,18 @@ const RegistrationContainer = () => {
             </Stack>
                 <RegistrationForm />
                 <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
-                    <Typography fontSize="14px">Already have an account? </Typography>
-                    <Typography onClick={userLogin} fontSize="14px" color="primary" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Sign In</Typography>
+                    <Typography fontSize={{
+                xs: '12px',
+                sm: '12px',
+                md: '14px',
+                lg: '14px'
+              }}>Already have an account? </Typography>
+                    <Typography onClick={userLogin} fontSize={{
+                xs: '12px',
+                sm: '12px',
+                md: '14px',
+                lg: '14px'
+              }} color="primary" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Sign In</Typography>
                 </Box>
         </CustomPaper>
     </CustomContainer>

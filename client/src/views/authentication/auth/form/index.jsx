@@ -1,19 +1,20 @@
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import useScriptRef from "../../../../hooks/useScriptRef";
-import { Box, Chip, FormHelperText, Grow, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Chip, FormHelperText, Grow, IconButton, InputAdornment, Paper, TextField, Typography } from "@mui/material";
 import CustomLoadingButton from "../../../../component/CustomLoadingButton";
-import { useState } from "react";
-import http from "../../../../api/http";
+import { useContext, useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import XSDotFlash from "../../../../component/CustomDotFlash/xsDotFlash";
+import { AuthContext } from "../../../../modules/context/AuthContext";
+import InfoIcon from '@mui/icons-material/Info';
 
 const LoginForm = ({...others}) => {
   const scriptedRef = useScriptRef();
-  const [ error, setError ] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { login, error, updatePassMessage } = useContext(AuthContext)
 
 
   const handleClickShowPassword = () => {
@@ -25,43 +26,17 @@ const LoginForm = ({...others}) => {
   };
 
   const handleSubmit = async (values) => {
-    setError(null);
-    setIsDisabled(true);
+    setIsDisabled(true)
     try {
-        const response = await http.post('/client-register', {
-          id_number: values.id_number, 
-          first_name: values.first_name,
-          last_name: values.last_name, 
-          email: values.email
-        });
-        if (response.status === 200) {
-          setIsDisabled(false);
-          clearData();
-        } else {
-          throw new Error(response.data.error)
-        }
+      await login(values.id_number, values.password);
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        if (error.response.data.error === "ID Number already exist!") {
-          setIsDisabled(false);
-            setError("ID Number already exist!");
-        } else if (error.response.data.error === "Email address already exist!") {
-          setIsDisabled(false);
-          setError("Email address already exist!");
-        } 
-      } else {
-          setIsDisabled(false);
-          setError("Server lost connection");
-      }
+      console.error(error)
+    } finally {
+      setIsDisabled(false)
     }
   };
 
-  const clearData = (values) => {
-    values.first_name = ''
-    values.last_name = ''
-    values.id_number = ''
-    values.email = ''
-  }
+
 
 
   return (
@@ -69,9 +44,43 @@ const LoginForm = ({...others}) => {
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb:1 }}>
       <Typography variant="h4">Sign In</Typography>
     </Box>
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb:1, width: '100%' }}>
-    {error && <Grow in={true}><Chip label={<Typography >{error}</Typography>} color="error" sx={{ borderRadius: 1, width: '100%' }} /></Grow>}
-    </Box>
+    {error ? (
+        <Grow in={true}>
+          <Chip
+            icon={<InfoIcon />}
+            label={<Typography textAlign="justify" sx={{ ml: 1 }}>{error}</Typography>}
+            color="error"
+            sx={{
+              borderRadius: 1,
+              height: 'auto',
+              '& .MuiChip-label': {
+                display: 'block',
+                whiteSpace: 'normal',
+                padding: 1
+              }
+            }}
+          />
+        </Grow>
+      ) : updatePassMessage ? (
+        <Grow in={true}>
+          <Paper
+            elevation={0}
+            sx={{
+              padding: 1.5,
+              borderRadius: 1,
+              background: '#66BB6A',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 2
+            }}
+          >
+            <Box><InfoIcon fontSize="medium" /></Box>
+            <Typography textAlign="justify">{updatePassMessage}</Typography>
+          </Paper>
+        </Grow>
+      ) : ( '' )}
     <Formik 
       initialValues={{
         id_number: '',
