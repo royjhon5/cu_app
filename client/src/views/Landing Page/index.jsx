@@ -1,11 +1,11 @@
 import { Box, Typography } from '@mui/material'
 const FrontLandingPage = () => {
   return (
-    <Box>
+      <Box>
         <Typography>
-            Fuck you nigga
+          Hello world mother fucker
         </Typography>
-    </Box>
+      </Box>
   )
 }
 

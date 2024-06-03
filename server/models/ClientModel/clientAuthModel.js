@@ -3,7 +3,7 @@ const db = require('../../config/dbConnection')
 
 const clientModel = {
     findIdNumberLogin: function(id_number) {
-      const query = 'SELECT * FROM admin_user WHERE id_number = ?';
+      const query = 'SELECT * FROM client_user WHERE id_number = ?';
       return new Promise((resolve, reject) => {
         db.query(query, [id_number], function(err, results) {
           if (err) {
@@ -63,7 +63,55 @@ const clientModel = {
         } catch (err) {
             console.err(err)
         }
-    }
+    },
+
+    incrementFailedAttempts: function(user_id) {
+      const query = 'UPDATE client_user SET failed_login_attempts = failed_login_attempts + 1 WHERE id = ?'
+      return new Promise((resolve, reject) => {
+          db.query(query, [user_id], function(err, results) {
+            if (err) {
+              return reject(err);
+            }
+            if (results.length === 0) {
+              return resolve(null);
+            }
+            const user = results[0];
+            resolve(user);
+          });
+        });
+    },
+
+    isDisable: function(user_id) {
+      const query = 'UPDATE client_user SET is_disable = 1 WHERE id = ?'
+      return new Promise((resolve, reject) => {
+          db.query(query, [user_id], function(err, results) {
+            if (err) {
+              return reject(err);
+            }
+            if (results.length === 0) {
+              return resolve(null);
+            }
+            const user = results[0];
+            resolve(user);
+          });
+        });
+    },
+
+    resetFailedAttempts: function(user_id) {
+      const query = 'UPDATE client_user SET failed_login_attempts = 0 WHERE id = ?'
+      return new Promise((resolve, reject) => {
+          db.query(query, [user_id], function(err, results) {
+            if (err) {
+              return reject(err);
+            }
+            if (results.length === 0) {
+              return resolve(null);
+            }
+            const user = results[0];
+            resolve(user);
+          });
+        });
+    },
 }
 
 module.exports = clientModel;

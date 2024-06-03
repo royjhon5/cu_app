@@ -34,8 +34,12 @@ router.delete('/delete-roles', AdminController.deleteRole);
 
 
 // CLIENT API HERE
+// GET //
 router.post('/client-register', ClientUserController.clientRegistration);
 router.get('/verify-email', ClientUserController.verifyEmail);
+
+//POST//
+router.post('/client-login', ClientUserController.ClientuserLogin);
 router.post('/set-password', ClientUserController.setPassword)
 
 module.exports = router;

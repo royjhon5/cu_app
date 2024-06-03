@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 
-module.exports.userLogin = async function(req, res) {
+module.exports.ClientuserLogin = async function(req, res) {
   const { id_number, password } = req.body;
   try {
       const user = await clientUser.findIdNumberLogin(id_number);
@@ -19,24 +19,24 @@ module.exports.userLogin = async function(req, res) {
       const match = await bcrypt.compare(password , user.password);
         if (!match) {
           if (user.failed_login_attempts >= 5) {
-            await adminUser.isDisable(user.id)
+            await clientUser.isDisable(user.id)
             return res.status(400).json({ error: 'Account locked. Please contact support.' });
           } else {
-            await adminUser.incrementFailedAttempts(user.id);
+            await clientUser.incrementFailedAttempts(user.id);
           }
           return res.status(400).json({ error: 'Invalid password!' });
         }
       const userID = user.id;
       const fName = user.first_name;
       const idNumber = user.id_number;
-      await adminUser.resetFailedAttempts(user.id);
+      await clientUser.resetFailedAttempts(user.id);
       const clientaccessToken = jwt.sign({userID, fName, idNumber}, process.env.SECRET_KEY, {
         expiresIn: '1d'
       }); 
-      await db.query('UPDATE client SET access_token = ? WHERE id = ?;', [
-        accessToken, user.id
+      await db.query('UPDATE client_user SET access_token = ? WHERE id = ?;', [
+        clientaccessToken, user.id
       ]);
-      await db.query('UPDATE client SET last_login = now() WHERE id =?;', [
+      await db.query('UPDATE client_user SET last_login = now() WHERE id =?;', [
           user.id,
       ]);
       res.cookie('clientaccessToken', clientaccessToken, {
