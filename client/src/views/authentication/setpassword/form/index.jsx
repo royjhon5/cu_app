@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { WebSocket } from "../../../../main";
 import http from "../../../../api/http";
 import CustomLoadingButton from "../../../../component/CustomLoadingButton";
+import XSDotFlash from "../../../../component/CustomDotFlash/xsDotFlash";
 const SetPasswordForm = ({...others}) => {
   const scriptedRef = useScriptRef();
   const [ error, setError ] = useState('');
@@ -32,12 +33,13 @@ const SetPasswordForm = ({...others}) => {
     const password = values.password
     try {
         await http.post('/set-password', {id_number, password});
-        navigate('/')
+        
         AppSocket.emit('SubmitNotif');
         AppSocket.emit('ShowNotif');
         AppSocket.emit('playNotifSound');
         setIsDisabled(false)
-        setError('Success');       
+        setError('Success'); 
+        navigate('/')      
     } catch (error) {
         console.error(error)
         setIsDisabled(false)
@@ -150,7 +152,7 @@ const SetPasswordForm = ({...others}) => {
                 isDisabled={isDisbled} 
                 type="submit"
                 btnVariant="contained"
-                label={isDisbled ? 'Setting Password...' : 'Set Password'} 
+                label={isDisbled ? <>Please wait <Box sx={{ml:1}}><XSDotFlash /></Box></> : 'Set Password'} 
                 btnClick={handleSubmit}
               />
             </Box>

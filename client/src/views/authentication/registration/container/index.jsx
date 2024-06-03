@@ -22,9 +22,9 @@ const RegistrationContainer = () => {
                 flexDirection: 'column',
                 gap: '4px',
                 marginTop: '14px',
-                marginBottom: '60px'
+                marginBottom: '45px'
             }}>
-                <Typography variant='h4' color="#9f1e22">Capitol University</Typography>
+                <Typography variant='h3' color="#9f1e22">Capitol University</Typography>
                 <Typography variant='h5' color="#9f1e22">Giftshop</Typography>
             </Stack>
                 <RegistrationForm />

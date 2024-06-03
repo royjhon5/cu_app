@@ -4,8 +4,54 @@ const clientUser = require('../../models/ClientModel/clientAuthModel');
 const db = require('../../config/dbConnection');
 const jwt = require('jsonwebtoken');
 
+
+
+module.exports.userLogin = async function(req, res) {
+  const { id_number, password } = req.body;
+  try {
+      const user = await clientUser.findIdNumberLogin(id_number);
+      if (!user) return res.status(400).json({ error: 'Invalid Id Number' });
+      if (user.status === 'pending') return res.status(400).json({ error: 'Your account is currently pending for approval. Please contact the administrator to update your account status.' });
+      if (user.status === 'rejected') return res.status(400).json({ error: 'Your account has been rejected. Please contact the administrator for further assistance.' });
+      if (user.status === 'banned') return res.status(400).json({ error: 'Your account has been banned. Please contact the administrator to resolve this issue.' });
+      if (user.access_token) return res.status(400).json({ error: 'User is already logged in on another device.' });
+      if (user.is_disable === 1) return res.status(400).json({ error: 'Account locked. Please contact the administrator for further assistance.' });
+      const match = await bcrypt.compare(password , user.password);
+        if (!match) {
+          if (user.failed_login_attempts >= 5) {
+            await adminUser.isDisable(user.id)
+            return res.status(400).json({ error: 'Account locked. Please contact support.' });
+          } else {
+            await adminUser.incrementFailedAttempts(user.id);
+          }
+          return res.status(400).json({ error: 'Invalid password!' });
+        }
+      const userID = user.id;
+      const fName = user.first_name;
+      const idNumber = user.id_number;
+      await adminUser.resetFailedAttempts(user.id);
+      const clientaccessToken = jwt.sign({userID, fName, idNumber}, process.env.SECRET_KEY, {
+        expiresIn: '1d'
+      }); 
+      await db.query('UPDATE client SET access_token = ? WHERE id = ?;', [
+        accessToken, user.id
+      ]);
+      await db.query('UPDATE client SET last_login = now() WHERE id =?;', [
+          user.id,
+      ]);
+      res.cookie('clientaccessToken', clientaccessToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+      });
+      res.json({ clientaccessToken });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+}
+
 module.exports.clientRegistration = async function(req, res) {
-    const { id_number, first_name, last_name, email } = req.body;
+    const { id_number, first_name, last_name, email, contact_no, type_id } = req.body;
     try {  
     const user = await clientUser.findIdNumberRegister(id_number);
     const userEmail = await clientUser.findUserEmail(email);
@@ -17,6 +63,8 @@ module.exports.clientRegistration = async function(req, res) {
       first_name,
       last_name,
       email,
+      contact_no,
+      type_id,
       verification_token: token,
       is_verified: false,
     }

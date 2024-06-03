@@ -7,6 +7,7 @@ import { useState } from "react";
 import http from "../../../../api/http";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import XSDotFlash from "../../../../component/CustomDotFlash/xsDotFlash";
 
 const LoginForm = ({...others}) => {
   const scriptedRef = useScriptRef();
@@ -147,7 +148,7 @@ const LoginForm = ({...others}) => {
                 btnClick={handleSubmit} 
                 isDisabled={isDisabled} 
                 btnVariant="contained" 
-                label={isDisabled ? 'Logging In...' : 'Login'} 
+                label={isDisabled ? <>Please wait <Box sx={{ml:1}}><XSDotFlash /></Box></> : 'Login'} 
               />
             </Box>
             

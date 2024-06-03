@@ -106,7 +106,7 @@ const Container = () => {
                     value={selectRole} 
                     onChange={handleSelectChange}
                     label="Role"
-                    renderValue={(selected) => selected.join(', ')}
+                    renderValue={(selected) => selected.join(',')}
                     >
                         {roleData.map((name) => (
                             <MenuItem key={name.id} value={name.role}>

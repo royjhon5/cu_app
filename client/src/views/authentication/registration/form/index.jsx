@@ -1,15 +1,18 @@
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import useScriptRef from "../../../../hooks/useScriptRef";
-import { Box, Chip, FormHelperText, Grow, TextField, Typography } from "@mui/material";
+import { Box, Chip, FormControl, FormHelperText, Grow, InputAdornment, InputLabel, ListItemText, MenuItem, Select, TextField, Typography } from "@mui/material";
 import CustomLoadingButton from "../../../../component/CustomLoadingButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import http from "../../../../api/http";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import XSDotFlash from "../../../../component/CustomDotFlash/xsDotFlash";
 const RegistrationForm = ({ ...others }) => {
   const scriptedRef = useScriptRef();
   const [ error, setError ] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
+  const [roleData, setRoleData] = useState([]);
   const navigate = useNavigate();
 
 
@@ -22,7 +25,9 @@ const RegistrationForm = ({ ...others }) => {
           id_number: values.id_number, 
           first_name: values.first_name,
           last_name: values.last_name, 
-          email: values.email
+          email: values.email,
+          contact_no: values.contact_no,
+          type_id: values.role
         });
         if (response.status === 200) {
           setIsDisabled(false);
@@ -46,6 +51,19 @@ const RegistrationForm = ({ ...others }) => {
     }
   };
 
+  useEffect(() => {
+    const getRoles = async () => {
+        await http.get('/get-roles')
+        .then((response) => {
+            setRoleData(response.data)
+        })
+        .catch((err) => {
+            toast.error(err, 'Cannot connect to the server!')
+        })
+      } 
+    getRoles()
+  }, [])
+
 
   return (
     <>
@@ -61,6 +79,8 @@ const RegistrationForm = ({ ...others }) => {
         last_name: '',
         id_number: '',
         email: '',
+        contact_no: '',
+        role: '',
         submit: null
       }}
       validationSchema={Yup.object().shape({
@@ -68,6 +88,8 @@ const RegistrationForm = ({ ...others }) => {
         last_name: Yup.string().typeError('Lastname is required').max(255).required('Lastname is required'),
         id_number: Yup.number().typeError('ID Number must be a number').required('ID Number is required'),
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+        contact_no: Yup.number().typeError('Contact must be a valid Contact Number').required('Contact Number is required'),
+        role: Yup.string().required('Role is required')
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         handleSubmit(values);
@@ -161,11 +183,52 @@ const RegistrationForm = ({ ...others }) => {
                 {errors.submit && (
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 )}
+                <TextField
+                  fullWidth
+                  label="Contact Number"
+                  variant="outlined"
+                  type="contact_no" 
+                  value={values.contact_no}
+                  name="contact_no"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={touched.contact_no && Boolean(errors.contact_no)}
+                  helperText={touched.contact_no && errors.contact_no}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">63+</InputAdornment>
+                  }}
+                />
+                {errors.submit && (
+                  <FormHelperText error>{errors.submit}</FormHelperText>
+                )}
+                <FormControl>
+                  <InputLabel>Role</InputLabel>
+                  <Select
+                    label="Role"
+                    variant="outlined"
+                    type="role" 
+                    value={values.role}
+                    name="role"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={touched.role && Boolean(errors.role)}
+                    helpertext={touched.role && errors.role}
+                  >
+                    {roleData.map((name) => (
+                          <MenuItem key={name.id} value={name.id}>
+                            <ListItemText primary={name.role} />
+                          </MenuItem>
+                      ))}
+                  </Select>
+                  {touched.role && errors.role && (
+                  <FormHelperText error>{errors.role}</FormHelperText>
+                  )}
+                </FormControl>           
                 <CustomLoadingButton 
                   btnClick={handleSubmit} 
                   isDisabled={isDisabled} 
                   btnVariant="contained" 
-                  label={isDisabled ? 'Creating Account...' : 'Create Account'} 
+                  label={isDisabled ? <>Creating Account <Box sx={{ ml:1 }}><XSDotFlash /></Box></> : 'Create Account'} 
                   type="submit"
                 />
             </Box>   
