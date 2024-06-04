@@ -1,4 +1,4 @@
-import { Box, Button, ListItemText, Stack, Typography } from "@mui/material";
+import { Box, Button, ListItemText, Stack, Typography, Skeleton } from "@mui/material";
 import NotifButton from "../NotifComponent";
 import DataContainer from "../NotifComponent/Container";
 import Identification from "../NotifComponent/Identification";
@@ -9,15 +9,24 @@ import ReactTimeAgo from 'react-time-ago';
 import http from "../../../api/http"
 import { WebSocket } from "../../../main";
 import { toast } from "sonner";
+import SkeletonAvatar from "../NotifComponent/SkeletonAvatar";
 
 const NotificationData = () => {
   const [unRead, setUnread] = useState([]);
+  const [loading, setLoading] = useState(false)
   const AppSocket = WebSocket();
 
   async function unreadNotify() {
-    const response = await http.get('/unread-notify');
-    const data = response.data;
-    setUnread(data);
+    setLoading(true)
+    try {
+      const response = await http.get('/unread-notify');
+      const data = response.data;
+      setUnread(data);
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function activateUser(useriDNumber) {
@@ -46,7 +55,7 @@ const NotificationData = () => {
       <ListContainer key={index}>
       <NotifButton>
         {notificationData.notif_status === 1 ? '' : <Identification />}
-          <ListAvatar />
+          {loading? <SkeletonAvatar /> : <ListAvatar />}
           <DataContainer>
               <ListItemText sx={{
                 flex: '1 1 auto',
@@ -54,7 +63,8 @@ const NotificationData = () => {
                 margin: 0
               }}>
                 <Box sx={{ marginBottom: '4px'}}>
-                    <Typography fontSize={15}>{notificationData.first_name} {notificationData.last_name} - {notificationData.id_number}</Typography>
+                  {loading ? <Skeleton variant="text" sx={{ fontSize: '15px' }} /> : ''}
+                    <Typography fontSize={'15px'}>{notificationData.first_name} {notificationData.last_name} - {notificationData.id_number}</Typography>
                 </Box>
                 <Stack sx={{
                   display: 'flex',
@@ -64,9 +74,13 @@ const NotificationData = () => {
                   fontSize: '0.75rem',
                   fontWeight: '400'
                 }}>
+                    {loading ? <Skeleton variant="text" sx={{ fontSize: '0.75rem', width: '100%' }} /> : 
+                    <>
                     <ReactTimeAgo date={new Date(notificationData.time_created).getTime()} /> 
                     <Box sx={{ width: '2px', height: '2px', backgroundColor: 'currentcolor', marginLeft: '4px', marginRight: '4px', borderRadius: '50%' }}></Box>
                     {notificationData.type_of_notification}
+                    </>
+                    }
                 </Stack>
               </ListItemText>
               <Stack sx={{

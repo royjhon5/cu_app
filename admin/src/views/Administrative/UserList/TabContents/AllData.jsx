@@ -48,38 +48,46 @@ const AllData = () => {
         </TableHeader>
         <CustomTableBody>
             {loading? (
-              <TableRow>
-                  <TableCell>
-                    <LoadingData />
-                  </TableCell>
-              </TableRow>
+                <>
+                  <Grow in={true}>
+                    <TableRow>
+                      <TableCell colSpan={12}>
+                        <LoadingData />
+                      </TableCell>
+                    </TableRow>
+                  </Grow>
+                </>
             ) : (
               <>
               {Array.isArray(getAllData) && getAllData.length > 0 ? (
                   getAllData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((variable) => (
-                    <Fragment key={variable.id}>
-                        <Grow in={true}>
-                          <TableRow hover>
-                              <CustomTableBodyCell display='flex' justifyContent='center' alignItems='center'>
-                                <Avatar sx={{ marginRight: '16px' }} />
-                                <ListItemText>
-                                  <Typography sx={{ fontSize:'0.875rem', fontWeight: 400 }}>{variable.first_name} {variable.last_name}</Typography>
-                                  <Typography sx={{ fontSize:'0.875rem', fontWeight: 400, color: 'rgb(99, 115, 129)' }}variant="body2">{variable.email}</Typography>
-                                </ListItemText>
-                              </CustomTableBodyCell>
-                              <CustomTableBodyCell>
-                                {variable.contact_no}
-                              </CustomTableBodyCell>
-                          </TableRow>
-                        </Grow>
-                    </Fragment>
+                     <>
+                      <Grow in={true} key={variable.id}>
+                        <TableRow hover>
+                            <CustomTableBodyCell display='flex' justifyContent='center' alignItems='center'>
+                              <Avatar sx={{ marginRight: '16px' }} />
+                              <ListItemText>
+                                <Typography sx={{ fontSize:'0.875rem', fontWeight: 400 }}>{variable.first_name} {variable.last_name}</Typography>
+                                <Typography sx={{ fontSize:'0.875rem', fontWeight: 400, color: 'rgb(99, 115, 129)' }}variant="body2">{variable.email}</Typography>
+                              </ListItemText>
+                            </CustomTableBodyCell>
+                            <CustomTableBodyCell>
+                              {variable.contact_no}
+                            </CustomTableBodyCell>
+                        </TableRow>
+                      </Grow>
+                    </>
                   ))
                   ) : (
+                    <>
+                    <Grow in={true}>
                     <TableRow>
-                        <TableCell sx={{ border: 'none'}}>
+                        <TableCell sx={{ border: 'none'}} colSpan={12}>
                             <NoData />
                         </TableCell>
                     </TableRow>
+                    </Grow>
+                    </>
                   )}  
               </>
             )}

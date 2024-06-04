@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import { Box, Button, CircularProgress, IconButton, Paper, Stack, TableCell, TablePagination, TableRow, TextField } from '@mui/material'
+import { Box, Button, IconButton, Paper, Stack, TableCell, TablePagination, TableRow, TextField, Fade } from '@mui/material'
 import CustomTable from '../../../components/CustomDataTable';
 import TableHeader from '../../../components/CustomDataTable/TableHeader';
 import CustomHeaderCell from '../../../components/CustomDataTable/CustomHeaderCell';
 import CustomTableBody from '../../../components/CustomDataTable/TableBody';
 import NoData from '../../../components/CustomDataTable/NoData';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TableMenuList from '../../../components/TableMenu';
 import TableMenuItem from '../../../components/TableMenu/TableMenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,6 +14,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import CustomDialog from '../../../components/CustomDialog';
 import { toast } from 'sonner'
 import http from '../../../api/http';
+import LoadingData from '../../../components/CustomDataTable/LoadingData';
 
 const ContentData = ({ openDialog, closeDialog  }) => {
   const [page, setPage] = useState(0);
@@ -122,18 +123,18 @@ const ContentData = ({ openDialog, closeDialog  }) => {
                 )}
             </TableHeader>
             <CustomTableBody>
-                {loading? (<TableRow>
+                {loading? (
+                    <TableRow>
                         <TableCell colSpan={1}>
-                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                <CircularProgress color="primary"/>
-                            </Box>
+                            <LoadingData />
                         </TableCell>
                     </TableRow>) : 
                     (
                     <>
                     {Array.isArray(data) && data.length > 0 ? (
                         data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((variable) => (
-                            <Fragment key={variable.id}>
+                            <>
+                                <Fade in={true} key={variable.id}>
                                 <TableRow hover >
                                     <TableCell sx={{ border: '1px dashed rgb(46, 50, 54)', width: '100%', borderLeft: 'none', borderRight: 'none' }}>{variable.role}</TableCell>
                                     <TableCell sx={{ border: '1px dashed rgb(46, 50, 54)', borderLeft: 'none', borderRight: 'none' }}>
@@ -153,14 +154,19 @@ const ContentData = ({ openDialog, closeDialog  }) => {
                                             </TableMenuList>
                                     </TableCell>
                                 </TableRow>
-                            </Fragment>
+                                </Fade>
+                            </>
                         ))
                         ) : (
+                            <>
+                            <Fade in={true}>
                             <TableRow>
                                 <TableCell sx={{ border: 'none'}}>
                                     <NoData />
                                 </TableCell>
                              </TableRow>
+                            </Fade>
+                            </>
                         )}  
                     </>
                     )
