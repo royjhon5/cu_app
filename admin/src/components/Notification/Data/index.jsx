@@ -83,6 +83,17 @@ const NotificationData = () => {
           </ListContainer>
         ))}
       </>
+    ) : unRead.length === 0 ? ( 
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Typography variant="body2" align="center">
+          No Data Found
+        </Typography>
+      </Box>
     ) : ( 
       unRead.map((notificationData, index) => (
         <ListContainer key={index}>
