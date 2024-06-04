@@ -12,7 +12,7 @@ const SuccessRegistration = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/');
-    }, 3500);
+    }, 5000);
     return () => clearTimeout(timer);
   })
   
