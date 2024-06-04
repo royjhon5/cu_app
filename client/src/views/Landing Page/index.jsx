@@ -1,9 +1,9 @@
 import { Box, Typography } from '@mui/material'
 const FrontLandingPage = () => {
   return (
-      <Box>
-        <Typography>
-          Hello world outlet here
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography fontSize="30px">
+          HI, FUCK YOU HAHAAHHAHAAHHAAHAHHAAH
         </Typography>
       </Box>
   )
