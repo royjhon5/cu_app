@@ -54,7 +54,7 @@ const NotificationData = () => {
     {loading ? 
     ( 
       <>
-        {[...Array(5)].map((_, index) => (
+        {[...Array(10)].map((_, index) => (
           <ListContainer key={index}>
             <NotifButton>
                 <SkeletonAvatar />
