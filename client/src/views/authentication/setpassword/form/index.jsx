@@ -40,7 +40,7 @@ const SetPasswordForm = ({...others}) => {
         AppSocket.emit('ToConfirmEmail');
         setIsDisabled(false)
         setError('Success'); 
-        navigate('/user/registration/success')      
+        navigate('/user/registration/success', { replace: true })      
     } catch (error) {
         console.error(error)
         setIsDisabled(false)

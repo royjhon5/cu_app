@@ -11,7 +11,7 @@ const SuccessRegistration = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('https://cu-app-giftshop.vercel.app/');
+      navigate('/');
     }, 3500);
     return () => clearTimeout(timer);
   })
