@@ -93,7 +93,7 @@ const NotificationData = () => {
         gap: 1.5,
         height: '85vh'
       }}>
-        <img src={NoNotificationIcon} style={{ height: '5%', width: '5%'}} />
+        <img src={NoNotificationIcon} style={{ height: '5%', width: '15%'}} />
         <Typography variant="body2" align="center">
           No notification
         </Typography>
