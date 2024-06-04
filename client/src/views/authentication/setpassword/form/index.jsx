@@ -5,7 +5,7 @@ import useScriptRef from "../../../../hooks/useScriptRef";
 import { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { WebSocket } from "../../../../main";
 import http from "../../../../api/http";
 import CustomLoadingButton from "../../../../component/CustomLoadingButton";
@@ -14,7 +14,6 @@ const SetPasswordForm = ({...others}) => {
   const scriptedRef = useScriptRef();
   const [ error, setError ] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const AppSocket = WebSocket();
   const location = useLocation();
   const id_number = location.state.data;
@@ -40,7 +39,7 @@ const SetPasswordForm = ({...others}) => {
         AppSocket.emit('ToConfirmEmail');
         setIsDisabled(false)
         setError('Success'); 
-        navigate('/user/registration/success', { replace: true })      
+        window.location.href = '/user/registration/success'    
     } catch (error) {
         console.error(error)
         setIsDisabled(false)
