@@ -10,6 +10,7 @@ import http from "../../../api/http"
 import { WebSocket } from "../../../main";
 import { toast } from "sonner";
 import SkeletonAvatar from "../NotifComponent/SkeletonAvatar";
+import NoNotificationIcon from '../../../assets/images/no-alarm.png'
 
 const NotificationData = () => {
   const [unRead, setUnread] = useState([]);
@@ -88,10 +89,13 @@ const NotificationData = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        gap: 1.5,
+        height: '85vh'
       }}>
+        <img src={NoNotificationIcon} style={{ height: '40%', width: '40%'}} />
         <Typography variant="body2" align="center">
-          No Data Found
+          No notification
         </Typography>
       </Box>
     ) : ( 
