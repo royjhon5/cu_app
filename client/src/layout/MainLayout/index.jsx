@@ -45,7 +45,7 @@ const MainLayout = () => {
             >
           <MainCard>
             <motion.div layout>
-              <Container maxWidth={theme.palette.appSettings.stretch === 'true' ? 'lg' : 'xl'}>
+              <Container maxWidth={theme.palette.appSettings.stretch === 'true' ? 'xxl' : 'xxl'}>
                 <Outlet />
               </Container>
             </motion.div>

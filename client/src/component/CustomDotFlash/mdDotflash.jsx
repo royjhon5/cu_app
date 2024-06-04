@@ -13,8 +13,8 @@ const dotFlashing = keyframes`
 
 export const DotFlashing = styled('div')`
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   margin: 0 2px;
   background-color: currentColor;
   border-radius: 50%;

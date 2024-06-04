@@ -7,6 +7,7 @@ const Register = Loadable(lazy(() => import('../views/authentication/registratio
 const Success = Loadable(lazy(() => import('../views/authentication/registration/SuccessRegistration/index')));
 const Verified = Loadable(lazy(() => import('../views/authentication/verifiedaccount/index')));
 const SetPasswordContainer = Loadable(lazy(() => import('../views/authentication/setpassword/container')));
+const VerifyEmail = Loadable(lazy(() => import('../views/authentication/registration/Verify')));
 
 const AuthenticationRoutes = {
   path: '/',
@@ -31,6 +32,10 @@ const AuthenticationRoutes = {
     {
       path: '/set-password',
       element: <SetPasswordContainer />
+    },
+    {
+      path: '/user/registration/verification',
+      element: <VerifyEmail />
     },
   ]
 }

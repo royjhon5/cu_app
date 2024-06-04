@@ -12,7 +12,7 @@ const SuccessRegistration = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/');
-    }, 5000);
+    }, 3500);
     return () => clearTimeout(timer);
   })
   
@@ -32,7 +32,7 @@ const SuccessRegistration = () => {
                 marginBottom: '20px'
             }}>
                 <Typography variant='h4'>Registered Successfully!</Typography>
-                <Typography variant='h5'>We have sent a confirmation email to your provided email address to verify your account.</Typography>
+                <Typography variant='h5'>Note: Your account is currently pending for approval. We will notify you once it has been fully activated. Thank you for your patience.</Typography>
             </Stack>
         </CustomPaper>
     </CustomContainer>

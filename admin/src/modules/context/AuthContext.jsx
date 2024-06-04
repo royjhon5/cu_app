@@ -77,12 +77,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await http.delete('/admin-logout');
-    localStorage.removeItem('accessToken');
-    setAccessToken(null);
-    setUser(null);
-    setIsAuthenticated(false);
-    setError("Logout successful");
+    try {
+      const response = await http.delete('/admin-logout');
+      if (response.status === 200) {
+        localStorage.removeItem('accessToken');
+        setAccessToken(null);
+        setUser(null);
+        setIsAuthenticated(false);
+        setError("Logout successful");
+      } else {
+        setError("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      setError("An error occurred during logout. Please try again.");
+    }
   };
 
   const userUpdatePassword = async (OTP, password) => {

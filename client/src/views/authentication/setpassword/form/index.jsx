@@ -37,9 +37,10 @@ const SetPasswordForm = ({...others}) => {
         AppSocket.emit('SubmitNotif');
         AppSocket.emit('ShowNotif');
         AppSocket.emit('playNotifSound');
+        AppSocket.emit('ToConfirmEmail');
         setIsDisabled(false)
         setError('Success'); 
-        navigate('/')      
+        navigate('/user/registration/success')      
     } catch (error) {
         console.error(error)
         setIsDisabled(false)

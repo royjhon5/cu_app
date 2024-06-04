@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, useTheme } from "@mui/material"
+import { AppBar, Container, Toolbar, useTheme } from "@mui/material"
 import { useEffect, useState } from "react";
 import { TopNavColor } from "../../../themes/palette";
 
@@ -29,15 +29,18 @@ const TopNavigation = () => {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        color: 'black'
+        color: 'black',
       }}>
           <Toolbar
             sx={{
               height: 1,
               px: { lg: 5 },
+              
             }}
           >
-            fuck you
+            <Container maxWidth="lg">
+              Hello world
+            </Container>
           </Toolbar>
       </AppBar>
   )

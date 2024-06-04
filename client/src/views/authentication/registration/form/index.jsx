@@ -31,7 +31,7 @@ const RegistrationForm = ({ ...others }) => {
         });
         if (response.status === 200) {
           setIsDisabled(false);
-          navigate('/user/registration/success')
+          navigate('/user/registration/verification')
         } else {
           throw new Error(response.data.error)
         }

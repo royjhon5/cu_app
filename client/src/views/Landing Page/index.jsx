@@ -3,7 +3,7 @@ const FrontLandingPage = () => {
   return (
       <Box>
         <Typography>
-          Hello world mother fucker
+          Hello world outlet here
         </Typography>
       </Box>
   )
