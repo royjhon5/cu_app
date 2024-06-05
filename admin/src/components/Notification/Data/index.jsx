@@ -1,4 +1,4 @@
-import { Box, Button, ListItemText, Stack, Typography, Skeleton, Grow } from "@mui/material";
+import { Box, Button, ListItemText, Stack, Typography, Skeleton } from "@mui/material";
 import NotifButton from "../NotifComponent";
 import DataContainer from "../NotifComponent/Container";
 import Identification from "../NotifComponent/Identification";
@@ -93,12 +93,10 @@ const NotificationData = () => {
         gap: 1.5,
         height: '85vh'
       }}>
-        <Grow in={true}>
         <img src={NoNotificationIcon} style={{ height: '5%', width: '10%'}} />
         <Typography variant="body2" align="center">
           No notification
         </Typography>
-        </Grow>
       </Box>
     ) : ( 
       unRead.map((notificationData, index) => (
