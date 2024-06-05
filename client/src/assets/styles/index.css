@@ -73,4 +73,11 @@
   transition: filter .3s;
 }
 
+.wrapper {
+  position: fixed;
+  bottom: 45px;
+  right: 40px;
+  z-index: 1000
+}
+
 

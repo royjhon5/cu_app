@@ -58,7 +58,8 @@ const LoginForm = ({...others}) => {
                 display: 'block',
                 whiteSpace: 'normal',
                 padding: 1
-              }
+              },
+              width: '100%'
             }}
           />
         </Grow>
@@ -155,10 +156,13 @@ const LoginForm = ({...others}) => {
                 }}
               />
               <CustomLoadingButton 
+                type="submit"
                 btnClick={handleSubmit} 
                 isDisabled={isDisabled} 
                 btnVariant="contained" 
                 label={isDisabled ? <>Please wait <Box sx={{ml:1}}><XSDotFlash /></Box></> : 'Login'} 
+                backgroundColor="#DC3545"
+                hoverColor="#A22024"
               />
             </Box>
             

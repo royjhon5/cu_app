@@ -43,7 +43,7 @@ const LoginContainer = () => {
                 sm: '12px',
                 md: '14px',
                 lg: '14px'
-              }} color="primary" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Create an Account</Typography>
+              }} color="#DC3545" sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' }, ml: 0.5 }}>Create an Account</Typography>
             <Box sx={{ flexGrow: 1}}></Box>
               <Typography fontSize={{
                 xs: '12px',

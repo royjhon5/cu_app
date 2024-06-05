@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom"
 import { UseAuth } from "../../modules/context/AuthContext"
+import CSRGuestMessage from "../../component/CSRGuestMessage";
 
 const GuestLayout = () => {
   const { CleintAccessToken } = UseAuth();
@@ -7,6 +8,7 @@ const GuestLayout = () => {
   return (
     <>
     <Outlet />
+    <CSRGuestMessage />
     </>
   )
 }
