@@ -1,5 +1,4 @@
 import { Box, IconButton, TextField, Tooltip } from "@mui/material"
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from "react";
 import { WebSocket } from "../../main";
@@ -13,9 +12,7 @@ const MessageContainer = () => {
   const [messageList, setMessageList] = useState([]);
   const [showChat, setShowChat] = useState(false);
   const AppSocket = WebSocket();
-  const messagesEndRef = useRef(null);
-
-  console.log(messageList)
+  const messageEl = useRef(null);
 
   const joinRoom = () => {
     if (username !== "" && room !== "") {
@@ -48,11 +45,17 @@ const MessageContainer = () => {
     });
   }, [AppSocket]);
 
+
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messageEl) {
+      messageEl.current.addEventListener('DOMNodeInserted', event => {
+        const { currentTarget: target } = event;
+        target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+      });
     }
-  }, [messageList]);
+  }, [])
+
+
   return (
     <>
         <Box sx={{
@@ -63,8 +66,12 @@ const MessageContainer = () => {
             padding: 1.5,
             boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;'
         }}>
-            <PerfectScrollbar>
-                <Box>
+                <Box ref={messageEl} sx={{
+                  height: '342px',
+                  overflowY:'auto',
+                  padding: 1.5
+                }}>
+                  
                     {!showChat ? ( 
                         <><h3>Join A Chat</h3>
                         <input
@@ -88,31 +95,25 @@ const MessageContainer = () => {
                         {messageList.length === 0 ?  
                             'hello how can i assist you' 
                             : 
-                            messageList.map((messageContent) => {
-                                return (
-                                    <>
+                            messageList.map((messageContent, index) => (
+                                    <div key={index} >
                                     {username === messageContent.author ? (
                                         <AuthorBox 
-                                        key={messageContent.id}
                                         authorMessage={messageContent.message} 
                                         authorTime={messageContent.time} 
                                         />
                                     ) : (                        
                                         <ClientBox 
-                                        key={messageContent.id}
                                         message={messageContent.message}
                                         time={messageContent.time}
                                         />
                                     )}
-                                    </>
-                                );
-                            })
+                                    </div>
+                            ))
                         }
-                        <Box ref={messagesEndRef} />
                         </>
                     )}
                 </Box>
-            </PerfectScrollbar>
         </Box>
         <Box sx={{ padding: 1, display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', gap: 1, boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;'}}>
             <TextField size="small" fullWidth variant="filled" label="Type a message" value={currentMessage}
