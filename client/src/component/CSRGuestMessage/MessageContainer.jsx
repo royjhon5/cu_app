@@ -1,7 +1,7 @@
 import { Box, IconButton, TextField, Tooltip } from "@mui/material"
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import SendIcon from '@mui/icons-material/Send';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WebSocket } from "../../main";
 import AuthorBox from "./authorBox";
 import ClientBox from "./clientBox";
@@ -12,7 +12,8 @@ const MessageContainer = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [showChat, setShowChat] = useState(false);
-  const AppSocket = WebSocket()
+  const AppSocket = WebSocket();
+  const messagesEndRef = useRef(null);
 
   console.log(messageList)
 
@@ -85,22 +86,23 @@ const MessageContainer = () => {
                                 return (
                                     <>
                                     {username === messageContent.author ? (
-                                        <ClientBox 
-                                        key={messageContent.id}
-                                        message={messageContent.message}
-                                        time={messageContent.time}
-                                        />
-                                    ) : (                        
                                         <AuthorBox 
                                         key={messageContent.id}
                                         authorMessage={messageContent.message} 
                                         authorTime={messageContent.time} 
+                                        />
+                                    ) : (                        
+                                        <ClientBox 
+                                        key={messageContent.id}
+                                        message={messageContent.message}
+                                        time={messageContent.time}
                                         />
                                     )}
                                     </>
                                 );
                             })
                         }
+                        <Box ref={messagesEndRef} />
                         </>
                     )}
                 </Box>
