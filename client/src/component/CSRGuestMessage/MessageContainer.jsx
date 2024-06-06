@@ -47,6 +47,12 @@ const MessageContainer = () => {
       setMessageList((list) => [...list, data]);
     });
   }, [AppSocket]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messageList]);
   return (
     <>
         <Box sx={{
