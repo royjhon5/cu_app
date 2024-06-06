@@ -1,8 +1,51 @@
-import { Box, IconButton, Stack, TextField, Tooltip, Typography } from "@mui/material"
+import { Box, IconButton, TextField, Tooltip } from "@mui/material"
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import SendIcon from '@mui/icons-material/Send';
+import { useEffect, useState } from "react";
+import { WebSocket } from "../../main";
+import AuthorBox from "./authorBox";
+import ClientBox from "./clientBox";
 
 const MessageContainer = () => {
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState("");
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [messageList, setMessageList] = useState([]);
+  const [showChat, setShowChat] = useState(false);
+  const AppSocket = WebSocket()
+
+  console.log(messageList)
+
+  const joinRoom = () => {
+    if (username !== "" && room !== "") {
+      AppSocket.emit("join_room", room);
+      setShowChat(true);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      const messageData = {
+        room: room,
+        author: username,
+        message: currentMessage,
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+
+      await AppSocket.emit("send_message", messageData);
+      setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
+    }
+  };
+
+  useEffect(() => {
+    AppSocket.on("receive_message", (data) => {
+      setMessageList((list) => [...list, data]);
+    });
+  }, [AppSocket]);
   return (
     <>
         <Box sx={{
@@ -15,52 +58,65 @@ const MessageContainer = () => {
         }}>
             <PerfectScrollbar>
                 <Box>
-                    {/* Admin Message */}
-
-                    {/* Admin Message */}
-
-                    {/* User Message */}
-                        <Stack sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            marginBottom: '40px'
-                        }}>
-                            <Stack sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-end'
-                            }}>
-                                <Typography sx={{ fontSize: '0.75rem' }}>2 hours ago</Typography>
-                                <Stack sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    position: 'relative'
-                                }}>
-                                    <Stack sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        padding: '12px',
-                                        minWidth: '48px',
-                                        maxWidth: '320px',
-                                        borderRadius:'8px',
-                                        background: 'rgb(200, 250, 214)',
-                                        color: 'rgb(33, 43, 54)'
-                                    }}>
-                                    The waves crashed against the shore, creating a soothing symphony of sound.
-                                    </Stack>
-                                </Stack>
-                            </Stack>
-                        </Stack>
-                    {/* User Message */}
+                    {!showChat ? ( 
+                        <><h3>Join A Chat</h3>
+                        <input
+                            type="text"
+                            placeholder="John..."
+                            onChange={(event) => {
+                            setUsername(event.target.value);
+                            }}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Room ID..."
+                            onChange={(event) => {
+                            setRoom(event.target.value);
+                            }}
+                        />
+                        <button onClick={joinRoom}>Join A Room</button>
+                        </>
+                    ) : (
+                        <>
+                        {messageList.length === 0 ?  
+                            'hello how can i assist you' 
+                            : 
+                            messageList.map((messageContent) => {
+                                return (
+                                    <>
+                                    {username === messageContent.author ? (
+                                        <ClientBox 
+                                        key={messageContent.id}
+                                        message={messageContent.message}
+                                        time={messageContent.time}
+                                        />
+                                    ) : (                        
+                                        <AuthorBox 
+                                        key={messageContent.id}
+                                        authorMessage={messageContent.message} 
+                                        authorTime={messageContent.time} 
+                                        />
+                                    )}
+                                    </>
+                                );
+                            })
+                        }
+                        </>
+                    )}
                 </Box>
             </PerfectScrollbar>
         </Box>
         <Box sx={{ padding: 1, display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', gap: 1, boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;'}}>
-            <TextField size="small" fullWidth variant="filled" label="Type a message" />
+            <TextField size="small" fullWidth variant="filled" label="Type a message" value={currentMessage}
+            onChange={(event) => {
+                setCurrentMessage(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                event.key === "Enter" && sendMessage();
+              }}
+            />
             <Tooltip tite="Send" placement="top">
-            <IconButton size="medium">        
+            <IconButton size="medium" onClick={sendMessage}>        
                     <SendIcon fontSize="small" color="primary" />
             </IconButton>
             </Tooltip>
