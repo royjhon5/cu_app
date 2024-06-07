@@ -6,6 +6,7 @@ const Dashboard = Loadable(lazy(() => import('../views/dashboard/index')));
 const AccountSettings = Loadable(lazy(() => import('../views/AccountSettings')));
 const UserProfile = Loadable(lazy(() => import('../views/User Profile')));
 const UserRoles = Loadable(lazy(() => import('../views/Administrative/UserRoles')));
+const GuestChatBox = Loadable(lazy(() => import('../views/Administrative/GuestChatBox')));
 
 const DashboardRoutes = {
   path: '/',
@@ -30,6 +31,10 @@ const DashboardRoutes = {
     {
       path: '/dashboard/administrative/user-list',
       element: <UserList />
+    },
+    {
+      path: '/dashboard/administrative/message-inbox',
+      element: <GuestChatBox />
     }
   ]
 }

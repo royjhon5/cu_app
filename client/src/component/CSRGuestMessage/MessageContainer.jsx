@@ -17,6 +17,16 @@ const MessageContainer = () => {
   const AppSocket = WebSocket();
   const messageEl = useRef(null);
 
+  const formatDateTime = (date) => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    const ss = String(date.getSeconds()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+  };
+
   useEffect(() => {
     const savedUsername = localStorage.getItem('7GNBbxcdTglBk+Djon8obg==');
     const savedRoom = localStorage.getItem('SkMvAnXuJKrczmx+awosRQ==');
@@ -33,8 +43,6 @@ const MessageContainer = () => {
       setShowChat(true);
       localStorage.setItem('7GNBbxcdTglBk+Djon8obg==', username);
       localStorage.setItem('SkMvAnXuJKrczmx+awosRQ==', room);
-
-      
     }
   };
 
@@ -48,13 +56,10 @@ const MessageContainer = () => {
         room: room,
         author: username,
         message: currentMessage,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
-      };
-
+        time: formatDateTime(new Date()),
+        };
       await AppSocket.emit("send_message", messageData);
+      await AppSocket.emit("triggerOpenGuestTicken")
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }

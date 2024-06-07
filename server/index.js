@@ -3,6 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 const http = require('http').Server(app);
+const db = require('./config/dbConnection')
 const socketServer = require('socket.io')(http, {
     cors: {
         origin: [
@@ -31,13 +32,26 @@ app.use(cors({
 require('./routes/routerManager')(app);
 socketServer.on('connection', (socket) => {
 
-    socket.on('join_room', (data) => {
-        socket.join(data)
-    })
+    socket.on('join_room', (room) => {
+        socket.join(room);
+        db.query('SELECT * FROM guest_messages WHERE room = ?', [room], (err, results) => {
+          if (err) throw err;
+          socket.emit('load_messages', results);
+        });
+    });
 
     socket.on("send_message", (data) => {
-        socket.to(data.room).emit("receive_message", data);
+        const { room, author, message, time } = data;
+        db.query('INSERT INTO guest_messages (room, author, message, time) VALUES (?, ?, ?, ?)',
+        [room, author, message, time], (err, result) => {
+            if (err) throw err;
+            socket.to(room).emit("receive_message", data);
+        }); 
     });
+
+    socket.on('triggerOpenGuestTicken', () => {
+        socketServer.emit('openGuestTicket');
+    })
 
     socket.on('SubmitNotif', () => {
         socketServer.emit('notifications');

@@ -6,11 +6,13 @@ const AdminisTrative = () => {
   const navigate = useNavigate();
   const navigateUserRoles = () => {navigate('/dashboard/administrative/user-roles')}
   const navigateUserList = () => {navigate('/dashboard/administrative/user-list')}
+  const navigateMessageInbox = () => {navigate('/dashboard/administrative/message-inbox')}
   return (
     <CustomList>
         <ListSubHeaderStyle ListLabel="ADMINSTRATIVE" />
         <ListItemButtonStyle ListbtnLabel="User Roles" activePath="/dashboard/administrative/user-roles" MenuClick={navigateUserRoles} />
         <ListItemButtonStyle ListbtnLabel="User List" activePath="/dashboard/administrative/user-list" MenuClick={navigateUserList} />
+        <ListItemButtonStyle ListbtnLabel="Message Inbox" activePath="/dashboard/administrative/message-inbox" MenuClick={navigateMessageInbox} />
     </CustomList>
   )
 }
