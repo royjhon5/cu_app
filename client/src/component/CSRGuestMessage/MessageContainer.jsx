@@ -6,6 +6,7 @@ import AuthorBox from "./authorBox";
 import ClientBox from "./clientBox";
 import HelpDesk from '../../assets/images/help-desk.png';
 import { v4 as uuidv4 } from 'uuid';
+import ReactTimeAgo from 'react-time-ago'
 
 const MessageContainer = () => {
   const guestId = uuidv4();
@@ -97,7 +98,6 @@ const MessageContainer = () => {
         height: '100%',
         overflow: 'hidden',
         boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;',
-        padding: showChat ? 1.5 : 0
       }}>
         <Box ref={messageEl} sx={{
           height: '342px',
@@ -135,12 +135,12 @@ const MessageContainer = () => {
                     {username === messageContent.author ? (
                       <AuthorBox
                         authorMessage={messageContent.message}
-                        authorTime={messageContent.time}
+                        authorTime={<ReactTimeAgo date={new Date(messageContent.time).getTime()} />}
                       />
                     ) : (
                       <ClientBox
                         message={messageContent.message}
-                        time={messageContent.time}
+                        time={<ReactTimeAgo date={new Date(messageContent.time).getTime()} />}
                       />
                     )}
                   </div>

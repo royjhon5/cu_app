@@ -6,7 +6,8 @@ const ClientBox = ({time, message, id}) => {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'unset',
-        marginBottom: '40px'
+        marginBottom: '40px',
+        ml:1.5,
     }}>
         <Avatar sx={{ width: '32px', height: '32px', marginRight: '16px' }} />
         <Stack sx={{
@@ -28,7 +29,8 @@ const ClientBox = ({time, message, id}) => {
                     minWidth: '48px',
                     maxWidth: '320px',
                     backgroundColor: 'rgba(145, 158, 171, 0.12)',
-                    fontSize: '0.875rem'
+                    fontSize: '0.875rem',
+                    borderRadius:'8px',
                 }}>
                     {message}
                 </Stack>
@@ -38,7 +40,7 @@ const ClientBox = ({time, message, id}) => {
   )
 }
 ClientBox.propTypes = {
-    time: PropTypes.string,
+    time: PropTypes.object,
     message: PropTypes.string,
     id: PropTypes.string
 }

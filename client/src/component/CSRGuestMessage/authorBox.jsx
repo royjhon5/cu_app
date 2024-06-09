@@ -6,7 +6,9 @@ const AuthorBox = ({authorMessage, authorTime, id}) => {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        marginBottom: '40px'
+        marginBottom: '40px',
+        mr:1.5,
+        mt:1
     }}>
         <Stack sx={{
             display: 'flex',
@@ -28,7 +30,8 @@ const AuthorBox = ({authorMessage, authorTime, id}) => {
                     maxWidth: '320px',
                     borderRadius:'8px',
                     background: 'rgb(200, 250, 214)',
-                    color: 'rgb(33, 43, 54)'
+                    color: 'rgb(33, 43, 54)',
+                    fontSize: '0.875rem',
                 }}>
                 {authorMessage}
                 </Stack>
@@ -39,7 +42,7 @@ const AuthorBox = ({authorMessage, authorTime, id}) => {
 }
 
 AuthorBox.propTypes = {
-    authorTime: PropTypes.string,
+    authorTime: PropTypes.object,
     authorMessage: PropTypes.string,
     id: PropTypes.string,
 }

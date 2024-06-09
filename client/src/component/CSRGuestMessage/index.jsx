@@ -1,29 +1,76 @@
-import {Box, Fab, IconButton, Popover, Stack, Typography, useMediaQuery } from '@mui/material'
+import {Badge, Box, Fab, IconButton, Popover, Stack, Typography, useMediaQuery } from '@mui/material'
 import CSRICon from '../../assets/images/customer-service.png'
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import MessageContainer from './MessageContainer';
+import http from '../../api/http';
+import { useEffect } from 'react';
+import { WebSocket } from '../../main';
 
 const CSRGuestMessage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const matchesXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const [unreadData, setUnreadCountData] = useState([])
+  const [room, setRoomData] = useState([]);
+  const guestToken = localStorage.getItem('SkMvAnXuJKrczmx+awosRQ==')
+  const AppSocket = WebSocket();
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    ReadAdminMessage();
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    ReadAdminMessage();
   };
+
+  const ReadAdminMessage = async () => {
+    try {
+      await http.post('/read-admin-messages' , {room})
+      getNotif();
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const getNotif = async () => {
+    try {
+        const response = await http.get('/unread-admin-messages');
+        const data = response.data;
+        const unreadCounts = data
+        .filter(item => item.room === guestToken)
+        .map(item => item.unread_count);
+        const getRoomData = data.map(item => item.room)
+        const unreadCount = unreadCounts.length > 0 ? unreadCounts[0] : 0;
+        setUnreadCountData(unreadCount)
+        setRoomData(getRoomData)
+    } catch(error) {
+        console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    getNotif();
+    AppSocket.on('GuestNotification', () => {
+      getNotif();
+    })
+    return () => {
+      AppSocket.off('GuestNotification');
+    };
+  }, [])
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
   return (
     <Box className="wrapper">
-      <Fab sx={{ background: '#DC3545', '&:hover': { background: '#A22024', }, }} size="medium" aria-describedby={id} onClick={handleClick}>
-        <img src={CSRICon} style={{ height: '75%', width: '75%' }}/>
-      </Fab>
+        <Badge badgeContent={open ? 0 : unreadData} color='error' anchorOrigin={{ vertical: 'top', horizontal: 'left'}}>
+          <Fab sx={{ background: '#DC3545', '&:hover': { background: '#A22024', }, }} size="medium" aria-describedby={id} onClick={handleClick}>
+            <img src={CSRICon} style={{ height: '75%', width: '75%' }}/>
+          </Fab>
+        </Badge>
       <Popover
         id={id}
         open={open}
