@@ -86,6 +86,8 @@ const ChatBoxContainer = () => {
         };
 
       await AppSocket.emit("send_message", messageData);
+      await AppSocket.emit("triggerGuestNotification");
+      await AppSocket.emit("triggerNotifyGuest");
       getUserDetails();
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
