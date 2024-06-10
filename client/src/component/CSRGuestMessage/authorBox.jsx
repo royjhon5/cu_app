@@ -1,8 +1,9 @@
-import { Stack, Typography } from "@mui/material"
+import { Grow, Stack, Typography } from "@mui/material"
 import PropTypes from 'prop-types'
 const AuthorBox = ({authorMessage, authorTime, id}) => {
   return (
-    <Stack id={id} sx={{
+    <Grow in={true}>
+        <Stack id={id} sx={{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end',
@@ -38,6 +39,7 @@ const AuthorBox = ({authorMessage, authorTime, id}) => {
             </Stack>
         </Stack>
     </Stack>
+    </Grow>
   )
 }
 

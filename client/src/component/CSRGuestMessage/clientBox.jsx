@@ -1,8 +1,9 @@
-import { Avatar, Stack, Typography } from "@mui/material"
+import { Avatar, Grow, Stack, Typography } from "@mui/material"
 import PropTypes from 'prop-types'
 const ClientBox = ({time, message, id}) => {
   return (
-    <Stack id={id} sx={{    
+    <Grow in={true}>
+        <Stack id={id} sx={{    
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'unset',
@@ -37,6 +38,7 @@ const ClientBox = ({time, message, id}) => {
             </Stack>
         </Stack>
     </Stack>
+    </Grow>
   )
 }
 ClientBox.propTypes = {

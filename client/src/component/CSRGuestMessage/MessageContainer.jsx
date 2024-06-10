@@ -1,10 +1,11 @@
-import { Box, Button, IconButton, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, Grow, IconButton, TextField, Typography } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from "react";
 import { WebSocket } from "../../main";
 import AuthorBox from "./authorBox";
 import ClientBox from "./clientBox";
-import HelpDesk from '../../assets/images/help-desk.png';
+import HelpDesk from '../../assets/images/admin.png';
+import HelloIcon from '../../assets/images/hello.png'
 import { v4 as uuidv4 } from 'uuid';
 import ReactTimeAgo from 'react-time-ago'
 
@@ -17,6 +18,8 @@ const MessageContainer = () => {
   const [showChat, setShowChat] = useState(false);
   const AppSocket = WebSocket();
   const messageEl = useRef(null);
+  const [loading, setLoading] = useState(false)
+  const grow = true;
 
   const formatDateTime = (date) => {
     const yyyy = date.getFullYear();
@@ -40,6 +43,7 @@ const MessageContainer = () => {
 
   const joinRoom = (username, room) => {
     if (username !== "" && room !== "") {
+      setLoading(true);
       AppSocket.emit("join_room", room);
       setShowChat(true);
       localStorage.setItem('7GNBbxcdTglBk+Djon8obg==', username);
@@ -73,6 +77,7 @@ const MessageContainer = () => {
 
     AppSocket.on("load_messages", (messages) => {
       setMessageList(messages);
+      setLoading(false)
     });
   }, [AppSocket]);
 
@@ -127,26 +132,38 @@ const MessageContainer = () => {
             </>
           ) : (
             <>
-              {messageList.length === 0 ?
-                'hello how can i assist you'
-                :
-                messageList.map((messageContent, index) => (
-                  <div key={index} >
-                    {username === messageContent.author ? (
-                      <AuthorBox
-                        authorMessage={messageContent.message}
-                        authorTime={<ReactTimeAgo date={new Date(messageContent.time).getTime()} />}
-                      />
-                    ) : (
-                      <ClientBox
-                        message={messageContent.message}
-                        time={<ReactTimeAgo date={new Date(messageContent.time).getTime()} />}
-                      />
-                    )}
-                  </div>
-                ))
-              }
-            </>
+              {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                messageList.length === 0 ?
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', flexDirection: 'column', gap:0 }}>
+                    <Grow in={grow} style={{ transformOrigin: '0 0 0' }}
+                    {...(grow ? { timeout: 800 } : {})}><img src={HelloIcon} /></Grow>
+                    <Grow in={grow} style={{ transformOrigin: '0 0 0' }}
+                    {...(grow ? { timeout: 1000 } : {})}>
+                      <Typography variant="h6">How can I assist?</Typography>
+                    </Grow>
+                </Box>
+                  :
+                  messageList.map((messageContent, index) => (
+                    <div key={index} >
+                      {username === messageContent.author ? (
+                        <AuthorBox
+                          authorMessage={messageContent.message}
+                          authorTime={<ReactTimeAgo date={new Date(messageContent.time).getTime()} />}
+                        />
+                      ) : (
+                        <ClientBox
+                          message={messageContent.message}
+                          time={<ReactTimeAgo date={new Date(messageContent.time).getTime()} />}
+                        />
+                      )}
+                    </div>
+                  ))
+              )}
+             </>
           )}
         </Box>
       </Box>

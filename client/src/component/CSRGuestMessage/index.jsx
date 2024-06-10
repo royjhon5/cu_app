@@ -113,7 +113,7 @@ const CSRGuestMessage = () => {
                 background: '#DC3545',
                 boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;'
             }}>
-                <Typography sx={{ color: 'white'}}>Customer Service</Typography>
+                <Typography sx={{ color: 'white'}}>Administrator</Typography>
                 <Stack sx={{ display: 'flex', flexGrow: 1}}></Stack>
                 <IconButton onClick={handleClose}><CloseIcon sx={{ color: 'white'}} /></IconButton>
             </Stack>
