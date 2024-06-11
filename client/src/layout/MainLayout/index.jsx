@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { UseAuth } from '../../modules/context/AuthContext'
 import { Box, Container, useTheme } from '@mui/material'
-import MainCard from '../../component/Cards/MainCard';
-import { motion } from 'framer-motion';
 import TopNavigation from './TopNav';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import CustomPreLoader from '../../component/CustomPreLoader';
+import MainCard from '../../component/Cards/MainCard';
+import Footer from '../../component/Cards/Footer';
 
 const MainLayout = () => {
   const { CleintAccessToken } = UseAuth();
@@ -34,23 +34,26 @@ const MainLayout = () => {
   return (
     <>
       {loading ? ( <CustomPreLoader /> ) : (
-        <>
-        <TopNavigation />
+        <>    
+          <div style={{height: '100%'}}>
           <Box
             sx={{
-              minHeight: 1,
               display: 'flex',
-              flexDirection: { xs: 'column', lg: 'row' },
+              flexDirection: 'column',
+              height: '100%'
               }}
             >
-          <MainCard>
-            <motion.div layout>
-              <Container maxWidth={theme.palette.appSettings.stretch === 'true' ? 'xxl' : 'xxl'}>
-                <Outlet />
-              </Container>
-            </motion.div>
-          </MainCard>  
+              <TopNavigation />
+              <MainCard>
+                  <Container maxWidth={theme.palette.appSettings.stretch === 'true' ? 'lg' : 'xxl'} sx={{mb:'120px'}}>
+                    <Outlet />
+                  </Container>
+              </MainCard>
+              <Footer>
+                fuck you bro
+              </Footer>  
           </Box>  
+          </div>
         </>
       )}
     </>
