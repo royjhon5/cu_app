@@ -1,6 +1,5 @@
 import { Stack, useTheme } from "@mui/material"
 import OverView from "./Overview"
-import AdminisTrative from "./Administrative";
 
 const SidebarContainer = () => {
   const theme = useTheme();
@@ -16,7 +15,6 @@ const SidebarContainer = () => {
             paddingRight: theme.palette.appSettings.layout === 'collapsed' ? '3px' : '16px'
         }}>
             <OverView />
-            <AdminisTrative />
         </Stack>
     </Stack>
   )

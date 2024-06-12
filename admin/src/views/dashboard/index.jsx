@@ -45,7 +45,7 @@ const Dashboard = () => {
               <InfoSlider />
           </Grid>
           <Grid item xs={12} md={12}>
-            fuck you
+         
           </Grid>
       </Grid>
       )}   
