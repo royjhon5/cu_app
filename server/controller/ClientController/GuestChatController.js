@@ -1,58 +1,57 @@
 const db = require('../../config/dbConnection');
-
-
-module.exports.GenerateNewChat = async function(req, res) {
-    const { guest_name, date_time } = req.body;
-    try { 
-        const insertQuery = 'INSERT INTO guest_room SET ?';
-        await db.query(insertQuery, {guest_name: guest_name, date_time: date_time }, (err) => {
-            if(err) {
-              res.status(400).send({ error: 'Server error' });
-              console.error(err);
-              return;
-            }
-            res.status(200).send('New chat created!');
-        })
-    } catch(error) {
-        res.status(400).send({error: 'Server error'})
-        console.error(error)
+module.exports.ReplyAdminChat = async function(req, res) {
+    try {
+      const query = `
+        SELECT t1.*, 
+               IF(MAX(t1.unread) = 1, 1, 0) AS unread,
+               (SELECT COUNT(*) 
+                FROM guest_messages AS t2 
+                WHERE t2.room = t1.room 
+                  AND t2.unread = 1 
+                  AND t2.author != t2.room) AS unread_count
+        FROM guest_messages AS t1
+        INNER JOIN (
+            SELECT room, MAX(id) AS max_id
+            FROM guest_messages
+            GROUP BY room
+        ) AS t2 ON t1.id = t2.max_id
+        GROUP BY t1.room
+        ORDER BY t1.time;
+      `;
+  
+      await db.query(query, (err, results) => {
+        if (err) {
+          console.error('Error executing the query', err.stack);
+          res.status(500).send('Error executing the query');
+          return;
+        }
+        res.status(200).send(results);
+      });
+    } catch (err) {
+      console.error('Error:', err);
+      res.status(500).send('Internal server error');
     }
 }
 
-module.exports.UserSendMessage = async function(req, res) {
-    const { guest_room_id, messages, datetime_created } = req.body;
-    try {
-        const insertQuery = 'INSERT INTO guest_messages SET ?';
-        await db.query(insertQuery, {
-            guest_room_id: guest_room_id, 
-            messages: messages, 
-            datetime_created: datetime_created 
-        }, (err) => {
-            if(err) {
-              res.status(400).send({ error: 'Server error' });
-              console.error(err);
-              return;
-            }
-            res.status(200).send('Message sent');
-        })
-    } catch (error) {
-        console.error(error)
-    }
-}
 
-module.exports.MessageList = async function(req, res) {
-    try {
-        const joinQuery = `SELECT guest_messages.*, guest_room.* 
-                           FROM guest_messages
-                           INNER JOIN guest_room on guest_messages.guest_room_id = guest_room.guest_name`
-        await db.query(joinQuery, (err, results) => {
-            if(err) {
-                console.error('Error executing the query server lost.', err.stack);
-                return;
-            }
-            res.status(200).send(results)
-        })
-    } catch(error) {
-        console.error(error)
-    }
+module.exports.ReadAdminMessage = async function(req, res) {
+  try {
+    const { room } = req.body;
+    const updateQuery = `
+      UPDATE guest_messages
+      SET unread = 0
+      WHERE room = ?;
+    `;
+    await new Promise((resolve, reject) => {
+      db.query(updateQuery, [room], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+    console.log("Unread messages marked as read.");
+    res.send("Unread messages marked as read.");
+  } catch (err) {
+    console.error("Error marking messages as read:", err);
+    res.status(500).send("Error marking messages as read");
+  }
 }

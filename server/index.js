@@ -53,6 +53,14 @@ socketServer.on('connection', (socket) => {
         socketServer.emit('openGuestTicket');
     })
 
+    socket.on('triggerGuestNotification', () => {
+        socketServer.emit('GuestNotification');
+    })
+
+    socket.on('triggerNotifyGuest', () => {
+        socketServer.emit('playSoundNotification');
+    })
+
     socket.on('SubmitNotif', () => {
         socketServer.emit('notifications');
     })

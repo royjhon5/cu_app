@@ -110,7 +110,7 @@ module.exports.ReplyGuestChat = async function(req, res) {
             GROUP BY room
         ) AS t2 ON t1.id = t2.max_id
         GROUP BY t1.room
-        ORDER BY t1.time;
+        ORDER BY t1.time DESC;
       `;
   
       await db.query(query, (err, results) => {
