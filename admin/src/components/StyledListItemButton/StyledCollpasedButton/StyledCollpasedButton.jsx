@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Box, ListItemButton, Stack, useTheme } from "@mui/material"
 import ArrowRight from '@mui/icons-material/ArrowRight';
 
-const StyledCollapsedButton = ({id ,handlePopoverOpen, handlePopoverClose, IconChildren, CollpaseBtnLabels, children, onClick}) => {
+const StyledCollapsedButton = ({id ,handlePopoverOpen, handlePopoverClose, IconChildren, CollpaseBtnLabels, children, onClick, bgcolor}) => {
   const theme = useTheme();
   return (
     <ListItemButton
@@ -16,7 +16,8 @@ const StyledCollapsedButton = ({id ,handlePopoverOpen, handlePopoverClose, IconC
       borderRadius: theme.palette.appSettings.layout === 'vertical' ? '8px' : theme.palette.appSettings.layout === 'horizontal' ? '6px' : '6px',
       minHeight: theme.palette.appSettings.layout === 'vertical' ? '44px' : theme.palette.appSettings.layout === 'horizontal' ? '32px' : '56px', 
       color: '#637381',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      backgroundColor: bgcolor
     }}
     aria-owns={id}
     aria-haspopup="true"
@@ -62,6 +63,7 @@ StyledCollapsedButton.propTypes = {
     children: PropTypes.any,
     CollpaseBtnLabels: PropTypes.any,
     onClick: PropTypes.func.isRequired,
+    bgcolor: PropTypes.string
 };
 
 export default StyledCollapsedButton

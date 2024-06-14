@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import Collapsebtn from "../../../../../components/StyledListItemButton/CustomCollapseListButton/Collapsebtn"
-import ListItemButtonStyle from "../../../../../components/StyledListItemButton/ListItemButton"
 import StyledCollapsedButton from "../../../../../components/StyledListItemButton/StyledCollpasedButton/StyledCollpasedButton"
 import StyledPopover from "../../../../../components/StyledPopover"
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownTwoToneIcon from '@mui/icons-material/ArrowDropDownTwoTone';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useRef, useState } from "react"
 import { useTheme } from "@emotion/react"
+import ListBtn from "../../../../../components/StyledListItemButton/CustomCollapseListButton/ListBtn"
 
 
 const AdministrativeList = () => {
@@ -40,7 +39,14 @@ const AdministrativeList = () => {
   const blackFunc = () => {};
   return (
     <>
-        <StyledCollapsedButton id={id} onClick={openCollapseV3} IconChildren={<AdminPanelSettingsIcon fontSize="small" />} CollpaseBtnLabels="Administrative" handlePopoverOpen={theme.palette.appSettings.layout === 'vertical' ? blackFunc : handleOpenCollapseV3} handlePopoverClose={handleCloseCollapseV3}>
+        <StyledCollapsedButton 
+        id={id} 
+        onClick={openCollapseV3} 
+        IconChildren={<AdminPanelSettingsIcon fontSize="small" />} 
+        CollpaseBtnLabels="Administrative" 
+        handlePopoverOpen={theme.palette.appSettings.layout === 'vertical' ? blackFunc : handleOpenCollapseV3} 
+        handlePopoverClose={handleCloseCollapseV3}
+        >
             {openTwo ? 
              <ArrowDropDownTwoToneIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex'}} />:
              <ArrowRightIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex'}} />
@@ -49,22 +55,21 @@ const AdministrativeList = () => {
         </StyledCollapsedButton>
         <StyledPopover id={id} open={opensTwo} anchorEl={anchorV3} onMouseLeave={handleCloseCollapseV3} onMouseEnter={openCollapseV3} popoverRef={popoverRef}  />
         <Collapsebtn stateOpen={openTwo}>
-          <ListItemButtonStyle 
-          ListbtnLabel="User Role" 
-          activePath="/dashboard/administrative/user-roles" 
-          MenuClick={navigateUserRoles}
-          IconChildrens={<FiberManualRecordIcon sx={{ fontSize: '5px', transition: 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms', transform: 'scale(1)' }} 
-          />} />
-          <ListItemButtonStyle 
-          ListbtnLabel="User List" 
-          activePath="/dashboard/administrative/user-list"
-          MenuClick={navigateUserList}
+          <ListBtn
+          activePath="/dashboard/administrative/user-roles"
+          onClick={navigateUserRoles}
+          label="User Role"
            />
-          <ListItemButtonStyle 
-          ListbtnLabel="Guest Chat Inbox" 
+          <ListBtn 
+          label="User List" 
+          activePath="/dashboard/administrative/user-list"
+          onClick={navigateUserList}
+           />
+          <ListBtn 
+          label="Guest Chat Inbox" 
           activePath="/dashboard/administrative/message-inbox" 
-          MenuClick={navigateMessageInbox}
-          />
+          onClick={navigateMessageInbox}
+          />         
         </Collapsebtn>
     </>
   )

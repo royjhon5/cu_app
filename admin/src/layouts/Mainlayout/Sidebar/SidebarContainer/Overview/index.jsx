@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CustomList from "../../../../../components/StyledListItemButton/CustomeList";
 import AdministrativeList from "./Administrative";
 import InventoryList from "./Inventory";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const OverView = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const OverView = () => {
   return (
     <CustomList >
         <ListSubHeaderStyle ListLabel="OVERVIEW" />
-        <ListItemButtonStyle ListbtnLabel="Dashboard" activePath="/dashboard" MenuClick={navigateDashboard} />
+        <ListItemButtonStyle ListbtnLabel="Dashboard" activePath="/dashboard" MenuClick={navigateDashboard} IconChildrens={<DashboardIcon fontSize="small" />} />
         <InventoryList />
         <AdministrativeList />
     </CustomList>
