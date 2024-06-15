@@ -23,7 +23,7 @@ const ListItemButtonStyle = ({ListbtnLabel, activePath, MenuClick, IconChildrens
             textAlign: 'center',
             background: isActive ? `${sideActiveColor.svgcolor[600]}` : 'none',
             '&:hover': {
-              backgroundColor: isActive ? `${sideActiveColor.svgcolor[600]}` : 'none',
+              backgroundColor: isActive ? `${sideActiveColor.svgcolor[600]}` : 'red',
             },
             color: isActive ? `${sideActiveColor.svgcolor[100]}` : '#637381'
         }}
