@@ -4,51 +4,56 @@ import DataContainer from "../NotifComponent/Container";
 import Identification from "../NotifComponent/Identification";
 import ListAvatar from "../NotifComponent/ListAvatar";
 import ListContainer from "../NotifComponent/ListContainer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ReactTimeAgo from 'react-time-ago';
 import http from "../../../api/http"
 import { WebSocket } from "../../../main";
 import { toast } from "sonner";
 import SkeletonAvatar from "../NotifComponent/SkeletonAvatar";
-import NoNotificationIcon from '../../../assets/images/no-alarm.png'
+import NoNotificationIcon from '../../../assets/images/no-alarm.png';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
+const fetchUnreadNotifications = async () => {
+  const response = await http.get('/unread-notify');
+  return response.data;
+};
+
+const activateUserRequest = async (useriDNumber) => {
+  await http.post(`/activate-client?id_number=${useriDNumber}`);
+};
 
 const NotificationData = () => {
-  const [unRead, setUnread] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const queryClient = useQueryClient();
   const AppSocket = WebSocket();
 
-  async function unreadNotify() {
-    setLoading(true)
-    try {
-      const response = await http.get('/unread-notify');
-      const data = response.data;
-      setUnread(data);
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { data: unRead = [], loading } = useQuery({
+    queryKey: ['unreadNotifications'],
+    queryFn: fetchUnreadNotifications,
+  });
 
-  async function activateUser(useriDNumber) {
-    try {
-      await http.post(`/activate-client?id_number=${useriDNumber}`);
-      unreadNotify();
+  const activateUserMutation = useMutation({
+    mutationFn: activateUserRequest,
+    onSuccess: (_, useriDNumber) => {
+      queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
       toast.success(`User id number ${useriDNumber} has now been activated`);
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error(error);
-    }
-  }
+    },
+  });
 
-  useEffect(() => {  
-    unreadNotify();
+  useEffect(() => {
     AppSocket.on('containerNotif', () => {
-      unreadNotify();
-    })
+      queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
+    });
     return () => {
       AppSocket.off('containerNotif');
     };
-  }, [AppSocket]);
+  }, [AppSocket, queryClient]);
+
+  const activateUser = (useriDNumber) => {
+    activateUserMutation.mutate(useriDNumber);
+  };
 
   return (
     <>
