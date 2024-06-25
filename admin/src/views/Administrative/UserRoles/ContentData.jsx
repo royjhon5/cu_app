@@ -6,7 +6,7 @@ import CustomHeaderCell from '../../../components/CustomDataTable/CustomHeaderCe
 import CustomTableBody from '../../../components/CustomDataTable/TableBody';
 import NoData from '../../../components/CustomDataTable/NoData';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TableMenuList from '../../../components/TableMenu';
 import TableMenuItem from '../../../components/TableMenu/TableMenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,83 +15,84 @@ import CustomDialog from '../../../components/CustomDialog';
 import { toast } from 'sonner'
 import http from '../../../api/http';
 import LoadingData from '../../../components/CustomDataTable/LoadingData';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+const fetchRoles = async () => {
+    const response = await http.get('/get-roles');
+    return response.data;
+};
 
 const ContentData = ({ openDialog, closeDialog  }) => {
-  const [page, setPage] = useState(0);
-  const [roleData, setRoleData] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedRoleId, setSelectedRoleId] = useState(null);
+    const [page, setPage] = useState(0);
+    const [roleData, setRoleData] = useState('');
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const [selectedRoleId, setSelectedRoleId] = useState(null);
+    const queryClient = useQueryClient();
 
-  const OpenMenu = (event, roleId) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedRoleId(roleId);
-  };
+    const { data, loading } = useQuery({
+        queryKey: ['roles'],
+        queryFn: fetchRoles
+    });
 
-  const CloseMenu = () => {
-    setAnchorEl(null);
-    setSelectedRoleId(null);
-  };
+    const OpenMenu = (event, roleId) => {
+        setAnchorEl(event.currentTarget);
+        setSelectedRoleId(roleId);
+    };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+    const CloseMenu = () => {
+        setAnchorEl(null);
+        setSelectedRoleId(null);
+    };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
-  const getRoles = async () => {
-    setLoading(true); 
-    http.get('/get-roles')
-        .then((response) => {
-            setData(response.data)
-        })
-        .catch((err) => {
-            toast.error(err, 'Cannot connect to the server!')
-        })
-        .finally(() => {
-            setLoading(false)
-        })
-  } 
-
-  useEffect(() => {
-    getRoles()
-  }, [])
-
-    const SaveNewRole = async () => {
-        if(!roleData) return toast.error('Field should not be entry!')
-        try {
-            await http.post('/upload-roles', {role: roleData})  
-            toast.success('New role has been saved.')
-            setRoleData('')
-            getRoles();
-        } catch (error) {
-            console.error('Server Error', error);
-            if (error.response && error.response.status === 400) { 
-                if (error.response.data.error === "Role already exists!") { 
-                    toast.error('Role already exists!')
+    const addRoleMutation = useMutation({
+        mutationFn: (role) => http.post('/upload-roles', { role }),
+            onSuccess: () => {
+                toast.success('New role has been saved.');
+                setRoleData('');
+                queryClient.invalidateQueries({ queryKey: ['roles'] });
+            },
+            onError: (error) => {
+                console.error('Server Error', error);
+                if (error.response && error.response.status === 400 && error.response.data.error === "Role already exists!") {
+                toast.error('Role already exists!');
+                } else {
+                toast.error('Server Error');
                 }
-            } else {
-                toast.error('Server Error')
             }
-        }
-    }
+    });
 
-    const DeleteRoles = async (roleId) => {
-        try {
-            await http.delete(`/delete-roles?id=${roleId}`)
-            toast.success('Data has been deleted successfully.')
-            getRoles();
-        } catch (error) {
-            console.log(error)
+    const SaveNewRole = () => {
+        if (!roleData) {
+          return toast.error('Field should not be empty!');
         }
-    }
+        addRoleMutation.mutate(roleData);
+    };
+
+    const deleteRoleMutation = useMutation({
+        mutationFn: (roleId) => http.delete(`/delete-roles?id=${roleId}`),
+        onSuccess: () => {
+          toast.success('Data has been deleted successfully.');
+          queryClient.invalidateQueries({ queryKey: ['roles'] });
+        }
+    });
+
+    const DeleteRoles = () => {
+        if (selectedRoleId) {
+          deleteRoleMutation.mutate(selectedRoleId);
+          CloseMenu();
+        }
+    };
 
 
 
@@ -149,7 +150,7 @@ const ContentData = ({ openDialog, closeDialog  }) => {
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <TableMenuList anchorEl={anchorEl} open={open} CloseMenu={CloseMenu}>
-                                                <TableMenuItem ListIcon={<DeleteIcon fontSize='small' color="error" />} ListTypo={"Delete"} color="error" onClick={() => DeleteRoles(selectedRoleId)}  />
+                                                <TableMenuItem ListIcon={<DeleteIcon fontSize='small' color="error" />} ListTypo={"Delete"} color="error" onClick={DeleteRoles}  />
                                                 <TableMenuItem ListIcon={<EditRoundedIcon fontSize='small' />} ListTypo={"Edit"} />
                                             </TableMenuList>
                                     </TableCell>

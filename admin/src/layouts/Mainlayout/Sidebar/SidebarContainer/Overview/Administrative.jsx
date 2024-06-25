@@ -21,6 +21,7 @@ const AdministrativeList = () => {
   const navigateUserRoles = () => {navigate('/dashboard/administrative/user-roles')}
   const navigateUserList = () => {navigate('/dashboard/administrative/user-list')}
   const navigateMessageInbox = () => {navigate('/dashboard/administrative/message-inbox')}
+  
   const openCollapseV3 = () => {
         setOpenTwo(!openTwo)
   }
@@ -53,7 +54,13 @@ const AdministrativeList = () => {
             }
              <ArrowDropDownTwoToneIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'flex' : 'none'}} />
         </StyledCollapsedButton>
-        <StyledPopover id={id} open={opensTwo} anchorEl={anchorV3} onMouseLeave={handleCloseCollapseV3} onMouseEnter={openCollapseV3} popoverRef={popoverRef}  />
+        <StyledPopover 
+        id={id} 
+        open={opensTwo} 
+        anchorEl={anchorV3} 
+        onMouseLeave={handleCloseCollapseV3} 
+        onMouseEnter={openCollapseV3} 
+        popoverRef={popoverRef}  />
         <Collapsebtn stateOpen={openTwo}>
           <ListBtn
           activePath="/dashboard/administrative/user-roles"

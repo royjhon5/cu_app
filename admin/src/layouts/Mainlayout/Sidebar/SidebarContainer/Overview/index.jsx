@@ -5,6 +5,8 @@ import CustomList from "../../../../../components/StyledListItemButton/CustomeLi
 import AdministrativeList from "./Administrative";
 import InventoryList from "./Inventory";
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SettingSection from "./Settings";
 
 const OverView = () => {
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ const OverView = () => {
         <ListItemButtonStyle ListbtnLabel="Dashboard" activePath="/dashboard" MenuClick={navigateDashboard} IconChildrens={<DashboardIcon fontSize="small" />} />
         <InventoryList />
         <AdministrativeList />
+        <ListItemButtonStyle ListbtnLabel="Orders" IconChildrens={<ShoppingCartIcon fontSize="small" />} />
+        {/* <SettingSection /> */}
     </CustomList>
   )
 }

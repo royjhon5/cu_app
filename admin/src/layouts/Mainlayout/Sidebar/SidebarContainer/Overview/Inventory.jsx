@@ -4,6 +4,9 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownTwoToneIcon from '@mui/icons-material/ArrowDropDownTwoTone';
 import { useRef, useState } from "react";
+import Collapsebtn from "../../../../../components/StyledListItemButton/CustomCollapseListButton/Collapsebtn";
+import ListBtn from "../../../../../components/StyledListItemButton/CustomCollapseListButton/ListBtn";
+import StyledPopover from "../../../../../components/StyledPopover";
 
 const InventoryList = () => {
   const theme = useTheme();  
@@ -14,29 +17,60 @@ const InventoryList = () => {
   const id = 'mouse-over-popover'
   
   const openCollapseBtn = () => {
-    setOpen(!openBool)
+    setOpen(!open)
   }
 
   const handleOpenCollapse = (event) => {
     setAnchorHere(event.currentTarget)
   }
 
-  const closeCollapse = () => {
+  const HandlecloseCollapse = () => {
     if (popoverRef.current && popoverRef.current.contains(event.relatedTarget)) {
-        return;
+      return;
     }
     setAnchorHere(null)
   }
 
   const blackFunc = () => {};
   return (
-    <StyledCollapsedButton id={id} onClick={openCollapseBtn} IconChildren={<InventoryIcon fontSize="small" />} CollpaseBtnLabels="Inventory" handlePopoverOpen={theme.palette.appSettings.layout === 'vertical' ? blackFunc : handleOpenCollapse} handlePopoverClose={closeCollapse}  >
+    <>
+    <StyledCollapsedButton 
+    id={id} 
+    onClick={openCollapseBtn} 
+    IconChildren={<InventoryIcon fontSize="small" />} 
+    CollpaseBtnLabels="Inventory" 
+    handlePopoverOpen={theme.palette.appSettings.layout === 'vertical' ? blackFunc : handleOpenCollapse} 
+    handlePopoverClose={HandlecloseCollapse}  
+    >
         {open ? 
         <ArrowDropDownTwoToneIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex'}} />:
         <ArrowRightIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'none' : 'flex'}} />
         }
         <ArrowDropDownTwoToneIcon sx={{ display: theme.palette.appSettings.layout ==='collapsed' ? 'none' : theme.palette.appSettings.layout === 'horizontal' ? 'flex' : 'none'}} />
     </StyledCollapsedButton>
+    <StyledPopover 
+    id={id}
+    open={openBool}
+    anchorEl={anchorHere}
+    onMouseLeave={HandlecloseCollapse}
+    onMouseEnter={openCollapseBtn}
+    popoverRef={popoverRef}
+    />
+    <Collapsebtn stateOpen={open}>
+        <ListBtn
+          label="Product"
+        />
+        <ListBtn
+          label="Brand"
+        />
+        <ListBtn
+          label="Category"
+        />
+        <ListBtn
+          label="Volume"
+        />
+    </Collapsebtn>
+    </>
   )
 }
 
