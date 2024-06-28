@@ -6,7 +6,7 @@ const PendingData = () => {
   return (
     <CustomTable>
     <TableHeader>
-        <CustomHeaderCell>User Info.</CustomHeaderCell>
+        <CustomHeaderCell>User Info..</CustomHeaderCell>
     </TableHeader>
     </CustomTable>
   )

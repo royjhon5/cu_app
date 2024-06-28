@@ -12,6 +12,7 @@ import ToastNotification from '../../components/ToastNotification';
 import useSound from 'use-sound';
 import notifSound from '../../assets/NotifSound/notifSound.mp3'
 import { WebSocket } from '../../main';
+import http from '../../api/http';
 
 
 
@@ -42,7 +43,7 @@ const MainLayout = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    await fetch('https://jsonplaceholder.typicode.com/posts/1').then(() => {
+    await http('/get-roles').then(() => {
     })
     setLoading(false)
   }
