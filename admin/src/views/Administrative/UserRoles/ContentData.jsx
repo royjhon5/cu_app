@@ -65,7 +65,7 @@ const ContentData = ({ openDialog, closeDialog  }) => {
             onError: (error) => {
                 console.error('Server Error', error);
                 if (error.response && error.response.status === 400 && error.response.data.error === "Role already exists!") {
-                toast.error('Role already exists.');
+                toast.error('Role already exists!');
                 } else {
                 toast.error('Server Error');
                 }
